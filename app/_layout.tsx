@@ -4,6 +4,7 @@ import { useFonts } from 'expo-font';
 import { SplashScreen, Stack } from 'expo-router';
 import { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
+import { FontsImport } from '../types/fonts';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -16,10 +17,13 @@ export const unstable_settings = {
 };
 
 export default function RootLayout() {
-  const [loaded, error] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-    ...FontAwesome.font,
-  });
+  const fonts: FontsImport = {
+    'Montserrat-Regular': require('../assets/fonts/montserrat/Montserrat-Regular.ttf'),
+    'Montserrat-Bold': require('../assets/fonts/montserrat/Montserrat-Bold.ttf'),
+    'Montserrat-Thin': require('../assets/fonts/montserrat/Montserrat-Thin.ttf'),
+    'Montserrat-SemiBold': require('../assets/fonts/montserrat/Montserrat-SemiBold.ttf'),
+  }
+  const [loaded, error] = useFonts(fonts);
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
@@ -43,7 +47,6 @@ function RootLayoutNav() {
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
         </Stack>
       </ThemeProvider>
     </>

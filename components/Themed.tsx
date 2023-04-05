@@ -6,6 +6,7 @@
 import { Text as DefaultText, useColorScheme, View as DefaultView } from 'react-native';
 
 import Colors from '../constants/Colors';
+import { Fonts } from '../types/fonts';
 
 export function useThemeColor(
   props: { light?: string; dark?: string },
@@ -26,14 +27,17 @@ type ThemeProps = {
   darkColor?: string;
 };
 
-export type TextProps = ThemeProps & DefaultText['props'];
+export type TextProps = ThemeProps & DefaultText['props'] & { weight?: 'bold' |'semibold'| 'regular'| 'thin' };
 export type ViewProps = ThemeProps & DefaultView['props'];
 
 export function Text(props: TextProps) {
   const { style, lightColor, darkColor, ...otherProps } = props;
   const color = useThemeColor({ light: lightColor, dark: darkColor }, 'text');
 
-  return <DefaultText style={[{ color }, style]} {...otherProps} />;
+  const weight = props.weight ?? 'regular';
+  const fontFamily: Fonts = weight === 'bold' ? 'Montserrat-Bold' : weight === 'semibold' ? 'Montserrat-SemiBold' : weight === 'thin' ? 'Montserrat-Thin' : 'Montserrat-Regular';
+
+  return <DefaultText style={[{ color, fontFamily }, style]} {...otherProps} />;
 }
 
 export function View(props: ViewProps) {
