@@ -92,10 +92,11 @@ export default function SignIn (): JSX.Element {
       />
       <Box mt='5' width='full'>
         <Button
-          bgColor='violet.500'
           onTouchEnd={() => handleSubmit(onSubmit)().catch}
         >
-          Sign In
+          <Text fontWeight='bold'>
+            Sign In
+          </Text>
         </Button>
 
         <Text marginTop='5' textAlign='center' color='white' fontSize='sm'>
