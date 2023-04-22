@@ -1,7 +1,8 @@
 import Constants from 'expo-constants'
-import { getAuth } from 'firebase/auth'
 import { initializeApp } from 'firebase/app'
 import { getFirestore } from 'firebase/firestore'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { getReactNativePersistence, initializeAuth } from 'firebase/auth/react-native'
 
 if (Constants.manifest?.extra == null) {
   throw new Error('No firebase config found')
@@ -17,6 +18,8 @@ const firebaseConfig = {
   databaseURL: Constants.manifest?.extra.databaseURL
 }
 
-initializeApp(firebaseConfig)
-export const auth = getAuth()
+const app = initializeApp(firebaseConfig)
+export const auth = initializeAuth(app, {
+  persistence: getReactNativePersistence(AsyncStorage)
+})
 export const database = getFirestore()
