@@ -1,10 +1,11 @@
-import { Link } from 'expo-router'
+import { Link, useRouter } from 'expo-router'
+import { type FirebaseError } from 'firebase/app'
 import { auth } from '../../config/firebaseConfig'
-import { Box, Button, Text, View, useToast } from 'native-base'
 import { CustomInput } from '../../components/CustomInput'
 import { signInWithEmailAndPassword } from 'firebase/auth'
+import { LoginWith } from '../../components/auth/LoginWith'
 import { useForm, type SubmitHandler } from 'react-hook-form'
-import { type FirebaseError } from 'firebase/app'
+import { Box, Button, Text, View, useToast } from 'native-base'
 
 interface SignInForm {
   email: string
@@ -13,6 +14,7 @@ interface SignInForm {
 
 export default function SignIn (): JSX.Element {
   const toast = useToast()
+  const router = useRouter()
   const {
     control,
     setError,
@@ -29,6 +31,7 @@ export default function SignIn (): JSX.Element {
   const onSubmit: SubmitHandler<SignInForm> = async (data) => {
     try {
       await signInWithEmailAndPassword(auth, data.email, data.password)
+      router.push('/chat')
     } catch (e: unknown) {
       const error = e as FirebaseError
 
@@ -54,58 +57,72 @@ export default function SignIn (): JSX.Element {
   }
 
   return (
-    <View width='full' height='full' px='5' justifyContent='center' alignItems='center' bg='blueGray.800'>
-      <CustomInput
-        name='email'
-        rules={{
-          required: {
-            value: true,
-            message: 'Email is required'
-          },
-          pattern: {
-            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-            message: 'Invalid email address'
-          }
-        }}
-        control={control}
-        error={errors.email}
-        placeholder='Write your email...'
-        label='Email'
-      />
-      <CustomInput
-        name='password'
-        control={control}
-        rules={{
-          required: {
-            value: true,
-            message: 'Password is required'
-          },
-          pattern: {
-            value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
-            message: 'Password must be at least 8 characters long and contain at least one letter and one number.'
-          }
-        }}
-        error={errors.password}
-        type='password'
-        placeholder='Write your password...'
-        label='Password'
-      />
-      <Box mt='5' width='full'>
-        <Button
-          onTouchEnd={() => handleSubmit(onSubmit)().catch}
-        >
-          <Text fontWeight='bold'>
-            Sign In
-          </Text>
-        </Button>
-
+    <View height='full' px='5' pt='20' pb='10' justifyContent='space-between' alignItems='flex-start' bg='blueGray.800'>
+      <Box>
+        <Text color='white' fontSize='2xl' fontWeight='bold' >
+          Hello! Welcome back! 👋
+        </Text>
+        <Text color='blueGray.400' fontSize='sm' >
+          Hello again, you've been missed!
+        </Text>
+        <Box mt='12'>
+          <CustomInput
+            name='email'
+            rules={{
+              required: {
+                value: true,
+                message: 'Email is required'
+              },
+              pattern: {
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                message: 'Invalid email address'
+              }
+            }}
+            control={control}
+            error={errors.email}
+            placeholder='Enter your email'
+            label='Email'
+          />
+          <CustomInput
+            style={{ marginTop: 10 }}
+            name='password'
+            control={control}
+            rules={{
+              required: {
+                value: true,
+                message: 'Password is required'
+              },
+              pattern: {
+                value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+                message: 'Password must be at least 8 characters long and contain at least one letter and one number.'
+              }
+            }}
+            error={errors.password}
+            type='password'
+            placeholder='Enter your password'
+            label='Password'
+          />
+          <Box mt='12'>
+            <Button
+              onTouchEnd={() => handleSubmit(onSubmit)().catch}
+            >
+              <Text fontWeight='bold' textAlign='center'>
+                Sign In
+              </Text>
+            </Button>
+          </Box>
+         <LoginWith />
+        </Box>
+      </Box>
+      <Box>
         <Text marginTop='5' textAlign='center' color='white' fontSize='sm'>
-          Not a member?{' '}
+          Don't have an account?{' '}
           <Link href='/signUp'>
             <Text fontWeight='bold'> Sign Up</Text>
           </Link>
         </Text>
       </Box>
+
     </View>
   )
 }

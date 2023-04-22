@@ -1,58 +1,82 @@
+import { store } from '../store'
+import { Provider } from 'react-redux'
+import { useUser } from '../hooks/useUser'
+import { type User } from '../types/user'
 import { useEffect, useState } from 'react'
 import { StatusBar } from 'expo-status-bar'
+import { doc, getDoc } from 'firebase/firestore'
 import { NativeBaseProvider } from 'native-base'
 import { customTheme } from '../utils/customTheme'
+import { COLLECTIONS } from '../utils/firebaseConsts'
+import { auth, database } from '../config/firebaseConfig'
 import { Slot, SplashScreen, useRouter } from 'expo-router'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-
+import { onAuthStateChanged, signOut } from 'firebase/auth'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary
 } from 'expo-router'
 
-export default function RootLayout (): JSX.Element | null {
-  const [firstTime, setFirstTime] = useState(false)
+const queryClient = new QueryClient()
+
+export default function App (): JSX.Element | null {
+  return (
+    <Provider store={store}>
+      <QueryClientProvider client={queryClient}>
+
+      <NativeBaseProvider theme={customTheme} >
+        <RootLayout />
+      </NativeBaseProvider>
+      </QueryClientProvider>
+    </Provider>
+  )
+}
+
+function RootLayout (): JSX.Element {
+  const { setUser } = useUser()
   const [showSplashScreen, setShowSplashScreen] = useState(true)
 
   useEffect(() => {
-    ;(async () => {
-      const value = await AsyncStorage.getItem('@firstTime')
+    const unSubscriber = onAuthStateChanged(auth, user => {
+      if (user != null) {
+        ;(async () => {
+          const docRef = doc(database, COLLECTIONS.USERS, user.uid)
+          const docSnap = await getDoc(docRef)
 
-      if (value === null || value === 'true') {
-        await AsyncStorage.setItem('@firstTime', 'true')
-        setFirstTime(true)
-      }
-      setShowSplashScreen(false)
-    })().catch((e) => {})
+          if (docSnap.exists()) {
+            const userData = docSnap.data() as User
+            setUser(userData)
+          } else signOut(auth).catch((e) => {})
+
+          setShowSplashScreen(false)
+        })().catch((e) => {})
+      } else setShowSplashScreen(false)
+    })
+    return () => { unSubscriber() }
   }, [])
 
   return (
+
     <>
-    <StatusBar style='light' />
+      <StatusBar style='light' />
       {
-        showSplashScreen ? <SplashScreen /> : <RootLayoutNav firstTime={firstTime} />
+        showSplashScreen ? <SplashScreen /> : <RootLayoutNav />
       }
     </>
   )
 }
 
-interface Props {
-  firstTime: boolean
-}
-
-function RootLayoutNav ({ firstTime }: Props): JSX.Element {
+function RootLayoutNav (): JSX.Element {
   const router = useRouter()
-  console.log(firstTime)
+
   useEffect(() => {
-    if (firstTime) router.push('/onboarding')
-    else router.push('/signIn')
+    if (auth.currentUser != null) router.push('/chat')
+    else router.push('/onboarding')
   }, [])
 
   return (
     <>
-      <NativeBaseProvider theme={customTheme} >
-        <Slot />
-      </NativeBaseProvider>
+      <Slot />
     </>
   )
 }

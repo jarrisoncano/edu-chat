@@ -17,7 +17,11 @@ export const customTheme = extendTheme({
       defaultProps: {
         color: 'white'
       }
+    },
+    Box: {
+      defaultProps: {
+        width: 'full'
+      }
     }
-
   }
 })

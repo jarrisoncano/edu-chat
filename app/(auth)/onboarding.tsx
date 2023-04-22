@@ -11,20 +11,19 @@ export default function OnBoarding (): JSX.Element {
             <Text fontSize='xl' fontWeight='medium' mt='5' color='blueGray.400'>
                 Connect with each other with chatting. Enjoy safe and private texting
             </Text>
-            <Box width='full' mt='20'>
-
-            <Button>
-                <Link href='/signUp'>
-                <Text fontWeight='bold'>
-                Join Now
+            <Box mt='20'>
+                <Button>
+                    <Link href='/signUp'>
+                        <Text fontWeight='bold' textAlign='center'>
+                            Join Now
+                        </Text>
+                    </Link>
+                </Button>
+                <Text mt='8' textAlign='center'>
+                    Already have an account? <Link href='/signIn'>
+                        <Text fontWeight='bold'>Sign In</Text>
+                    </Link>
                 </Text>
-                </Link>
-            </Button>
-            <Text mt='8'>
-                Already have an account? <Link href='/signIn'>
-                <Text fontWeight='bold'>Sign In</Text>
-                </Link>
-            </Text>
             </Box>
         </View>
   )
