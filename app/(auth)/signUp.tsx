@@ -1,5 +1,5 @@
-import { useUser } from '../../hooks/useUser'
 import { type User } from '../../types/user'
+import { useUser } from '../../hooks/useUser'
 import { Link, useRouter } from 'expo-router'
 import { type FirebaseError } from 'firebase/app'
 import { useFetchNewUser } from '../../services/user'
@@ -7,6 +7,7 @@ import { Box, Button, Text, View } from 'native-base'
 import { CustomInput } from '../../components/CustomInput'
 import { LoginWith } from '../../components/auth/LoginWith'
 import { useForm, type SubmitHandler } from 'react-hook-form'
+import { routes } from '../../utils/routes'
 
 interface SignUpForm {
   name: string
@@ -45,7 +46,7 @@ export default function SignUp (): JSX.Element {
       await mutateAsync({ user: newUser, password: data.password })
       reset()
       setUser(newUser)
-      router.push('/setUser')
+      router.push(routes.setUser)
     } catch (e: unknown) {
       const error = e as FirebaseError
 
@@ -135,7 +136,7 @@ export default function SignUp (): JSX.Element {
       <Box>
         <Text marginTop='5' textAlign='center' color='white' fontSize='sm'>
           Already have an account?{' '}
-          <Link href='/signIn'>
+          <Link href={routes.signIn}>
             <Text fontWeight='bold'> Sign In</Text>
           </Link>
         </Text>

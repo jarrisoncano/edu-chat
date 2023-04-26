@@ -12,6 +12,7 @@ import { auth, database } from '../config/firebaseConfig'
 import { Slot, SplashScreen, useRouter } from 'expo-router'
 import { onAuthStateChanged, signOut } from 'firebase/auth'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { routes } from '../utils/routes'
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary
@@ -70,8 +71,8 @@ function RootLayoutNav (): JSX.Element {
   const router = useRouter()
 
   useEffect(() => {
-    if (auth.currentUser != null) router.push('/chat')
-    else router.push('/onboarding')
+    if (auth.currentUser != null) router.push(routes.chat)
+    else router.push(routes.onboarding)
   }, [])
 
   return (

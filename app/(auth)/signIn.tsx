@@ -6,6 +6,7 @@ import { signInWithEmailAndPassword } from 'firebase/auth'
 import { LoginWith } from '../../components/auth/LoginWith'
 import { useForm, type SubmitHandler } from 'react-hook-form'
 import { Box, Button, Text, View, useToast } from 'native-base'
+import { routes } from '../../utils/routes'
 
 interface SignInForm {
   email: string
@@ -31,7 +32,7 @@ export default function SignIn (): JSX.Element {
   const onSubmit: SubmitHandler<SignInForm> = async (data) => {
     try {
       await signInWithEmailAndPassword(auth, data.email, data.password)
-      router.push('/chat')
+      router.push(routes.chat)
     } catch (e: unknown) {
       const error = e as FirebaseError
 
@@ -117,7 +118,7 @@ export default function SignIn (): JSX.Element {
       <Box>
         <Text marginTop='5' textAlign='center' color='white' fontSize='sm'>
           Don't have an account?{' '}
-          <Link href='/signUp'>
+          <Link href={routes.signUp}>
             <Text fontWeight='bold'> Sign Up</Text>
           </Link>
         </Text>

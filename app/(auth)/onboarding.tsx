@@ -1,5 +1,6 @@
 import { Link } from 'expo-router'
 import { Box, Button, Text, View } from 'native-base'
+import { routes } from '../../utils/routes'
 
 export default function OnBoarding (): JSX.Element {
   return (
@@ -13,14 +14,14 @@ export default function OnBoarding (): JSX.Element {
             </Text>
             <Box mt='20'>
                 <Button>
-                    <Link href='/signUp'>
+                    <Link href={routes.signUp}>
                         <Text fontWeight='bold' textAlign='center'>
                             Join Now
                         </Text>
                     </Link>
                 </Button>
                 <Text mt='8' textAlign='center'>
-                    Already have an account? <Link href='/signIn'>
+                    Already have an account? <Link href={routes.signIn}>
                         <Text fontWeight='bold'>Sign In</Text>
                     </Link>
                 </Text>
