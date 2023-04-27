@@ -1,12 +1,12 @@
+import { routes } from '../../utils/routes'
 import { Link, useRouter } from 'expo-router'
 import { type FirebaseError } from 'firebase/app'
 import { auth } from '../../config/firebaseConfig'
-import { CustomInput } from '../../components/CustomInput'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import { LoginWith } from '../../components/auth/LoginWith'
 import { useForm, type SubmitHandler } from 'react-hook-form'
 import { Box, Button, Text, View, useToast } from 'native-base'
-import { routes } from '../../utils/routes'
+import { CustomInput } from '../../components/shared/CustomInput'
 
 interface SignInForm {
   email: string

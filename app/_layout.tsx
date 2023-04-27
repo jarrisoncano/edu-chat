@@ -1,7 +1,8 @@
 import { store } from '../store'
 import { Provider } from 'react-redux'
-import { useUser } from '../hooks/useUser'
+import { routes } from '../utils/routes'
 import { type User } from '../types/user'
+import { useUser } from '../hooks/useUser'
 import { useEffect, useState } from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { doc, getDoc } from 'firebase/firestore'
@@ -12,7 +13,6 @@ import { auth, database } from '../config/firebaseConfig'
 import { Slot, SplashScreen, useRouter } from 'expo-router'
 import { onAuthStateChanged, signOut } from 'firebase/auth'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { routes } from '../utils/routes'
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary

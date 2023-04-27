@@ -1,7 +1,7 @@
 export const routes = {
   signIn: '/signIn',
   signUp: '/signUp',
-  setUser: '/set-user',
+  setUser: '/user/setUser',
   chat: '/chat',
   onboarding: '/onboarding'
 }

@@ -6,9 +6,10 @@ export const customTheme = extendTheme({
       defaultProps: {
         px: '5',
         flex: 1,
+        pt: '20',
         width: 'full',
         height: 'full',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         alignItems: 'center',
         bg: 'blueGray.800'
       }

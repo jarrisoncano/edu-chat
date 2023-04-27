@@ -1,13 +1,13 @@
+import { routes } from '../../utils/routes'
 import { type User } from '../../types/user'
 import { useUser } from '../../hooks/useUser'
 import { Link, useRouter } from 'expo-router'
 import { type FirebaseError } from 'firebase/app'
 import { useFetchNewUser } from '../../services/user'
 import { Box, Button, Text, View } from 'native-base'
-import { CustomInput } from '../../components/CustomInput'
 import { LoginWith } from '../../components/auth/LoginWith'
 import { useForm, type SubmitHandler } from 'react-hook-form'
-import { routes } from '../../utils/routes'
+import { CustomInput } from '../../components/shared/CustomInput'
 
 interface SignUpForm {
   name: string
