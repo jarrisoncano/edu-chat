@@ -1,5 +1,6 @@
 import { FormControl, Input } from 'native-base'
 import { type StyleProp, type ViewStyle } from 'react-native'
+import { type ResponsiveValue } from 'native-base/lib/typescript/components/types'
 import { Controller, type ErrorOption, type RegisterOptions } from 'react-hook-form'
 
 interface InputProps {
@@ -9,6 +10,7 @@ interface InputProps {
   required?: boolean
   placeholder: string
   style?: StyleProp<ViewStyle>
+  height?: ResponsiveValue<number | string>
   rules?: RegisterOptions
   error?: ErrorOption
   type?: 'text' | 'password'
@@ -17,7 +19,7 @@ interface InputProps {
 
 export const CustomInput = (props: InputProps): JSX.Element => {
   return (
-    <FormControl style={props.style} isInvalid={Boolean(props.error?.type)}>
+    <FormControl style={props.style} isInvalid={Boolean(props.error?.type)} height={props.height}>
       <FormControl.Label>{props.label}</FormControl.Label>
       <Controller
         control={props.control}
@@ -26,7 +28,7 @@ export const CustomInput = (props: InputProps): JSX.Element => {
           props.rules
         }
         render={({ field: { value, onChange, onBlur } }) => (
-          <Input autoCorrect={false} autoCapitalize='none' value={value} onChangeText={onChange} onBlur={onBlur} isRequired={props.required} autoComplete='email' type={props.type ?? 'text'} placeholder={props.placeholder} variant={props.variant ?? 'filled'} bgColor='blueGray.700' color='white' borderColor='blueGray.500' />
+          <Input height={props.height} autoCorrect={false} autoCapitalize='none' value={value} onChangeText={onChange} onBlur={onBlur} isRequired={props.required} autoComplete='email' type={props.type ?? 'text'} placeholder={props.placeholder} variant={props.variant ?? 'filled'} bgColor='blueGray.700' color='white' borderColor='blueGray.500' />
         )}
       />
       <FormControl.ErrorMessage>{props.error?.message ?? 'Something is wrong.'}</FormControl.ErrorMessage>
