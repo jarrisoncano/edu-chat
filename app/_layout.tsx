@@ -10,8 +10,8 @@ import { NativeBaseProvider } from 'native-base'
 import { customTheme } from '../utils/customTheme'
 import { COLLECTIONS } from '../utils/firebaseConsts'
 import { auth, database } from '../config/firebaseConfig'
-import { Slot, SplashScreen, useRouter } from 'expo-router'
 import { onAuthStateChanged, signOut } from 'firebase/auth'
+import { Slot, SplashScreen, useRouter, useSegments } from 'expo-router'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 export {
   // Catch any errors thrown by the Layout component.
@@ -69,11 +69,12 @@ function RootLayout (): JSX.Element {
 
 function RootLayoutNav (): JSX.Element {
   const router = useRouter()
+  const segments = useSegments()
 
   useEffect(() => {
-    if (auth.currentUser != null) router.push(routes.chat)
-    else router.push(routes.onboarding)
-  }, [])
+    if (segments[0] === '(auth)' || auth.currentUser == null) router.push(routes.onboarding)
+    else router.push(routes.home)
+  }, [auth.currentUser, segments])
 
   return (
     <>

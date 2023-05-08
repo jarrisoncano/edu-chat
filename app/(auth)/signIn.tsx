@@ -32,7 +32,7 @@ export default function SignIn (): JSX.Element {
   const onSubmit: SubmitHandler<SignInForm> = async (data) => {
     try {
       await signInWithEmailAndPassword(auth, data.email, data.password)
-      router.push(routes.chat)
+      router.push(routes.home)
     } catch (e: unknown) {
       const error = e as FirebaseError
 

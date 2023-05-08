@@ -66,7 +66,7 @@ export default function SetUser () {
 
   useEffect(() => {
     if (isSuccess && data) {
-      router.push(routes.chat)
+      router.push(routes.home)
       setUser(data)
       reset()
     } else if (isError) {
@@ -93,7 +93,7 @@ export default function SetUser () {
         <Box width='25px'>
             <TouchableOpacity
               onPress={() => {
-                router.push(routes.chat)
+                router.push(routes.home)
               }}
             >
               <Ionicons name='ios-close' size={25} color='white' />
