@@ -4,5 +4,7 @@ export const routes = {
   setUser: '/user/setUser',
   chat: '/chat',
   onboarding: '/onboarding',
-  home: '/home'
+  home: '/home',
+  events: '/events',
+  settings: '/settings'
 }

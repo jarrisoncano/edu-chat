@@ -1,8 +1,8 @@
 import { Box, View } from 'native-base'
 import { useForm } from 'react-hook-form'
 import { Timestamp } from 'firebase/firestore'
-import { UserCard } from '../../components/Chats/UserCard'
-import { CustomInput } from '../../components/shared/CustomInput'
+import { UserCard } from '../../../components/Chats/UserCard'
+import { CustomInput } from '../../../components/shared/CustomInput'
 
 const userMock = {
   username: 'Jarrison Cano',
