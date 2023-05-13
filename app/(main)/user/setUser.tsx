@@ -5,6 +5,7 @@ import { useAppSelector } from '../../../store'
 import { useUser } from '../../../hooks/useUser'
 import { TouchableOpacity } from 'react-native'
 import { Ionicons, AntDesign } from '@expo/vector-icons'
+import { Header } from '../../../components/shared/Header'
 import { useFetchUpdateUser } from '../../../services/user'
 import { type SubmitHandler, useForm } from 'react-hook-form'
 import { Avatar, Box, Button, Image, Text, View } from 'native-base'
@@ -43,7 +44,6 @@ export default function SetUser () {
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1
-
     })
 
     if (!result.canceled) {
@@ -80,78 +80,60 @@ export default function SetUser () {
   }, [user])
 
   return (
-    <View pt='20' justifyContent='flex-start'>
-      <Box flexDirection='row' justifyContent='space-between' >
-        <Box width='2/3'>
-          <Text color='white' fontSize='2xl' fontWeight='bold'>
-            Profile Settings 🛠
-          </Text>
-          <Text color='blueGray.400' fontSize='sm'>
-            {secondaryText}
-          </Text>
-        </Box>
-        <Box width='25px'>
-            <TouchableOpacity
-              onPress={() => {
-                router.push(routes.home)
-              }}
-            >
-              <Ionicons name='ios-close' size={25} color='white' />
-            </TouchableOpacity>
-        </Box>
-      </Box>
-      <Box mt='12' alignItems='center'>
-        <TouchableOpacity
-          onPress={() => {
-            uploadImage().catch(() => { })
-          }}
-        >
-          <Avatar bgColor='blueGray.600' size='2xl'>
-            {watch('photoURL')
-              ? (
-                <Image
-                  width={'full'}
-                  height={'full'}
-                  borderRadius='full'
-                  source={{ uri: watch('photoURL') }}
-                  alt='Profile picture'
+        <View pt='20' justifyContent='flex-start'>
+            <Header primaryText='Profile Settings 🛠' secondaryText={secondaryText} route={routes.home} />
+            <Box mt='12' alignItems='center'>
+                <TouchableOpacity
+                    onPress={() => {
+                      uploadImage().catch(() => {})
+                    }}
+                >
+                    <Avatar bgColor='blueGray.600' size='2xl'>
+                        {watch('photoURL')
+                          ? (
+                            <Image
+                                width={'full'}
+                                height={'full'}
+                                borderRadius='full'
+                                source={{ uri: watch('photoURL') }}
+                                alt='Profile picture'
+                            />
+                            )
+                          : (
+                            <AntDesign name='user' size={34} color='white' />
+                            )}
+                        <Avatar.Badge bg='blueGray.300' alignItems='center' justifyContent='center'>
+                            <Ionicons name='ios-cloud-upload-outline' size={15} color='gray' />
+                        </Avatar.Badge>
+                    </Avatar>
+                </TouchableOpacity>
+                <Text pt='5' fontSize='2xl' fontWeight='bold'>
+                    {user?.name}
+                </Text>
+                <Text fontSize='md' fontWeight='thin'>
+                    {user?.email}
+                </Text>
+            </Box>
+            <Box pt='12' alignItems='center'>
+                <CustomTextArea
+                    control={control}
+                    name='description'
+                    placeholder='Tell us about yourself'
+                    height={150}
+                    required={false}
+                    error={errors.description}
                 />
-                )
-              : (
-                <AntDesign name='user' size={34} color='white' />
-                )}
-            <Avatar.Badge bg='blueGray.300' alignItems='center' justifyContent='center'>
-              <Ionicons name='ios-cloud-upload-outline' size={15} color='gray' />
-            </Avatar.Badge>
-          </Avatar>
-        </TouchableOpacity>
-        <Text pt='5' fontSize='2xl' fontWeight='bold'>
-          {user?.name}
-        </Text>
-        <Text fontSize='md' fontWeight='thin'>
-          {user?.email}
-        </Text>
-      </Box>
-      <Box pt='12' alignItems='center'>
-        <CustomTextArea
-          control={control}
-          name='description'
-          placeholder='Tell us about yourself'
-          height={150}
-          required={false}
-          error={errors.description}
-        />
-        <Box alignItems='flex-end'>
-          <Text fontWeight='semibold' fontSize='xs'>
-            {watch('description').length}/100
-          </Text>
-        </Box>
-      </Box>
-      <Button mt='10' isLoading={isLoading} onTouchEnd={() => handleSubmit(onSubmit)().catch}>
-        <Text fontWeight='bold' textAlign='center'>
-          Let's start
-        </Text>
-      </Button>
-    </View>
+                <Box alignItems='flex-end'>
+                    <Text fontWeight='semibold' fontSize='xs'>
+                        {watch('description').length}/100
+                    </Text>
+                </Box>
+            </Box>
+            <Button mt='10' isLoading={isLoading} onTouchEnd={() => handleSubmit(onSubmit)().catch}>
+                <Text fontWeight='bold' textAlign='center'>
+                    Let's start
+                </Text>
+            </Button>
+        </View>
   )
 }
