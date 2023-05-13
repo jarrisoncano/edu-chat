@@ -8,9 +8,9 @@ import { Ionicons, AntDesign } from '@expo/vector-icons'
 import { Header } from '../../../components/shared/Header'
 import { useFetchUpdateUser } from '../../../services/user'
 import { type SubmitHandler, useForm } from 'react-hook-form'
+import { uploadImage } from '../../../components/utils/uploadImage'
 import { Avatar, Box, Button, Image, Text, View } from 'native-base'
 import { CustomTextArea } from '../../../components/shared/CustomTextArea'
-import { launchImageLibraryAsync, MediaTypeOptions } from 'expo-image-picker'
 
 interface Form {
   photoURL: string
@@ -38,23 +38,9 @@ export default function SetUser () {
   const firstTime = !user?.avatar || !user?.description
   const secondaryText = firstTime ? 'Complete your profile' : 'Update your profile'
 
-  const uploadImage = async () => {
-    const result = await launchImageLibraryAsync({
-      mediaTypes: MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1
-    })
-
-    if (!result.canceled) {
-      const img = result.assets[0]
-      const isJPG = img.fileName?.endsWith('.jpg') ?? img.fileName?.endsWith('.jpeg')
-      if (!isJPG) {
-        alert('Only JPG images are supported')
-        return
-      }
-      setValue('photoURL', img.uri)
-    }
+  const handleImage = async () => {
+    const img = await uploadImage()
+    if (img) setValue('photoURL', img.uri)
   }
 
   const onSubmit: SubmitHandler<Form> = async (data) => {
@@ -85,7 +71,7 @@ export default function SetUser () {
             <Box mt='12' alignItems='center'>
                 <TouchableOpacity
                     onPress={() => {
-                      uploadImage().catch(() => {})
+                      handleImage().catch(() => {})
                     }}
                 >
                     <Avatar bgColor='blueGray.600' size='2xl'>
