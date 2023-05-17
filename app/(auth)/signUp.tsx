@@ -63,10 +63,10 @@ export default function SignUp (): JSX.Element {
   return (
     <View height='full' px='5' pt='20' pb='10' justifyContent='space-between' alignItems='flex-start' bg='blueGray.800'>
       <Box>
-        <Text color='white' fontSize='2xl' fontWeight='bold' >
+        <Text color='white' fontSize='2xl' fontWeight='bold'>
           Create Account
         </Text>
-        <Text color='blueGray.400' fontSize='sm' >
+        <Text color='blueGray.400' fontSize='sm'>
           Connect with your friends Today!
         </Text>
         <Box mt='12'>
@@ -84,7 +84,7 @@ export default function SignUp (): JSX.Element {
             label='Name'
           />
           <CustomInput
-           style={{ marginTop: 10 }}
+            style={{ marginTop: 10 }}
             name='email'
             rules={{
               required: {
@@ -122,7 +122,7 @@ export default function SignUp (): JSX.Element {
           />
           <Box mt='12'>
             <Button
-            isLoading={isLoading}
+              isLoading={isLoading}
               onTouchEnd={() => handleSubmit(onSubmit)().catch}
             >
               <Text fontWeight='bold' textAlign='center'>
@@ -130,7 +130,7 @@ export default function SignUp (): JSX.Element {
               </Text>
             </Button>
           </Box>
-         <LoginWith />
+          <LoginWith />
         </Box>
       </Box>
       <Box>

@@ -60,10 +60,10 @@ export default function SignIn (): JSX.Element {
   return (
     <View height='full' px='5' pt='20' pb='10' justifyContent='space-between' alignItems='flex-start' bg='blueGray.800'>
       <Box>
-        <Text color='white' fontSize='2xl' fontWeight='bold' >
+        <Text color='white' fontSize='2xl' fontWeight='bold'>
           Hello! Welcome back! 👋
         </Text>
-        <Text color='blueGray.400' fontSize='sm' >
+        <Text color='blueGray.400' fontSize='sm'>
           Hello again, you've been missed!
         </Text>
         <Box mt='12'>
@@ -112,7 +112,7 @@ export default function SignIn (): JSX.Element {
               </Text>
             </Button>
           </Box>
-         <LoginWith />
+          <LoginWith />
         </Box>
       </Box>
       <Box>

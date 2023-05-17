@@ -18,56 +18,54 @@ export {
   ErrorBoundary
 } from 'expo-router'
 
-const queryClient = new QueryClient()
+export const queryClient = new QueryClient()
 
-export default function App (): JSX.Element | null {
+export default function App(): JSX.Element | null {
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
-
-      <NativeBaseProvider theme={customTheme} >
-        <RootLayout />
-      </NativeBaseProvider>
+        <NativeBaseProvider theme={customTheme}>
+          <RootLayout />
+        </NativeBaseProvider>
       </QueryClientProvider>
     </Provider>
   )
 }
 
-function RootLayout (): JSX.Element {
+function RootLayout(): JSX.Element {
   const { setUser } = useUser()
   const [showSplashScreen, setShowSplashScreen] = useState(true)
 
   useEffect(() => {
-    const unSubscriber = onAuthStateChanged(auth, user => {
+    const unSubscriber = onAuthStateChanged(auth, (user) => {
       if (user != null) {
-        ;(async () => {
+        ; (async () => {
           const docRef = doc(database, COLLECTIONS.USERS, user.uid)
           const docSnap = await getDoc(docRef)
 
           if (docSnap.exists()) {
             const userData = docSnap.data() as User
             setUser(userData)
-          } else signOut(auth).catch((e) => {})
+          } else signOut(auth).catch((e) => { })
 
           setShowSplashScreen(false)
-        })().catch((e) => {})
+        })().catch((e) => { })
       } else setShowSplashScreen(false)
     })
-    return () => { unSubscriber() }
+    return () => {
+      unSubscriber()
+    }
   }, [])
 
   return (
-
     <>
       <StatusBar style='light' />
-      {
-        showSplashScreen ? <SplashScreen /> : <RootLayoutNav />
-      }
+      {showSplashScreen ? <SplashScreen /> : <RootLayoutNav />}
     </>
   )
 }
 
-function RootLayoutNav (): JSX.Element {
+function RootLayoutNav(): JSX.Element {
   const router = useRouter()
   const segments = useSegments()
 

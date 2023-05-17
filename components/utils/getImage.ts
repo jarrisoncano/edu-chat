@@ -1,6 +1,6 @@
 import { MediaTypeOptions, launchImageLibraryAsync } from 'expo-image-picker'
 
-export const uploadImage = async () => {
+export const getImageFromLibary = async () => {
   const result = await launchImageLibraryAsync({
     mediaTypes: MediaTypeOptions.Images,
     allowsEditing: true,
