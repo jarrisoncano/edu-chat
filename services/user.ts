@@ -1,5 +1,6 @@
 import { type User } from '../types/user'
 import { useMutation } from '@tanstack/react-query'
+import { COLLECTIONS } from '../utils/firebaseConsts'
 import { doc, setDoc, updateDoc } from 'firebase/firestore'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { auth, database, storage } from '../config/firebaseConfig'
@@ -21,7 +22,7 @@ const fetchNewUser: any = async ({ user, password }: NewUserType) => {
     avatar: '',
     description: ''
   }
-  await setDoc(doc(database, 'users', newAuthUser.user.uid), newUser)
+  await setDoc(doc(database, COLLECTIONS.USERS, newAuthUser.user.uid), newUser)
   return newUser
 }
 export const useFetchNewUser = () => useMutation((data: NewUserType) => fetchNewUser(data), {})
@@ -40,7 +41,7 @@ const fetchUpdateUser = async (user: User): Promise<User | undefined> => {
       avatarUrl = url
     }
 
-    await updateDoc(doc(database, 'users', user.uid), {
+    await updateDoc(doc(database, COLLECTIONS.USERS, user.uid), {
       name: user.name,
       avatar: avatarUrl,
       description: user.description
