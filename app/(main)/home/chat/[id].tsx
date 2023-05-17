@@ -1,11 +1,14 @@
+import { useSegments } from 'expo-router'
 import { Text, View } from 'native-base'
 
-export default function Chat (): JSX.Element {
+export default function Chat(): JSX.Element {
+  const segment = useSegments()
+  console.log(segment)
   return (
-        <View>
+    <View>
 
-            <Text>Chat</Text>
-            {/*
+      <Text>Chat</Text>
+      {/*
             <Button width='20' onTouchEnd={() => {
               signOut(auth).catch((e) => { })
               router.push(routes.setUser)
@@ -18,6 +21,6 @@ export default function Chat (): JSX.Element {
             }}>
                 Log out
             {/* </Button> */}
-        </View>
+    </View>
   )
 }
