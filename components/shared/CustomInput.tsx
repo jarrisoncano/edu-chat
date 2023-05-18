@@ -13,6 +13,7 @@ interface InputProps {
   height?: ResponsiveValue<number | string>
   rules?: RegisterOptions
   error?: ErrorOption
+  backgroundColor?: string
   type?: 'text' | 'password'
   variant?: 'filled' | 'outline' | 'unstyled' | 'underlined' | 'rounded'
 }
@@ -20,7 +21,7 @@ interface InputProps {
 export const CustomInput = (props: InputProps): JSX.Element => {
   return (
     <FormControl style={props.style} isInvalid={Boolean(props.error?.type)} height={props.height}>
-      <FormControl.Label>{props.label}</FormControl.Label>
+      <FormControl.Label m={'0'} h={props.label ? '6' : 0}>{props.label}</FormControl.Label>
       <Controller
         control={props.control}
         name={props.name}
@@ -28,7 +29,7 @@ export const CustomInput = (props: InputProps): JSX.Element => {
           props.rules
         }
         render={({ field: { value, onChange, onBlur } }) => (
-          <Input height={props.height} autoCorrect={false} autoCapitalize='none' value={value} onChangeText={onChange} onBlur={onBlur} isRequired={props.required} autoComplete='email' type={props.type ?? 'text'} placeholder={props.placeholder} variant={props.variant ?? 'filled'} bgColor='blueGray.700' color='white' borderColor='blueGray.500' />
+          <Input height={props.height} autoCorrect={false} autoCapitalize='none' value={value} onChangeText={onChange} onBlur={onBlur} isRequired={props.required} autoComplete='email' type={props.type ?? 'text'} placeholder={props.placeholder} variant={props.variant ?? 'filled'} bgColor={props.backgroundColor ?? 'blueGray.700'} color='white' borderColor='blueGray.500' />
         )}
       />
       <FormControl.ErrorMessage>{props.error?.message ?? 'Something is wrong.'}</FormControl.ErrorMessage>
