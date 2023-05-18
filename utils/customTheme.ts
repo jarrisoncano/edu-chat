@@ -23,6 +23,18 @@ export const customTheme = extendTheme({
       defaultProps: {
         width: 'full'
       }
+    },
+    Button: {
+      defaultProps: {
+        bg: 'indigo.400',
+      }
+    },
+    Input: {
+      defaultProps: {
+        _focus: {
+          borderColor: 'indigo.400',
+        }
+      }
     }
   }
 })
