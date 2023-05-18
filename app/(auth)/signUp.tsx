@@ -15,7 +15,7 @@ interface SignUpForm {
   password: string
 }
 
-export default function SignUp (): JSX.Element {
+export default function SignUp(): JSX.Element {
   const router = useRouter()
   const { setUser } = useUser()
   const { isLoading, mutateAsync } = useFetchNewUser()
@@ -43,9 +43,9 @@ export default function SignUp (): JSX.Element {
         name: data.name,
         email: data.email
       }
-      await mutateAsync({ user: newUser, password: data.password })
+      const user = await mutateAsync({ user: newUser, password: data.password }) as User
       reset()
-      setUser(newUser)
+      setUser(user)
       router.push(routes.setUser)
     } catch (e: unknown) {
       const error = e as FirebaseError

@@ -70,8 +70,8 @@ function RootLayoutNav(): JSX.Element {
   const segments = useSegments()
 
   useEffect(() => {
-    if (segments[0] === '(auth)' || auth.currentUser == null) router.push(routes.onboarding)
-    else if (segments[0] !== '(main)') router.push(routes.home)
+    if (segments[0] !== '(auth)' && auth.currentUser === null) router.push(routes.onboarding)
+    else if (segments[0] !== '(main)' && auth.currentUser) router.push(routes.home)
   }, [auth.currentUser, segments])
 
   return (

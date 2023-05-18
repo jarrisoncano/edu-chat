@@ -17,7 +17,7 @@ interface Form {
   description: string
 }
 
-export default function SetUser () {
+export default function SetUser() {
   const { setUser } = useUser()
   const router = useRouter()
   const user = useAppSelector((state) => state.userSlice.user)
@@ -45,7 +45,7 @@ export default function SetUser () {
 
   const onSubmit: SubmitHandler<Form> = async (data) => {
     const { photoURL, description } = data
-    if (user == null) return
+    if (user == null || !user.uid) return
 
     mutate({ ...user, avatar: photoURL, description })
   }
@@ -71,7 +71,7 @@ export default function SetUser () {
       <Box mt='12' alignItems='center'>
         <TouchableOpacity
           onPress={() => {
-					  handleImage().catch(() => {})
+            handleImage().catch(() => { })
           }}
         >
           <Avatar bgColor='blueGray.600' size='2xl'>
@@ -84,10 +84,10 @@ export default function SetUser () {
                   source={{ uri: watch('photoURL') }}
                   alt='Profile picture'
                 />
-                )
+              )
               : (
                 <AntDesign name='user' size={34} color='white' />
-                )}
+              )}
             <Avatar.Badge bg='blueGray.300' alignItems='center' justifyContent='center'>
               <Ionicons name='ios-cloud-upload-outline' size={15} color='gray' />
             </Avatar.Badge>
