@@ -38,7 +38,7 @@ export default function CreateGroup(): JSX.Element {
 	const user = useAppSelector((state) => state.userSlice.user)
 	const { mutate, isSuccess, isError, error, isLoading } = useFetchCreateGroup()
 
-	const onSubmit = async (data: Form) => {
+	const onSubmit = (data: Form) => {
 		if (!user) return
 
 		const newGroup: Group = {
@@ -130,7 +130,7 @@ export default function CreateGroup(): JSX.Element {
 					error={errors.description}
 				/>
 			</Box>
-			<Button mt='10' isLoading={isLoading} onTouchEnd={() => handleSubmit(onSubmit)().catch}>
+			<Button mt='10' isLoading={isLoading} onTouchEnd={() => handleSubmit(onSubmit)}>
 				<Text fontWeight='bold' textAlign='center'>
 					Create group
 				</Text>
