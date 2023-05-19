@@ -1,3 +1,4 @@
+import { Box } from 'native-base'
 import { routes } from '../../utils/routes'
 import { Slot, usePathname } from 'expo-router'
 import { MenuBar } from '../../components/shared/MenuBar'
@@ -11,9 +12,9 @@ export default function MainLayout() {
 	const validPaths = [routes.home, routes.settings, routes.events]
 
 	return (
-		<>
+		<Box h='full' bgColor='blueGray.800'>
 			<Slot />
 			{validPaths.includes(pathname) && <MenuBar />}
-		</>
+		</Box>
 	)
 }
