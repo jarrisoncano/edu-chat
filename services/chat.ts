@@ -1,12 +1,12 @@
-import { type Group } from '../types/Group'
 import { useMutation } from '@tanstack/react-query'
 import { COLLECTIONS } from '../utils/firebaseConsts'
+import { type Message, type Group } from '../types/Group'
 import { useAppDispatch, useAppSelector } from '../store'
 import { database, storage } from '../config/firebaseConfig'
 import { handleAddGroups } from '../store/groups/groupsSlice'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
-import { Timestamp, Unsubscribe, addDoc, collection, doc, onSnapshot, query, updateDoc, where } from 'firebase/firestore'
+import { Timestamp, Unsubscribe, addDoc, arrayUnion, collection, doc, onSnapshot, query, updateDoc, where } from 'firebase/firestore'
 
 const fetchCreateGroup = async (group: Group): Promise<Group | undefined> => {
   try {
@@ -86,10 +86,33 @@ export const useListenUserGroupsChanges = () => {
   useEffect(() => {
     dispatch(handleAddGroups(groups))
   }, [groups])
+}
+// 
+interface FetchMessageInterface {
+  groupId: string
+  message: string
+  userId: string
+}
+const fetchMessage = async ({ groupId, message, userId }: FetchMessageInterface): Promise<undefined> => {
+  try {
 
+    const newMessage: Message = {
+      userId,
+      content: message,
+      createdAt: Timestamp.now()
+    }
 
-  // return useQuery({
-  // 	queryKey: ['getGroups', userId],
-  // 	queryFn: async () => await fetchGetGroups(userId)
-  // })
+    const docRef = doc(database, COLLECTIONS.GROUPS, groupId)
+    await updateDoc(docRef, {
+      chat: arrayUnion(newMessage)
+    })
+    return
+  } catch (e) {
+    console.log(e)
+  }
+}
+export const useFetchMessage = () => {
+  const user = useAppSelector((state) => state.userSlice.user)
+  const userId = user?.uid ?? ''
+  return useMutation(async (data: { message: string, groupId: string }) => await fetchMessage({ groupId: data.groupId, message: data.message, userId }))
 }

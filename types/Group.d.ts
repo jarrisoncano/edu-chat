@@ -1,11 +1,10 @@
-import { Timestamp } from "firebase/firestore"
+import { type Timestamp } from "firebase/firestore"
 
 export interface Message {
-  id: string
-  sender: string
+  userId: string
   image?: string
   content: string
-  createdAt: Date
+  createdAt: Timestamp
   status?: {
     delivered: string[]
     read: string[]
