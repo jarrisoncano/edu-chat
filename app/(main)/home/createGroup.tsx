@@ -1,5 +1,5 @@
 import { useRouter } from 'expo-router'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { routes } from '../../../utils/routes'
 import { TouchableOpacity } from 'react-native'
@@ -9,9 +9,10 @@ import { AntDesign, Ionicons } from '@expo/vector-icons'
 import { Header } from '../../../components/shared/Header'
 import { useFetchCreateGroup } from '../../../services/chat'
 import { CustomInput } from '../../../components/shared/CustomInput'
-import { Avatar, Box, Button, Image, Text, View } from 'native-base'
+import { Avatar, Box, Button, Image, ScrollView, Text, View } from 'native-base'
 import { getImageFromLibary } from '../../../components/utils/getImage'
 import { CustomTextArea } from '../../../components/shared/CustomTextArea'
+import { UserCardInf } from '../../../components/shared/UserCardInf'
 
 interface Form {
 	photoURL: string
@@ -36,6 +37,8 @@ export default function CreateGroup(): JSX.Element {
 	})
 	const router = useRouter()
 	const user = useAppSelector((state) => state.userSlice.user)
+	const [contactsToAdd, setContactsToAdd] = useState<string[]>([])
+	const contacts = useAppSelector((state) => state.userSlice.contacts)
 	const { mutate, isSuccess, isError, error, isLoading } = useFetchCreateGroup()
 
 	const onSubmit = (data: Form) => {
@@ -48,7 +51,7 @@ export default function CreateGroup(): JSX.Element {
 			avatar: data.photoURL,
 			createdAt: new Date(),
 			admins: [user?.uid],
-			members: [user?.uid],
+			members: [user?.uid, ...contactsToAdd],
 			chat: []
 		}
 
@@ -67,7 +70,7 @@ export default function CreateGroup(): JSX.Element {
 		} else if (isError) {
 			console.error(error)
 		}
-	}, [isSuccess]);
+	}, [isSuccess])
 
 	return (
 		<View>
@@ -85,19 +88,17 @@ export default function CreateGroup(): JSX.Element {
 						}}
 					>
 						<Avatar bgColor='blueGray.600' size='lg'>
-							{watch('photoURL')
-								? (
-									<Image
-										width={'full'}
-										height={'full'}
-										borderRadius='full'
-										source={{ uri: watch('photoURL') }}
-										alt='Profile picture'
-									/>
-								)
-								: (
-									<AntDesign name='user' size={34} color='white' />
-								)}
+							{watch('photoURL') ? (
+								<Image
+									width={'full'}
+									height={'full'}
+									borderRadius='full'
+									source={{ uri: watch('photoURL') }}
+									alt='Profile picture'
+								/>
+							) : (
+								<AntDesign name='user' size={34} color='white' />
+							)}
 							<Avatar.Badge bg='blueGray.300' alignItems='center' justifyContent='center'>
 								<Ionicons name='ios-cloud-upload-outline' size={15} color='gray' />
 							</Avatar.Badge>
@@ -130,7 +131,40 @@ export default function CreateGroup(): JSX.Element {
 					error={errors.description}
 				/>
 			</Box>
-			<Button mt='10' isLoading={isLoading} onTouchEnd={() => handleSubmit(onSubmit)}>
+			<Text w='full' mt='5' fontSize='md' color='white'>
+				Add participants:
+			</Text>
+			<ScrollView mt='5' maxH={contacts.length * 20 < 200 ? contacts.length * 20 : 200}>
+				{contacts.map((contact) => {
+					const isAdded = contactsToAdd.includes(contact.uid)
+					return (
+						<UserCardInf
+							key={contact.uid}
+							contact={contact}
+							userId={user?.uid}
+							addToGroup={
+								isAdded
+									? undefined
+									: () => {
+											setContactsToAdd([...contactsToAdd, contact.uid])
+									  }
+							}
+							removeFromGroup={
+								isAdded
+									? () => {
+											setContactsToAdd(contactsToAdd.filter((id) => id !== contact.uid))
+									  }
+									: undefined
+							}
+							isContact={undefined}
+						/>
+					)
+				})}
+			</ScrollView>
+			<Text mt='0' fontSize='xs' textAlign='left' width='full' color='blueGray.500'>
+				{contactsToAdd.length} participants added
+			</Text>
+			<Button mt='10' isLoading={isLoading} onTouchEnd={() => handleSubmit(onSubmit)()}>
 				<Text fontWeight='bold' textAlign='center'>
 					Create group
 				</Text>

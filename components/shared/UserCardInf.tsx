@@ -11,6 +11,8 @@ interface Props {
 	isContact?: boolean
 	add?: boolean
 	remove?: boolean
+	addToGroup?: () => void
+	removeFromGroup?: () => void
 }
 
 export const UserCardInf: FC<Props> = (props) => {
@@ -78,6 +80,16 @@ export const UserCardInf: FC<Props> = (props) => {
 					>
 						{fetchRemoveContact.isLoading && <Spinner color='indigo.500' />}
 						<Entypo name='remove-user' size={22} color='red' />
+					</Pressable>
+				)}
+				{props.addToGroup && (
+					<Pressable width='full' alignItems='flex-end' pr='2' onPress={props.addToGroup}>
+						<Entypo name='plus' size={22} color='white' />
+					</Pressable>
+				)}
+				{props.removeFromGroup && (
+					<Pressable width='full' alignItems='flex-end' pr='2' onPress={props.removeFromGroup}>
+						<Entypo name='minus' size={22} color='white' />
 					</Pressable>
 				)}
 			</Box>
