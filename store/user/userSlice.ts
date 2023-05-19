@@ -1,23 +1,28 @@
-import { type User } from '../../types/user'
 import { createSlice } from '@reduxjs/toolkit'
+import { type User, type Contact } from '../../types/user'
 
 interface AuthState {
-  user: User | null
+	user: User | null
+	contacts: Contact[]
 }
 const initialState: AuthState = {
-  user: null
+	user: null,
+	contacts: []
 }
 
 export const userSlice = createSlice({
-  name: 'user',
-  initialState,
-  reducers: {
-    handleSetUser: (state, action) => {
-      state.user = action.payload
-    }
-  }
+	name: 'user',
+	initialState,
+	reducers: {
+		handleSetUser: (state, action) => {
+			state.user = action.payload
+		},
+		handleAddContacts: (state, action) => {
+			state.contacts = action.payload
+		}
+	}
 })
 
-export const { handleSetUser } = userSlice.actions
+export const { handleSetUser, handleAddContacts } = userSlice.actions
 
 export default userSlice.reducer
