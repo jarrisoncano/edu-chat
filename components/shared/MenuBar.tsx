@@ -29,17 +29,17 @@ export const MenuBar = (): JSX.Element => {
   return (
     <Box px='12' pb='5' pt='3' bg='blueGray.900' flexDir='row' alignItems='center' justifyContent='space-between'>
       {
-                screens.map((screen) => (
-                  <TouchableOpacity key={screen.route} onPress={() => { router.push(screen.route) }}>
-                    <Flex justifyContent='center' width='16' height='16' p='1' borderRadius='full' alignItems='center' bg={screen.route === pathname ? 'blueGray.800' : 'initial'}>
-                      <screen.icon.type {...screen.icon.props} color={screen.route === pathname ? '#64748b' : 'white'} />
-                      <Text fontSize='xs' color={screen.route === pathname ? 'blueGray.500' : 'white'} fontWeight={screen.route === pathname ? 'bold' : 'normal'}>
-                        {screen.name}
-                      </Text>
-                    </Flex>
-                  </TouchableOpacity>
-                ))
-            }
+        screens.map((screen) => (
+          <TouchableOpacity key={screen.route} onPress={() => { router.push(screen.route) }}>
+            <Flex justifyContent='center' width='16' height='16' p='1' borderRadius='full' alignItems='center' bg={screen.route === pathname ? 'blueGray.800' : 'initial'}>
+              <screen.icon.type {...screen.icon.props} color={screen.route === pathname ? '#818cf8' : 'white'} />
+              <Text fontSize='xs' color={screen.route === pathname ? 'indigo.400' : 'white'} fontWeight={screen.route === pathname ? 'bold' : 'normal'}>
+                {screen.name}
+              </Text>
+            </Flex>
+          </TouchableOpacity>
+        ))
+      }
     </Box>
   )
 }

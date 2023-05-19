@@ -6,7 +6,7 @@ export const customTheme = extendTheme({
       defaultProps: {
         px: '5',
         flex: 1,
-        pt: '20',
+        pt: '16',
         width: 'full',
         height: 'full',
         justifyContent: 'flex-start',
