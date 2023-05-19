@@ -4,11 +4,12 @@ export const routes = {
 	setUser: '/user/setUser',
 	chat: (id: string) => `/home/chat/${id}`,
 	detailChat: (id: string) => `/home/chat/detail/${id}`,
+	updateGroup: (id: string) => `/home/groups/update/${id}`,
 	onboarding: '/onboarding',
 	home: '/home',
 	events: '/events',
 	settings: '/settings',
-	createGroup: '/home/createGroup',
+	createGroup: '/home/groups/createGroup',
 	contacts: '/home/contacts',
 	addContact: '/home/contacts/add'
 }

@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react'
+import { FC } from 'react'
 import { useRouter } from 'expo-router'
 import { Group } from '../../types/Group'
 import { routes } from '../../utils/routes'
@@ -30,7 +30,13 @@ export const GroupMenu: FC<Props> = (props) => {
 		>
 			{isAdmin ? (
 				<>
-					<Menu.Item>Edit</Menu.Item>
+					<Menu.Item
+						onPress={() => {
+							// router.push(routes.updateGroup(props.group?.id ?? ''))
+						}}
+					>
+						Edit
+					</Menu.Item>
 					<Menu.Item
 						onPress={() => {
 							router.push(routes.home)
