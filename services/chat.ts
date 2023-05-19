@@ -5,6 +5,7 @@ import {
 	arrayUnion,
 	collection,
 	doc,
+	getDoc,
 	onSnapshot,
 	query,
 	updateDoc,
@@ -130,4 +131,34 @@ export const useFetchMessage = () => {
 		async (data: { message: string; groupId: string }) =>
 			await fetchMessage({ groupId: data.groupId, message: data.message, userId })
 	)
+}
+//
+const fetchReadMessages = async (groupId: string, userId: string) => {
+	try {
+		const docRef = doc(database, COLLECTIONS.GROUPS, groupId)
+		const group = await getDoc(docRef)
+		if (group.exists()) {
+			const chat = group.data().chat
+			const unReadMessages = chat.filter((message: Message) => !message.status.read.includes(userId))
+			const readMessages = unReadMessages.map((message: Message) => ({
+				...message,
+				status: {
+					...message.status,
+					read: [...message.status.read, userId]
+				}
+			}))
+
+			await updateDoc(docRef, {
+				chat: [...chat.filter((message: Message) => message.status.read.includes(userId)), ...readMessages]
+			})
+		}
+	} catch (e) {
+		console.log(e)
+	}
+}
+export const useFetchReadMessages = () => {
+	const user = useAppSelector((state) => state.userSlice.user)
+	const userId = user?.uid ?? ''
+
+	return useMutation(async (data: { groupId: string }) => await fetchReadMessages(data.groupId, userId))
 }

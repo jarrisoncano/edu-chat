@@ -1,19 +1,20 @@
-import { useMemo } from 'react'
 import { useAssets } from 'expo-asset'
 import { ChatHeader } from './ChatHeader'
 import { useForm } from 'react-hook-form'
+import { useEffect, useMemo } from 'react'
 import { Feather } from '@expo/vector-icons'
 import { useLocalSearchParams } from 'expo-router'
 import { useAppSelector } from '../../../../store'
-import { useFetchMessage } from '../../../../services/chat'
 import { ImageBackground, TouchableOpacity } from 'react-native'
 import { Box, ScrollView, Spinner, Text, View } from 'native-base'
 import { ChatMessage } from '../../../../components/Chats/Message'
 import { CustomInput } from '../../../../components/shared/CustomInput'
+import { useFetchMessage, useFetchReadMessages } from '../../../../services/chat'
 
 export default function Chat(): JSX.Element {
 	const { id: groupId } = useLocalSearchParams()
 	const { isLoading, mutate } = useFetchMessage()
+	const fetchReadMessages = useFetchReadMessages()
 	const { control, reset, handleSubmit } = useForm<{ message: string }>()
 	const [assets] = useAssets([require('../../../../assets/wallpapers/bg.png')])
 
@@ -31,6 +32,10 @@ export default function Chat(): JSX.Element {
 		mutate({ message, groupId })
 		reset()
 	}
+
+	useEffect(() => {
+		fetchReadMessages.mutate({ groupId })
+	}, [group])
 
 	return (
 		<View pt='16' bg='blueGray.900' px='0'>

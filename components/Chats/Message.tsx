@@ -14,8 +14,6 @@ export const ChatMessage: FC<Props> = (props) => {
 	const date = props.message.createdAt.toDate ? props.message.createdAt.toDate() : props.message.createdAt
 	const dateFormatted = format(date, 'p')
 
-	console.log(dateFormatted)
-
 	return (
 		<Box
 			alignSelf={isFromUser ? 'flex-end' : 'flex-start'}
