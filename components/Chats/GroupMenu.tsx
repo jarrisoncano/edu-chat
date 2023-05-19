@@ -32,7 +32,7 @@ export const GroupMenu: FC<Props> = (props) => {
 				<>
 					<Menu.Item
 						onPress={() => {
-							// router.push(routes.updateGroup(props.group?.id ?? ''))
+							router.push(routes.updateGroup(props.group?.id ?? ''))
 						}}
 					>
 						Edit

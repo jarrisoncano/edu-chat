@@ -120,3 +120,30 @@ export const useFetchDeleteGroup = () => {
 
 	return useMutation(async (groupId: string) => await deleteGroup(userId, groupId))
 }
+//
+const updateGroup = async (group: Group) => {
+	try {
+		if (group.avatar.search('firebasestorage') === -1 && group.avatar !== '') {
+			const avatarRef = ref(storage, `avatars/${group.name}-${group.createdAt.toJSON()}`)
+			const img = await fetch(group.avatar)
+			const bytes = await img.blob()
+
+			await uploadBytes(avatarRef, bytes, { contentType: 'image/jpeg' })
+			const url = await getDownloadURL(avatarRef)
+			group.avatar = url
+		}
+
+		const docRef = doc(database, COLLECTIONS.GROUPS, group.id)
+		await updateDoc(docRef, {
+			name: group.name,
+			description: group.description,
+			avatar: group.avatar,
+			members: group.members
+		})
+	} catch (e) {
+		console.log(e)
+	}
+}
+export const useFetchUpdateGroup = () => {
+	return useMutation(async (group: Group) => await updateGroup(group))
+}

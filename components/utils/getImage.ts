@@ -1,3 +1,4 @@
+import { SaveFormat, manipulateAsync } from 'expo-image-manipulator'
 import { MediaTypeOptions, launchImageLibraryAsync } from 'expo-image-picker'
 
 export const getImageFromLibary = async () => {
@@ -10,14 +11,13 @@ export const getImageFromLibary = async () => {
 
 	if (!result.canceled) {
 		const img = result.assets[0]
-		const fileNameLower = img.fileName?.toLowerCase()
 
-		const isJPG = fileNameLower?.endsWith('.jpg') || fileNameLower?.endsWith('.jpeg')
-		if (!isJPG) {
-			alert('Only JPG images are supported')
-			return
+		try {
+			let imgResult = await manipulateAsync(img.uri, [], { compress: 1, format: SaveFormat.JPEG })
+			return imgResult
+		} catch (e) {
+			return null
 		}
-		return img
 	}
 	return null
 }
