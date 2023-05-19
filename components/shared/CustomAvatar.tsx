@@ -11,7 +11,7 @@ interface Props {
 export const CustomAvatar: FC<Props> = (props) => {
 	const [imageLoaded, setImageLoaded] = useState<boolean>(false)
 	const size = props.size ?? 'md'
-	const iconSize = size === 'md' ? 24 : size === 'lg' ? 40 : 18
+	const iconSize = size === 'md' ? 24 : size === 'lg' ? 40 : size === '2xl' ? 52 : 18
 
 	return (
 		<Avatar bgColor='blueGray.600' size={size}>

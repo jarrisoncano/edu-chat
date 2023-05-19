@@ -3,7 +3,7 @@ import { routes } from '../../utils/routes'
 import { Slot, usePathname } from 'expo-router'
 import { MenuBar } from '../../components/shared/MenuBar'
 import { useListenUserChanges } from '../../services/user'
-import { useListenUserGroupsChanges } from '../../services/chat'
+import { useListenUserGroupsChanges } from '../../services/groups'
 
 export default function MainLayout() {
 	useListenUserChanges()

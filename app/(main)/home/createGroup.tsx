@@ -1,18 +1,18 @@
 import { useRouter } from 'expo-router'
-import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { routes } from '../../../utils/routes'
 import { TouchableOpacity } from 'react-native'
 import { useAppSelector } from '../../../store'
 import { type Group } from '../../../types/Group'
+import React, { useEffect, useState } from 'react'
 import { AntDesign, Ionicons } from '@expo/vector-icons'
 import { Header } from '../../../components/shared/Header'
-import { useFetchCreateGroup } from '../../../services/chat'
+import { useFetchCreateGroup } from '../../../services/groups'
 import { CustomInput } from '../../../components/shared/CustomInput'
-import { Avatar, Box, Button, Image, ScrollView, Text, View } from 'native-base'
+import { UserCardInf } from '../../../components/shared/UserCardInf'
 import { getImageFromLibary } from '../../../components/utils/getImage'
 import { CustomTextArea } from '../../../components/shared/CustomTextArea'
-import { UserCardInf } from '../../../components/shared/UserCardInf'
+import { Avatar, Box, Button, Image, ScrollView, Text, View } from 'native-base'
 
 interface Form {
 	photoURL: string

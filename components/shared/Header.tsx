@@ -6,7 +6,10 @@ import { TouchableOpacity } from 'react-native'
 
 interface Props {
 	variant?: 'primary' | 'secondary'
-	showIcon?: boolean
+	showIcon?: {
+		icon: JSX.Element
+		onPress: () => void
+	}
 	primaryText: string
 	secondaryText: string
 	route: string
@@ -47,8 +50,8 @@ export const Header: FC<Props> = (props) => {
 			</Box>
 			{props.showIcon && (
 				<Box width='1/6' alignItems='flex-end'>
-					<TouchableOpacity onPress={() => router.push(props.route)}>
-						<Ionicons name='person-add' size={20} color='white' />
+					<TouchableOpacity onPress={props.showIcon.onPress}>
+						<props.showIcon.icon.type {...props.showIcon.icon.props} />
 					</TouchableOpacity>
 				</Box>
 			)}

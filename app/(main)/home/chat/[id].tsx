@@ -1,5 +1,4 @@
 import { useAssets } from 'expo-asset'
-import { ChatHeader } from './ChatHeader'
 import { useForm } from 'react-hook-form'
 import { useEffect, useMemo } from 'react'
 import { Feather } from '@expo/vector-icons'
@@ -8,6 +7,7 @@ import { useAppSelector } from '../../../../store'
 import { ImageBackground, TouchableOpacity } from 'react-native'
 import { Box, ScrollView, Spinner, Text, View } from 'native-base'
 import { ChatMessage } from '../../../../components/Chats/Message'
+import { ChatHeader } from '../../../../components/Chats/ChatHeader'
 import { CustomInput } from '../../../../components/shared/CustomInput'
 import { useFetchMessage, useFetchReadMessages } from '../../../../services/chat'
 
