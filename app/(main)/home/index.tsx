@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { useRouter } from 'expo-router'
 import { routes } from '../../../utils/routes'
 import { AntDesign } from '@expo/vector-icons'
@@ -13,6 +14,20 @@ export default function Home(): JSX.Element {
 	const user = useAppSelector((state) => state.userSlice.user)
 	const groups = useAppSelector((state) => state.groupsSlice.groups)
 
+	const groupsSorted = useMemo(() => {
+		const copyOfGroups = [...groups]
+
+		copyOfGroups.sort((a, b) => {
+			const aLastMessage = a.chat[a.chat.length - 1]
+			const bLastMessage = b.chat[b.chat.length - 1]
+			if (!aLastMessage || !bLastMessage) return a.createdAt > b.createdAt ? -1 : 1
+			if (aLastMessage.createdAt > bLastMessage.createdAt) return -1
+			if (aLastMessage.createdAt < bLastMessage.createdAt) return 1
+			return 0
+		})
+		return copyOfGroups
+	}, [groups])
+
 	return (
 		<View>
 			<Box mt='2' flexDir='row' justifyContent='space-between' alignItems='center'>
@@ -26,7 +41,7 @@ export default function Home(): JSX.Element {
 				</Box>
 			</Box>
 			<Box mt='7'>
-				{groups.map((group) => {
+				{groupsSorted.map((group) => {
 					const messagesUnread = group.chat.filter(
 						(message) => message.status?.read.includes(user?.uid ?? '') === false
 					)
