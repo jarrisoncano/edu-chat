@@ -1,8 +1,8 @@
 import { FC } from 'react'
-import { useAssets } from 'expo-asset'
-import { Entypo } from '@expo/vector-icons'
+import { AntDesign, Entypo } from '@expo/vector-icons'
+import { CustomAvatar } from './CustomAvatar'
 import { type Contact, type User } from '../../types/user'
-import { Avatar, Box, Pressable, Spinner, Text, VStack } from 'native-base'
+import { Box, Pressable, Spinner, Text, VStack } from 'native-base'
 import { useFetchAddContact, usefetchRemoveContact } from '../../services/contacts'
 
 interface Props {
@@ -19,18 +19,11 @@ export const UserCardInf: FC<Props> = (props) => {
 	const { contact } = props
 	const fetchAddContact = useFetchAddContact()
 	const fetchRemoveContact = usefetchRemoveContact()
-	const [assets] = useAssets([require('../../assets/images/avatar.png')])
-	const imageURI = contact.avatar ? contact.avatar : assets?.[0].localUri
 
 	return (
 		<Box flexDir='row' px='4' py='2' width='full' bg='coolGray.700' alignItems='center'>
 			<Box width='1/6'>
-				<Avatar
-					size='md'
-					source={{
-						uri: imageURI ?? undefined
-					}}
-				/>
+				<CustomAvatar imageURI={contact.avatar} />
 			</Box>
 			<VStack ml='1' width='4/6'>
 				<Text width='full' color='white' bold>
@@ -57,10 +50,10 @@ export const UserCardInf: FC<Props> = (props) => {
 					>
 						{fetchAddContact.isLoading && <Spinner color='indigo.500' />}
 						{props.isContact && !fetchAddContact.isLoading && (
-							<Entypo name='check' size={22} color='green' />
+							<AntDesign name='check' size={24} color='#22c55e' />
 						)}
 						{!props.isContact && !fetchAddContact.isLoading && (
-							<Entypo name='add-user' size={22} color='white' />
+							<AntDesign name='adduser' size={24} color='white' />
 						)}
 					</Pressable>
 				)}
@@ -79,17 +72,17 @@ export const UserCardInf: FC<Props> = (props) => {
 						}}
 					>
 						{fetchRemoveContact.isLoading && <Spinner color='indigo.500' />}
-						<Entypo name='remove-user' size={22} color='red' />
+						<AntDesign name='deleteuser' size={24} color='red' />
 					</Pressable>
 				)}
 				{props.addToGroup && (
 					<Pressable width='full' alignItems='flex-end' pr='2' onPress={props.addToGroup}>
-						<Entypo name='plus' size={22} color='white' />
+						<AntDesign name='pluscircleo' size={24} color='white' />
 					</Pressable>
 				)}
 				{props.removeFromGroup && (
 					<Pressable width='full' alignItems='flex-end' pr='2' onPress={props.removeFromGroup}>
-						<Entypo name='minus' size={22} color='white' />
+						<AntDesign name='pluscircle' size={24} color='#22c55e' />
 					</Pressable>
 				)}
 			</Box>
