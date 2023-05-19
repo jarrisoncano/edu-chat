@@ -4,8 +4,8 @@ export interface Message {
 	userId: string
 	image?: string
 	content: string
-	createdAt: Timestamp
-	status?: {
+	createdAt: any
+	status: {
 		delivered: string[]
 		read: string[]
 	}
