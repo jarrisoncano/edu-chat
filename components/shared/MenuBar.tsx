@@ -52,7 +52,7 @@ export const MenuBar = (): JSX.Element => {
 						p='1'
 						borderRadius='full'
 						alignItems='center'
-						bg={screen.route === pathname ? 'blueGray.800' : 'initial'}
+						bg={screen.route === pathname ? 'blueGray.800' : 'blueGray.900'}
 					>
 						<screen.icon.type
 							{...screen.icon.props}

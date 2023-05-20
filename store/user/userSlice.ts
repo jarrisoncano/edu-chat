@@ -19,10 +19,13 @@ export const userSlice = createSlice({
 		},
 		handleAddContacts: (state, action) => {
 			state.contacts = action.payload
+		},
+		handleLogout: () => {
+			return initialState
 		}
 	}
 })
 
-export const { handleSetUser, handleAddContacts } = userSlice.actions
+export const { handleSetUser, handleAddContacts, handleLogout } = userSlice.actions
 
 export default userSlice.reducer

@@ -87,11 +87,12 @@ export const useListenUserGroupsChanges = () => {
 	const userId = user?.uid ?? ''
 
 	useEffect(() => {
+		if (!userId) return
 		const unsubscribe = fetchGetGroups(userId, setGroups)
 		return () => {
 			unsubscribe()
 		}
-	}, [])
+	}, [userId])
 
 	useEffect(() => {
 		dispatch(handleAddGroups(groups))

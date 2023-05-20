@@ -1,10 +1,9 @@
-import { useAssets } from 'expo-asset'
 import { useForm } from 'react-hook-form'
 import { useEffect, useMemo } from 'react'
 import { Feather } from '@expo/vector-icons'
+import { TouchableOpacity } from 'react-native'
 import { useLocalSearchParams } from 'expo-router'
 import { useAppSelector } from '../../../../store'
-import { ImageBackground, TouchableOpacity } from 'react-native'
 import { Box, ScrollView, Spinner, Text, View } from 'native-base'
 import { ChatMessage } from '../../../../components/Chats/Message'
 import { ChatHeader } from '../../../../components/Chats/ChatHeader'
@@ -16,7 +15,6 @@ export default function Chat(): JSX.Element {
 	const { isLoading, mutate } = useFetchMessage()
 	const fetchReadMessages = useFetchReadMessages()
 	const { control, reset, handleSubmit } = useForm<{ message: string }>()
-	const [assets] = useAssets([require('../../../../assets/wallpapers/bg.png')])
 
 	const groups = useAppSelector((state) => state.groupsSlice.groups)
 	const group = groups.find((group) => group.id === groupId)

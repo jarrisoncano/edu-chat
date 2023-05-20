@@ -4,16 +4,24 @@ import { useDispatch, useSelector } from 'react-redux'
 import type { TypedUseSelectorHook } from 'react-redux'
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 
+const resetStateMiddleware = () => (next: any) => (action: any) => {
+	if (action.type === 'user/handleLogout') {
+		store.dispatch({ type: 'groups/handleResetGroups' })
+	}
+	next(action)
+}
+
 const rootReducer = combineReducers({
-  userSlice,
-  groupsSlice
+	userSlice,
+	groupsSlice
 })
 
 export const store = configureStore({
-  reducer: rootReducer,
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware({
-    serializableCheck: false,
-  }),
+	reducer: rootReducer,
+	middleware: (getDefaultMiddleware) =>
+		getDefaultMiddleware({
+			serializableCheck: false
+		}).concat(resetStateMiddleware)
 })
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

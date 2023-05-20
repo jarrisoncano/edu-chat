@@ -97,11 +97,13 @@ export const useListenUserChanges = () => {
 	const userId = user?.uid ?? ''
 
 	useEffect(() => {
+		if (!userId) return
+
 		const unsubscribe = fetchGetUserContacts(userId, setContacts, setUserData)
 		return () => {
 			unsubscribe()
 		}
-	}, [])
+	}, [userId])
 
 	useEffect(() => {
 		if (userData) setUser(userData)

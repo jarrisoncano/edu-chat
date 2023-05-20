@@ -8,7 +8,7 @@ export const routes = {
 	onboarding: '/onboarding',
 	home: '/home',
 	events: '/events',
-	settings: '/settings',
+	settings: '/user/settings',
 	createGroup: '/home/groups/createGroup',
 	contacts: '/home/contacts',
 	addContact: '/home/contacts/add'

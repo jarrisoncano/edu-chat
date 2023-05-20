@@ -2,22 +2,25 @@ import { type Group } from '../../types/Group'
 import { createSlice } from '@reduxjs/toolkit'
 
 interface GroupsState {
-  groups: Group[]
+	groups: Group[]
 }
 const initialState: GroupsState = {
-  groups: []
+	groups: []
 }
 
 export const groupsSlice = createSlice({
-  name: 'groups',
-  initialState,
-  reducers: {
-    handleAddGroups: (state, action) => {
-      state.groups = action.payload
-    }
-  }
+	name: 'groups',
+	initialState,
+	reducers: {
+		handleAddGroups: (state, action) => {
+			state.groups = action.payload
+		},
+		handleResetGroups: () => {
+			return initialState
+		}
+	}
 })
 
-export const { handleAddGroups } = groupsSlice.actions
+export const { handleAddGroups, handleResetGroups } = groupsSlice.actions
 
 export default groupsSlice.reducer
