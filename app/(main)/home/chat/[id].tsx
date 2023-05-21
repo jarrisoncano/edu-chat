@@ -2,15 +2,17 @@ import { useForm } from 'react-hook-form'
 import { useEffect, useMemo } from 'react'
 import { Feather } from '@expo/vector-icons'
 import { TouchableOpacity } from 'react-native'
-import { useLocalSearchParams } from 'expo-router'
+import { routes } from '../../../../utils/routes'
 import { useAppSelector } from '../../../../store'
-import { Box, ScrollView, Spinner, Text, View } from 'native-base'
+import { Box, ScrollView, Spinner, View } from 'native-base'
+import { useLocalSearchParams, useRouter } from 'expo-router'
 import { ChatMessage } from '../../../../components/Chats/Message'
 import { ChatHeader } from '../../../../components/Chats/ChatHeader'
 import { CustomInput } from '../../../../components/shared/CustomInput'
 import { useFetchMessage, useFetchReadMessages } from '../../../../services/chat'
 
 export default function Chat(): JSX.Element {
+	const router = useRouter()
 	const { id: groupId } = useLocalSearchParams()
 	const { isLoading, mutate } = useFetchMessage()
 	const fetchReadMessages = useFetchReadMessages()
@@ -18,10 +20,12 @@ export default function Chat(): JSX.Element {
 
 	const groups = useAppSelector((state) => state.groupsSlice.groups)
 	const group = groups.find((group) => group.id === groupId)
-	if (!group) return <Text>Group not found</Text>
+	if (!group) {
+		router.push(routes.home)
+	}
 
 	const chat = useMemo(() => {
-		const messages = [...group.chat]
+		const messages = [...(group?.chat ?? [])]
 		return messages
 	}, [group])
 
@@ -32,10 +36,11 @@ export default function Chat(): JSX.Element {
 	}
 
 	useEffect(() => {
+		if (!groupId) return
 		fetchReadMessages.mutate({ groupId })
-	}, [group])
+	}, [groupId])
 
-	return (
+	return group ? (
 		<View pt='16' bg='blueGray.900' px='0'>
 			<ChatHeader group={group} />
 			<Box bg='blueGray.800' px='5' h='full'>
@@ -89,5 +94,7 @@ export default function Chat(): JSX.Element {
 				</Box>
 			</Box>
 		</View>
+	) : (
+		<></>
 	)
 }
