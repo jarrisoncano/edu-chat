@@ -12,7 +12,7 @@ import { UserCardInf } from '../../../../components/shared/UserCardInf'
 import { CustomInput } from '../../../../components/shared/CustomInput'
 import { getImageFromLibary } from '../../../../components/utils/getImage'
 import { CustomTextArea } from '../../../../components/shared/CustomTextArea'
-import { Avatar, Box, Button, Image, ScrollView, Text, View } from 'native-base'
+import { Avatar, Box, Button, FlatList, Image, Text, View } from 'native-base'
 
 interface Form {
 	photoURL: string
@@ -41,6 +41,8 @@ export default function CreateGroup(): JSX.Element {
 	const contacts = useAppSelector((state) => state.userSlice.contacts)
 	const { mutate, isSuccess, isError, error, isLoading } = useFetchCreateGroup()
 
+	console.log('contactsToAdd', user?.name, `${contacts.length * 20 < 200 ? contacts.length * 20 : 200}px`)
+
 	const onSubmit = (data: Form) => {
 		if (!user) return
 
@@ -52,7 +54,8 @@ export default function CreateGroup(): JSX.Element {
 			createdAt: new Date(),
 			admins: [user?.uid],
 			members: [user?.uid, ...contactsToAdd],
-			chat: []
+			chat: [],
+			events: []
 		}
 
 		mutate(newGroup)
@@ -134,8 +137,11 @@ export default function CreateGroup(): JSX.Element {
 			<Text w='full' mt='5' fontSize='md' color='white'>
 				Add participants:
 			</Text>
-			<ScrollView mt='5' maxH={contacts.length * 20 < 200 ? contacts.length * 20 : 200}>
-				{contacts.map((contact) => {
+			<FlatList
+				mt='5'
+				data={contacts}
+				maxH={`${contacts.length * 66 < 200 ? contacts.length * 66 : 200}px`}
+				renderItem={({ item: contact }) => {
 					const isAdded = contactsToAdd.includes(contact.uid)
 					return (
 						<UserCardInf
@@ -159,8 +165,8 @@ export default function CreateGroup(): JSX.Element {
 							isContact={undefined}
 						/>
 					)
-				})}
-			</ScrollView>
+				}}
+			/>
 			<Text mt='0' fontSize='xs' textAlign='left' width='full' color='blueGray.500'>
 				{contactsToAdd.length} participants added
 			</Text>
