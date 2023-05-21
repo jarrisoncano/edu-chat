@@ -23,7 +23,7 @@ export const EventCard: FC<Props> = (props) => {
 		<TouchableOpacity onPress={onPress}>
 			<Box mt='2' key={createdDate} bg={event.color} borderRadius='md' px='2' py='1'>
 				<Box flexDir='row' justifyContent='space-between'>
-					<Text w='4/6' fontSize='md' bold>
+					<Text numberOfLines={2} w='4/6' fontSize='md' bold>
 						{event.title}
 					</Text>
 					<Text w='2/6' textAlign='right' fontSize='xs'>

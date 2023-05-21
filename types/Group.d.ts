@@ -23,6 +23,11 @@ export interface Event {
 	endDate: any
 }
 
+export interface SelectedEvent extends Event {
+	groupId: string
+	isAdmin: boolean
+}
+
 export interface Group {
 	id: string
 	name: string

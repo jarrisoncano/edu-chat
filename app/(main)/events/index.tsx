@@ -3,29 +3,31 @@ import { useMemo, useState } from 'react'
 import { routes } from '../../../utils/routes'
 import { AntDesign } from '@expo/vector-icons'
 import { TouchableOpacity } from 'react-native'
-import { useAppSelector } from '../../../store'
-import { type Event } from '../../../types/Group'
 import { MaterialIcons } from '@expo/vector-icons'
 import { Box, Fab, Icon, Text, View } from 'native-base'
+import { type SelectedEvent } from '../../../types/Group'
+import { useAppDispatch, useAppSelector } from '../../../store'
 import { EventCard } from '../../../components/events/EventCard'
 import { EventModal } from '../../../components/events/EventModal'
+import { handleSelectedEvent } from '../../../store/events/eventsSlice'
 
 export default function Events(): JSX.Element {
-	const [selectedUtils, setSelectedUtils] = useState({
-		edit: false,
-		groupId: ''
-	})
+	const dispatch = useAppDispatch()
 	const user = useAppSelector((state) => state.userSlice.user)
 	const groups = useAppSelector((state) => state.groupsSlice.groups)
-	const [selectedEvent, setSelectedEvent] = useState<Event | null>(null)
+	const selectedEvent = useAppSelector((state) => state.eventsSlice.selectedEvent)
 
 	const groupsFiltered = useMemo(() => {
 		return groups.filter((group) => group.events.length > 0)
 	}, [groups])
 
+	const changeSelectedEvent = (event: SelectedEvent | null) => {
+		dispatch(handleSelectedEvent(event))
+	}
+
 	return (
 		<View>
-			<EventModal utils={selectedUtils} event={selectedEvent} handleClose={() => setSelectedEvent(null)} />
+			<EventModal event={selectedEvent} handleClose={() => changeSelectedEvent(null)} />
 			<Box mt='2' flexDir='row' justifyContent='space-between' alignItems='center'>
 				<Text numberOfLines={1} width='5/6' fontSize='2xl' bold>
 					Events
@@ -48,10 +50,10 @@ export default function Events(): JSX.Element {
 									key={i}
 									event={event}
 									handlePress={() => {
-										setSelectedEvent(event)
-										setSelectedUtils({
-											edit: group.admins.includes(user?.uid || ''),
-											groupId: group.id
+										changeSelectedEvent({
+											...event,
+											groupId: group.id,
+											isAdmin: group.admins.includes(user?.uid ?? '')
 										})
 									}}
 								/>

@@ -1,31 +1,36 @@
 import { FC } from 'react'
 import { formatISO } from 'date-fns'
-import { type Event } from '../../types/Group'
+import { useRouter } from 'expo-router'
+import { routes } from '../../utils/routes'
 import { AntDesign } from '@expo/vector-icons'
+import { SelectedEvent } from '../../types/Group'
 import { Linking, TouchableOpacity } from 'react-native'
-import { Box, Button, HStack, Modal, Text } from 'native-base'
 import { useFetchDeleteEvent } from '../../services/groups'
+import { Box, Button, HStack, Modal, Text } from 'native-base'
 
 interface Props {
-	utils: {
-		groupId: string
-		edit: boolean
-	}
-	event: Event | null
+	event: SelectedEvent | null
 	handleClose: () => void
 }
 
 export const EventModal: FC<Props> = (props) => {
+	const router = useRouter()
 	const { mutate, isLoading } = useFetchDeleteEvent()
 	const startDate = props.event?.startDate?.toDate() as Date
 	const endDate = props.event?.endDate?.toDate() as Date
 	const isoStartDate = startDate ? formatISO(startDate, { format: 'basic', representation: 'date' }) : ''
 	const isoEndDate = endDate ? formatISO(endDate, { format: 'basic', representation: 'date' }) : ''
 
+	const handleEdit = () => {
+		if (props.event) {
+			router.push(routes.updateEvent)
+		}
+	}
+
 	const handleDelete = () => {
 		if (props.event) {
 			mutate({
-				groupId: props.utils.groupId,
+				groupId: props.event.groupId,
 				eventId: props.event.id
 			})
 			props.handleClose()
@@ -68,10 +73,14 @@ export const EventModal: FC<Props> = (props) => {
 							</TouchableOpacity>
 						</Box>
 
-						{props.utils.edit && (
+						{props.event?.isAdmin && (
 							<HStack w='3/6' justifyContent='flex-end' space={3}>
 								<Box w='10' justifyContent='center' alignItems='center'>
-									<TouchableOpacity>
+									<TouchableOpacity
+										onPress={() => {
+											handleEdit()
+										}}
+									>
 										<AntDesign name='edit' size={24} color='white' />
 									</TouchableOpacity>
 								</Box>

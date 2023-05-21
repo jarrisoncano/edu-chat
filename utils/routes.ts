@@ -9,6 +9,7 @@ export const routes = {
 	home: '/home',
 	events: '/events',
 	createEvent: '/events/createEvent',
+	updateEvent: '/events/updateEvent',
 	settings: '/user/settings',
 	createGroup: '/home/groups/createGroup',
 	contacts: '/home/contacts',

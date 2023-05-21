@@ -1,8 +1,8 @@
-import { type Event } from '../../types/Group'
 import { createSlice } from '@reduxjs/toolkit'
+import { type SelectedEvent } from '../../types/Group'
 
 interface EventsState {
-	selectedEvent: Event | null
+	selectedEvent: SelectedEvent | null
 }
 const initialState: EventsState = {
 	selectedEvent: null
