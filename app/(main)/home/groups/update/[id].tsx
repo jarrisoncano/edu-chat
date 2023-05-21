@@ -47,7 +47,7 @@ export default function UpdateGroup(): JSX.Element {
 	const { mutate, isSuccess, isError, error, isLoading } = useFetchUpdateGroup()
 
 	const contactsSorted = useMemo(
-		() => contacts.sort((a) => (contactsToAdd.includes(a.uid) ? -1 : 1)),
+		() => [...contacts].sort((a) => (contactsToAdd.includes(a.uid) ? -1 : 1)),
 		[contacts, contactsToAdd]
 	)
 
@@ -145,7 +145,7 @@ export default function UpdateGroup(): JSX.Element {
 			<Text w='full' mt='5' fontSize='md' color='white'>
 				Participants:
 			</Text>
-			<ScrollView mt='5' maxH={(contactsSorted.length + 1) * 20 < 150 ? (contactsSorted.length + 1) * 20 : 150}>
+			<ScrollView mt='5' maxH={`${contacts.length * 66 < 200 ? contacts.length * 66 : 200}px`}>
 				<UserCardInf
 					userId={user?.uid}
 					contact={user as any}
@@ -179,7 +179,7 @@ export default function UpdateGroup(): JSX.Element {
 					)
 				})}
 			</ScrollView>
-			<Text mt='-2' fontSize='xs' textAlign='left' width='full' color='blueGray.500'>
+			<Text fontSize='xs' textAlign='left' width='full' color='blueGray.500'>
 				{contactsToAdd.length} participants added
 			</Text>
 			<Button mt='10' isLoading={isLoading} onTouchEnd={() => handleSubmit(onSubmit)()}>
