@@ -163,3 +163,24 @@ const fetchNewEvent = async (groupId: string, event: Event) => {
 }
 export const useFetchNewEvent = () =>
 	useMutation(async (data: { groupId: string; event: Event }) => await fetchNewEvent(data.groupId, data.event))
+//
+const fetchDeleteEvent = async (groupId: string, eventId: string) => {
+	try {
+		const docRef = doc(database, COLLECTIONS.GROUPS, groupId)
+		const group = await getDoc(docRef)
+		if (!group.exists()) return
+
+		const newEvents = group.data()?.events.filter((e: Event) => e.id !== eventId)
+
+		await updateDoc(docRef, {
+			events: newEvents
+		})
+	} catch (e) {
+		console.log(e)
+	}
+}
+export const useFetchDeleteEvent = () => {
+	return useMutation(
+		async (data: { groupId: string; eventId: string }) => await fetchDeleteEvent(data.groupId, data.eventId)
+	)
+}

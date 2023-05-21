@@ -4,18 +4,33 @@ import { type Event } from '../../types/Group'
 import { AntDesign } from '@expo/vector-icons'
 import { Linking, TouchableOpacity } from 'react-native'
 import { Box, Button, HStack, Modal, Text } from 'native-base'
+import { useFetchDeleteEvent } from '../../services/groups'
 
 interface Props {
-	edit: boolean
+	utils: {
+		groupId: string
+		edit: boolean
+	}
 	event: Event | null
 	handleClose: () => void
 }
 
 export const EventModal: FC<Props> = (props) => {
+	const { mutate, isLoading } = useFetchDeleteEvent()
 	const startDate = props.event?.startDate?.toDate() as Date
 	const endDate = props.event?.endDate?.toDate() as Date
 	const isoStartDate = startDate ? formatISO(startDate, { format: 'basic', representation: 'date' }) : ''
 	const isoEndDate = endDate ? formatISO(endDate, { format: 'basic', representation: 'date' }) : ''
+
+	const handleDelete = () => {
+		if (props.event) {
+			mutate({
+				groupId: props.utils.groupId,
+				eventId: props.event.id
+			})
+			props.handleClose()
+		}
+	}
 
 	return (
 		<Modal isOpen={!!props.event} onClose={() => props.handleClose()}>
@@ -53,14 +68,22 @@ export const EventModal: FC<Props> = (props) => {
 							</TouchableOpacity>
 						</Box>
 
-						{props.edit && (
+						{props.utils.edit && (
 							<HStack w='3/6' justifyContent='flex-end' space={3}>
 								<Box w='10' justifyContent='center' alignItems='center'>
 									<TouchableOpacity>
 										<AntDesign name='edit' size={24} color='white' />
 									</TouchableOpacity>
 								</Box>
-								<Button bg='red.500' w='20' _pressed={{ bgColor: 'red.600' }}>
+								<Button
+									isLoading={isLoading}
+									bg='red.500'
+									w='20'
+									_pressed={{ bgColor: 'red.600' }}
+									onPress={() => {
+										handleDelete()
+									}}
+								>
 									<Text textAlign='center'>Delete</Text>
 								</Button>
 							</HStack>

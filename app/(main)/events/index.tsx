@@ -11,7 +11,10 @@ import { EventCard } from '../../../components/events/EventCard'
 import { EventModal } from '../../../components/events/EventModal'
 
 export default function Events(): JSX.Element {
-	const [edit, setEdit] = useState(false)
+	const [selectedUtils, setSelectedUtils] = useState({
+		edit: false,
+		groupId: ''
+	})
 	const user = useAppSelector((state) => state.userSlice.user)
 	const groups = useAppSelector((state) => state.groupsSlice.groups)
 	const [selectedEvent, setSelectedEvent] = useState<Event | null>(null)
@@ -22,7 +25,7 @@ export default function Events(): JSX.Element {
 
 	return (
 		<View>
-			<EventModal edit={edit} event={selectedEvent} handleClose={() => setSelectedEvent(null)} />
+			<EventModal utils={selectedUtils} event={selectedEvent} handleClose={() => setSelectedEvent(null)} />
 			<Box mt='2' flexDir='row' justifyContent='space-between' alignItems='center'>
 				<Text numberOfLines={1} width='5/6' fontSize='2xl' bold>
 					Events
@@ -46,7 +49,10 @@ export default function Events(): JSX.Element {
 									event={event}
 									handlePress={() => {
 										setSelectedEvent(event)
-										setEdit(group.admins.includes(user?.uid || ''))
+										setSelectedUtils({
+											edit: group.admins.includes(user?.uid || ''),
+											groupId: group.id
+										})
 									}}
 								/>
 							))}

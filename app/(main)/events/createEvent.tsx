@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid'
 import { useRouter } from 'expo-router'
 import { useForm } from 'react-hook-form'
 import { routes } from '../../../utils/routes'
@@ -69,9 +70,10 @@ export default function CreateEvent() {
 		if (!user || !data.groupId) return
 
 		const newEvent: Event = {
+			id: uuidv4(),
 			userId: user.uid,
-			color: data.color,
 			title: data.name,
+			color: data.color,
 			description: data.description,
 			startDate: date.start,
 			endDate: date.end,

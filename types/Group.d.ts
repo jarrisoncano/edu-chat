@@ -13,6 +13,7 @@ export interface Message {
 }
 
 export interface Event {
+	id: string
 	userId: string
 	title: string
 	description: string
