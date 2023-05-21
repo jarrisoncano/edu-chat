@@ -23,23 +23,22 @@ export const CustomTextArea = (props: InputProps): JSX.Element => {
 				name={props.name}
 				rules={props.rules}
 				render={({ field: { value, onChange, onBlur } }) => (
-					<Box alignItems='center' w='100%'>
-						<TextArea
-							autoCompleteType={'off'}
-							value={value}
-							onChangeText={onChange}
-							onBlur={onBlur}
-							isRequired={props.required}
-							placeholder={props.placeholder}
-							variant={props.variant ?? 'filled'}
-							bgColor='blueGray.700'
-							color='white'
-							maxLength={props.maxLength ?? 100}
-							borderColor='blueGray.500'
-							h={props.height ?? 20}
-							w='100%'
-						/>
-					</Box>
+					<TextArea
+						autoCompleteType={'off'}
+						autoCorrect={false}
+						value={value}
+						onChange={onChange}
+						onBlur={onBlur}
+						isRequired={props.required}
+						placeholder={props.placeholder}
+						variant={props.variant ?? 'filled'}
+						bgColor='blueGray.700'
+						color='white'
+						maxLength={props.maxLength ?? 100}
+						borderColor='blueGray.500'
+						h={props.height ?? 20}
+						w='100%'
+					/>
 				)}
 			/>
 			<FormControl.ErrorMessage>{props.error?.message ?? 'Something is wrong.'}</FormControl.ErrorMessage>
