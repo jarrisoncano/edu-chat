@@ -29,6 +29,7 @@ export default {
       supportsTablet: true
     },
     android: {
+      package: 'com.educhat',
       adaptiveIcon: {
         foregroundImage: './assets/images/adaptive-icon.png',
         backgroundColor: '#0f172a'
@@ -44,7 +45,10 @@ export default {
       projectId: process.env.PROJECT_ID,
       storageBucket: process.env.STORAGE_BUCKET,
       messagingSenderId: process.env.MESSAGING_SENDER_ID,
-      appId: process.env.APP_ID
+      appId: process.env.APP_ID,
+      eas: {
+        projectId: process.env.EAS_PROJECT_ID,
+      }
     }
   }
 }
