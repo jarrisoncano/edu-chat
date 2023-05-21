@@ -10,6 +10,7 @@ interface InputProps {
 	required?: boolean
 	options: Array<{ label: string; value: any }>
 	placeholder: string
+	isDisabled?: boolean
 	style?: StyleProp<ViewStyle>
 	height?: ResponsiveValue<number | string>
 	rules?: RegisterOptions
@@ -19,7 +20,12 @@ interface InputProps {
 
 export const CustomSelect = (props: InputProps): JSX.Element => {
 	return (
-		<FormControl style={props.style} isInvalid={Boolean(props.error?.type)} height={props.height}>
+		<FormControl
+			isDisabled={props.isDisabled}
+			style={props.style}
+			isInvalid={Boolean(props.error?.type)}
+			height={props.height}
+		>
 			<FormControl.Label m={'0'} h={props.label ? '6' : 0}>
 				{props.label}
 			</FormControl.Label>
@@ -43,6 +49,7 @@ export const CustomSelect = (props: InputProps): JSX.Element => {
 						</Box>
 						<Select
 							mt={1}
+							isDisabled={props.isDisabled}
 							selectedValue={value}
 							lineHeight={1}
 							accessibilityLabel={props.placeholder}
