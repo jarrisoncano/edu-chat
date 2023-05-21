@@ -2,6 +2,7 @@ import {
 	Timestamp,
 	Unsubscribe,
 	addDoc,
+	arrayUnion,
 	collection,
 	deleteDoc,
 	doc,
@@ -11,7 +12,7 @@ import {
 	updateDoc,
 	where
 } from 'firebase/firestore'
-import { type Group } from '../types/Group'
+import { Event, type Group } from '../types/Group'
 import { useMutation } from '@tanstack/react-query'
 import { COLLECTIONS } from '../utils/firebaseConsts'
 import { useAppDispatch, useAppSelector } from '../store'
@@ -32,6 +33,7 @@ const fetchCreateGroup = async (group: Group): Promise<Group | undefined> => {
 			members: group.members,
 			admins: group.admins,
 			chat: group.chat,
+			events: group.events,
 			createdAt: group.createdAt
 		}
 
@@ -148,3 +150,16 @@ const updateGroup = async (group: Group) => {
 export const useFetchUpdateGroup = () => {
 	return useMutation(async (group: Group) => await updateGroup(group))
 }
+//
+const fetchNewEvent = async (groupId: string, event: Event) => {
+	try {
+		const docRef = doc(database, COLLECTIONS.GROUPS, groupId)
+		await updateDoc(docRef, {
+			events: arrayUnion(event)
+		})
+	} catch (e) {
+		console.log(e)
+	}
+}
+export const useFetchNewEvent = () =>
+	useMutation(async (data: { groupId: string; event: Event }) => await fetchNewEvent(data.groupId, data.event))

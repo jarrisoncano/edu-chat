@@ -12,6 +12,16 @@ export interface Message {
 	responseOf?: string
 }
 
+export interface Event {
+	userId: string
+	title: string
+	description: string
+	color: string
+	createdAt: any
+	startDate: any
+	endDate: any
+}
+
 export interface Group {
 	id: string
 	name: string
@@ -20,5 +30,6 @@ export interface Group {
 	members: string[]
 	admins: string[]
 	chat: Message[]
+	events: Event[]
 	createdAt: Date
 }

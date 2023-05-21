@@ -1,5 +1,6 @@
 import userSlice from './user/userSlice'
 import groupsSlice from './groups/groupsSlice'
+import eventsSlice from './events/eventsSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import type { TypedUseSelectorHook } from 'react-redux'
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
@@ -7,13 +8,15 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit'
 const resetStateMiddleware = () => (next: any) => (action: any) => {
 	if (action.type === 'user/handleLogout') {
 		store.dispatch({ type: 'groups/handleResetGroups' })
+		store.dispatch({ type: 'events/handleResetEvents' })
 	}
 	next(action)
 }
 
 const rootReducer = combineReducers({
 	userSlice,
-	groupsSlice
+	groupsSlice,
+	eventsSlice
 })
 
 export const store = configureStore({

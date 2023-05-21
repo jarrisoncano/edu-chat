@@ -41,8 +41,6 @@ export default function CreateGroup(): JSX.Element {
 	const contacts = useAppSelector((state) => state.userSlice.contacts)
 	const { mutate, isSuccess, isError, error, isLoading } = useFetchCreateGroup()
 
-	console.log('contactsToAdd', user?.name, `${contacts.length * 20 < 200 ? contacts.length * 20 : 200}px`)
-
 	const onSubmit = (data: Form) => {
 		if (!user) return
 
