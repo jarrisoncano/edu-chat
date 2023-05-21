@@ -2,6 +2,7 @@ import {
 	Timestamp,
 	Unsubscribe,
 	addDoc,
+	arrayRemove,
 	arrayUnion,
 	collection,
 	deleteDoc,
@@ -205,3 +206,16 @@ export const useFetchUpdateEvent = () => {
 		async (data: { groupId: string; event: Event }) => await fetchUpdateEvent(data.groupId, data.event)
 	)
 }
+//
+export const fetchLeaveGroup = (groupId: string, userId: string) => {
+	try {
+		const docRef = doc(database, COLLECTIONS.GROUPS, groupId)
+		updateDoc(docRef, {
+			members: arrayRemove(userId)
+		})
+	} catch (e) {
+		console.log(e)
+	}
+}
+export const useFetchLeaveGroup = () =>
+	useMutation(async (data: { groupId: string; userId: string }) => fetchLeaveGroup(data.groupId, data.userId))

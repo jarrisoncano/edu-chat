@@ -5,7 +5,7 @@ import { routes } from '../../utils/routes'
 import { useAppSelector } from '../../store'
 import { Feather } from '@expo/vector-icons'
 import { Menu, Pressable, Text } from 'native-base'
-import { useFetchDeleteGroup } from '../../services/groups'
+import { useFetchDeleteGroup, useFetchLeaveGroup } from '../../services/groups'
 
 interface Props {
 	group: Group | undefined
@@ -14,6 +14,7 @@ interface Props {
 export const GroupMenu: FC<Props> = (props) => {
 	const router = useRouter()
 	const { mutate } = useFetchDeleteGroup()
+	const fetchLeaveGroup = useFetchLeaveGroup()
 	const user = useAppSelector((state) => state.userSlice.user)
 	const isAdmin = props.group?.admins.includes(user?.uid ?? '')
 
@@ -47,7 +48,14 @@ export const GroupMenu: FC<Props> = (props) => {
 					</Menu.Item>
 				</>
 			) : (
-				<Menu.Item>
+				<Menu.Item
+					onPress={() => {
+						fetchLeaveGroup.mutate({
+							groupId: props.group?.id ?? '',
+							userId: user?.uid ?? ''
+						})
+					}}
+				>
 					<Text color='red.500'>Leave</Text>
 				</Menu.Item>
 			)}
