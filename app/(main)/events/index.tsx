@@ -1,5 +1,5 @@
+import { useMemo } from 'react'
 import { useRouter } from 'expo-router'
-import { useMemo, useState } from 'react'
 import { routes } from '../../../utils/routes'
 import { AntDesign } from '@expo/vector-icons'
 import { TouchableOpacity } from 'react-native'
@@ -39,28 +39,34 @@ export default function Events(): JSX.Element {
 				</Box>
 			</Box>
 			<Box mt='7'>
-				{groupsFiltered.map((group) => (
-					<Box key={group.id} mt='2'>
-						<Text fontSize='lg' bold>
-							{group.name}
-						</Text>
-						<Box>
-							{group.events.map((event, i) => (
-								<EventCard
-									key={i}
-									event={event}
-									handlePress={() => {
-										changeSelectedEvent({
-											...event,
-											groupId: group.id,
-											isAdmin: group.admins.includes(user?.uid ?? '')
-										})
-									}}
-								/>
-							))}
+				{groupsFiltered.map((group) => {
+					const eventsSorted = useMemo(
+						() => [...group.events].sort((a, b) => a.createdAt - b.createdAt),
+						[group.events]
+					)
+					return (
+						<Box key={group.id} mt='2'>
+							<Text fontSize='lg' bold>
+								{group.name}
+							</Text>
+							<Box>
+								{eventsSorted.map((event, i) => (
+									<EventCard
+										key={i}
+										event={event}
+										handlePress={() => {
+											changeSelectedEvent({
+												...event,
+												groupId: group.id,
+												isAdmin: group.admins.includes(user?.uid ?? '')
+											})
+										}}
+									/>
+								))}
+							</Box>
 						</Box>
-					</Box>
-				))}
+					)
+				})}
 			</Box>
 			<CreateEventButton />
 		</View>

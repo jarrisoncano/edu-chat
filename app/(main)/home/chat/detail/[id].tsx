@@ -4,11 +4,18 @@ import { Box, Divider, HStack, Text, View } from 'native-base'
 import { Header } from '../../../../../components/shared/Header'
 import { GroupMenu } from '../../../../../components/Chats/GroupMenu'
 import { CustomAvatar } from '../../../../../components/shared/CustomAvatar'
+import { EventCard } from '../../../../../components/events/EventCard'
+import { useMemo } from 'react'
 
 export default function DetailtChat() {
 	const { id: groupId } = useLocalSearchParams()
 	const groups = useAppSelector((state) => state.groupsSlice.groups)
 	const group = groups.find((group) => group.id === groupId)
+
+	const eventsSorted = useMemo(
+		() => [...(group?.events ?? [])].sort((a, b) => a.createdAt - b.createdAt),
+		[group?.events]
+	)
 
 	return (
 		<View>
@@ -47,7 +54,9 @@ export default function DetailtChat() {
 				<Text fontSize='xl' fontWeight='semibold'>
 					Events
 				</Text>
-				<Text>Coming soon...</Text>
+				{eventsSorted?.map((event) => (
+					<EventCard event={event} handlePress={() => {}} key={event.id} />
+				))}
 			</Box>
 		</View>
 	)
