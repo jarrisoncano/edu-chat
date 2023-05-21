@@ -1,5 +1,6 @@
-import { Box, FormControl, TextArea } from 'native-base'
+import { FormControl, Input } from 'native-base'
 import { type StyleProp, type ViewStyle } from 'react-native'
+import { ResponsiveValue } from 'native-base/lib/typescript/components/types'
 import { Controller, type ErrorOption, type RegisterOptions } from 'react-hook-form'
 
 interface InputProps {
@@ -9,7 +10,7 @@ interface InputProps {
 	required?: boolean
 	placeholder: string
 	style?: StyleProp<ViewStyle>
-	height?: number
+	height?: ResponsiveValue<number | string>
 	rules?: RegisterOptions
 	error?: ErrorOption
 	variant?: 'filled' | 'outline' | 'unstyled' | 'underlined' | 'rounded'
@@ -23,21 +24,21 @@ export const CustomTextArea = (props: InputProps): JSX.Element => {
 				name={props.name}
 				rules={props.rules}
 				render={({ field: { value, onChange, onBlur } }) => (
-					<TextArea
-						autoCompleteType={'off'}
+					<Input
+						height={props.height ?? '24'}
+						fontSize='sm'
 						autoCorrect={false}
+						autoCapitalize='none'
 						value={value}
-						onChange={onChange}
 						onBlur={onBlur}
+						onChangeText={onChange}
 						isRequired={props.required}
 						placeholder={props.placeholder}
+						multiline
 						variant={props.variant ?? 'filled'}
-						bgColor='blueGray.700'
+						bgColor={'blueGray.700'}
 						color='white'
-						maxLength={props.maxLength ?? 100}
 						borderColor='blueGray.500'
-						h={props.height ?? 20}
-						w='100%'
 					/>
 				)}
 			/>
