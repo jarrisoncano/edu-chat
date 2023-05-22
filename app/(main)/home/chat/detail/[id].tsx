@@ -1,6 +1,6 @@
 import { useLocalSearchParams } from 'expo-router'
 import { useAppSelector } from '../../../../../store'
-import { Box, Divider, HStack, Text, View } from 'native-base'
+import { Box, Divider, HStack, ScrollView, Text, View } from 'native-base'
 import { Header } from '../../../../../components/shared/Header'
 import { GroupMenu } from '../../../../../components/Chats/GroupMenu'
 import { CustomAvatar } from '../../../../../components/shared/CustomAvatar'
@@ -39,25 +39,28 @@ export default function DetailtChat() {
 				</Text>
 				<Text mt='2'>{group?.description}</Text>
 			</Box>
-			<Divider mt='5' mb='3' bg='indigo.500' />
-			<Box>
-				<Text fontSize='xl' fontWeight='semibold'>
-					Images & Files
-				</Text>
-				<HStack space={3} mt='2'>
-					<Box h='20' w='20' bg='primary.300' rounded='md' shadow={3} />
-					<Box h='20' w='20' bg='primary.500' rounded='md' shadow={3} />
-				</HStack>
-			</Box>
-			<Divider mt='6' mb='3' bg='indigo.500' />
-			<Box>
-				<Text fontSize='xl' fontWeight='semibold'>
-					Events
-				</Text>
-				{eventsSorted?.map((event) => (
-					<EventCard event={event} handlePress={() => {}} key={event.id} />
-				))}
-			</Box>
+			<ScrollView showsHorizontalScrollIndicator={false} maxH='lg' mt='2'>
+				<Divider mt='5' mb='3' bg='indigo.500' />
+				<Box>
+					<Text fontSize='xl' fontWeight='semibold'>
+						Images & Files
+					</Text>
+					<HStack space={3} mt='2'>
+						<Box h='20' w='20' bg='primary.300' rounded='md' shadow={3} />
+						<Box h='20' w='20' bg='primary.500' rounded='md' shadow={3} />
+					</HStack>
+				</Box>
+				<Divider mt='6' mb='3' bg='indigo.500' />
+				<Box>
+					<Text fontSize='xl' fontWeight='semibold'>
+						Events
+					</Text>
+
+					{eventsSorted?.map((event) => (
+						<EventCard event={event} handlePress={() => {}} key={event.id} />
+					))}
+				</Box>
+			</ScrollView>
 		</View>
 	)
 }

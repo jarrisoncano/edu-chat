@@ -4,7 +4,7 @@ import { routes } from '../../../utils/routes'
 import { AntDesign } from '@expo/vector-icons'
 import { TouchableOpacity } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
-import { Box, Fab, Icon, Text, View } from 'native-base'
+import { Box, Fab, Icon, ScrollView, Text, View } from 'native-base'
 import { type SelectedEvent } from '../../../types/Group'
 import { useAppDispatch, useAppSelector } from '../../../store'
 import { EventCard } from '../../../components/events/EventCard'
@@ -39,34 +39,34 @@ export default function Events(): JSX.Element {
 				</Box>
 			</Box>
 			<Box mt='7'>
-				{groupsFiltered.map((group) => {
-					const eventsSorted = useMemo(
-						() => [...group.events].sort((a, b) => a.createdAt - b.createdAt),
-						[group.events]
-					)
-					return (
-						<Box key={group.id} mt='2'>
-							<Text fontSize='lg' bold>
-								{group.name}
-							</Text>
-							<Box>
-								{eventsSorted.map((event, i) => (
-									<EventCard
-										key={i}
-										event={event}
-										handlePress={() => {
-											changeSelectedEvent({
-												...event,
-												groupId: group.id,
-												isAdmin: group.admins.includes(user?.uid ?? '')
-											})
-										}}
-									/>
-								))}
+				<ScrollView h='95%'>
+					{groupsFiltered.map((group) => {
+						const eventsSorted = [...group.events].sort((a, b) => a.createdAt - b.createdAt)
+
+						return (
+							<Box key={group.id} mt='2'>
+								<Text fontSize='lg' bold>
+									{group.name}
+								</Text>
+								<Box>
+									{eventsSorted.map((event, i) => (
+										<EventCard
+											key={i}
+											event={event}
+											handlePress={() => {
+												changeSelectedEvent({
+													...event,
+													groupId: group.id,
+													isAdmin: group.admins.includes(user?.uid ?? '')
+												})
+											}}
+										/>
+									))}
+								</Box>
 							</Box>
-						</Box>
-					)
-				})}
+						)
+					})}
+				</ScrollView>
 			</Box>
 			<CreateEventButton />
 		</View>

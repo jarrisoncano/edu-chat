@@ -4,7 +4,7 @@ import { routes } from '../../../utils/routes'
 import { TouchableOpacity } from 'react-native'
 import { useAppSelector } from '../../../store'
 import { type Message } from '../../../types/Group'
-import { Box, Fab, Icon, Text, View } from 'native-base'
+import { Box, Fab, Icon, ScrollView, Text, View } from 'native-base'
 import { AntDesign, FontAwesome5 } from '@expo/vector-icons'
 import { UserCard } from '../../../components/Chats/UserCard'
 
@@ -41,34 +41,36 @@ export default function Home(): JSX.Element {
 				</Box>
 			</Box>
 			<Box mt='7'>
-				{groupsSorted.map((group) => {
-					const messagesUnread = group.chat.filter(
-						(message) => message.status?.read.includes(user?.uid ?? '') === false
-					)
-					const lastMessage: Message = group.chat[group.chat.length - 1] || {
-						content: 'Write the first message',
-						createdAt: group.createdAt
-					}
-					const userToDisplay = users.find((user) => user.uid === lastMessage.userId)
-					const message =
-						lastMessage.userId === user?.uid
-							? 'You: ' + lastMessage.content
-							: `${userToDisplay?.name}: ${lastMessage.content}`
+				<ScrollView h='95%'>
+					{groupsSorted.map((group) => {
+						const messagesUnread = group.chat.filter(
+							(message) => message.status?.read.includes(user?.uid ?? '') === false
+						)
+						const lastMessage: Message = group.chat[group.chat.length - 1] || {
+							content: 'Write the first message',
+							createdAt: group.createdAt
+						}
+						const userToDisplay = users.find((user) => user.uid === lastMessage.userId)
+						const message =
+							lastMessage.userId === user?.uid
+								? 'You: ' + lastMessage.content
+								: `${userToDisplay?.name}: ${lastMessage.content}`
 
-					if (lastMessage?.createdAt?.toDate) lastMessage.createdAt = lastMessage.createdAt.toDate()
+						if (lastMessage?.createdAt?.toDate) lastMessage.createdAt = lastMessage.createdAt.toDate()
 
-					return (
-						<UserCard
-							id={group.id}
-							key={group.id}
-							message={message}
-							username={group.name}
-							avatar={group.avatar}
-							date={lastMessage.createdAt}
-							unread={messagesUnread.length}
-						/>
-					)
-				})}
+						return (
+							<UserCard
+								id={group.id}
+								key={group.id}
+								message={message}
+								username={group.name}
+								avatar={group.avatar}
+								date={lastMessage.createdAt}
+								unread={messagesUnread.length}
+							/>
+						)
+					})}
+				</ScrollView>
 			</Box>
 			<CreateGroupButton />
 		</View>
