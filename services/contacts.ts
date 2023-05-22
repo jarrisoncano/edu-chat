@@ -5,26 +5,6 @@ import { COLLECTIONS } from '../utils/firebaseConsts'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { arrayRemove, arrayUnion, collection, doc, getDocs, query, updateDoc, where } from 'firebase/firestore'
 
-const fetchListOfUsers = async (userId: string) => {
-	try {
-		const q = query(collection(database, COLLECTIONS.USERS), where('uid', '!=', userId))
-		const querySnapshot = await getDocs(q)
-
-		return querySnapshot.docs.map((doc) => {
-			const data = doc.data() as User
-			return data
-		})
-	} catch (e) {
-		console.log(e)
-	}
-}
-export const useFetchListOfUsers = () => {
-	const user = useAppSelector((state) => state.userSlice.user)
-	const userId = user?.uid ?? ''
-
-	return useQuery(['allUsers'], () => fetchListOfUsers(userId))
-}
-//
 const fetchAddContact = async (userId: string, contactId: string) => {
 	try {
 		await updateDoc(doc(database, COLLECTIONS.USERS, userId), {

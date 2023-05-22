@@ -8,7 +8,7 @@ import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { handleAddContacts, handleAddUsers } from '../store/user/userSlice'
 import { Unsubscribe, createUserWithEmailAndPassword } from 'firebase/auth'
-import { collection, doc, getDoc, onSnapshot, query, setDoc, updateDoc } from 'firebase/firestore'
+import { collection, doc, getDoc, onSnapshot, query, setDoc, updateDoc, where } from 'firebase/firestore'
 
 interface NewUserType {
 	user: User
@@ -111,9 +111,9 @@ export const useListenUserChanges = () => {
 	}, [contacts])
 }
 //
-const fetchUsersChange = (setUsers: Dispatch<SetStateAction<User[]>>): Unsubscribe => {
+const fetchUsersChange = (userId: string, setUsers: Dispatch<SetStateAction<User[]>>): Unsubscribe => {
 	try {
-		const q = query(collection(database, COLLECTIONS.USERS))
+		const q = query(collection(database, COLLECTIONS.USERS), where('uid', '!=', userId))
 
 		const unsubscribe = onSnapshot(q, (querySnapshot) => {
 			const users: User[] = []
@@ -133,9 +133,11 @@ const fetchUsersChange = (setUsers: Dispatch<SetStateAction<User[]>>): Unsubscri
 export const useListenUsersChanges = () => {
 	const dispatch = useAppDispatch()
 	const [users, setUsers] = useState<User[]>([])
+	const user = useAppSelector((state) => state.userSlice.user)
+	const userId = user?.uid ?? ''
 
 	useEffect(() => {
-		const unsubscribe = fetchUsersChange(setUsers)
+		const unsubscribe = fetchUsersChange(userId, setUsers)
 		return () => {
 			unsubscribe()
 		}
