@@ -18,6 +18,7 @@ interface Form {
 	photoURL: string
 	name: string
 	description: string
+	search: string
 }
 
 export default function UpdateGroup(): JSX.Element {
@@ -32,7 +33,8 @@ export default function UpdateGroup(): JSX.Element {
 		defaultValues: {
 			description: '',
 			name: '',
-			photoURL: ''
+			photoURL: '',
+			search: ''
 		}
 	})
 
@@ -49,6 +51,11 @@ export default function UpdateGroup(): JSX.Element {
 	const usersSorted = useMemo(
 		() => [...users].sort((a) => (usersToAdd.includes(a.uid) ? -1 : 1)),
 		[users, usersToAdd]
+	)
+
+	const usersFiltered = useMemo(
+		() => usersSorted.filter((user) => user.name?.toLowerCase().includes(watch('search')?.toLowerCase())),
+		[watch('search')]
 	)
 
 	const onSubmit = (data: Form) => {
@@ -143,9 +150,9 @@ export default function UpdateGroup(): JSX.Element {
 				/>
 			</Box>
 			<Text w='full' mt='5' fontSize='md' color='white'>
-				Participants:
+				Admin:
 			</Text>
-			<ScrollView mt='5' maxH={`${users.length * 66 < 200 ? users.length * 66 : 200}px`}>
+			<Box mt='2'>
 				<UserCardInf
 					userId={user?.uid}
 					contact={user as any}
@@ -153,7 +160,14 @@ export default function UpdateGroup(): JSX.Element {
 					isContact={undefined}
 					removeFromGroup={() => {}}
 				/>
-				{usersSorted.map((contact) => {
+			</Box>
+
+			<Text w='full' mt='5' fontSize='md' color='white'>
+				Participants:
+			</Text>
+			<CustomInput control={control} name='search' label='Search' placeholder='Search an user...' />
+			<ScrollView mt='5' maxH={`${users.length * 66 < 300 ? users.length * 66 : 300}px`}>
+				{usersFiltered.map((contact) => {
 					const isAdded = usersToAdd.includes(contact.uid)
 					return (
 						<UserCardInf

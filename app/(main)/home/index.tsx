@@ -11,6 +11,7 @@ import { UserCard } from '../../../components/Chats/UserCard'
 export default function Home(): JSX.Element {
 	const router = useRouter()
 	const user = useAppSelector((state) => state.userSlice.user)
+	const users = useAppSelector((state) => state.userSlice.users)
 	const groups = useAppSelector((state) => state.groupsSlice.groups)
 
 	const groupsSorted = useMemo(() => {
@@ -48,8 +49,12 @@ export default function Home(): JSX.Element {
 						content: 'Write the first message',
 						createdAt: group.createdAt
 					}
+					const userToDisplay = users.find((user) => user.uid === lastMessage.userId)
 					const message =
-						lastMessage.userId === user?.uid ? 'You: ' + lastMessage.content : lastMessage.content
+						lastMessage.userId === user?.uid
+							? 'You: ' + lastMessage.content
+							: `${userToDisplay?.name}: ${lastMessage.content}`
+
 					if (lastMessage?.createdAt?.toDate) lastMessage.createdAt = lastMessage.createdAt.toDate()
 
 					return (

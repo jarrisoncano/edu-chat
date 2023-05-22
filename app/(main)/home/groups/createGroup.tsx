@@ -3,9 +3,9 @@ import { useForm } from 'react-hook-form'
 import { TouchableOpacity } from 'react-native'
 import { routes } from '../../../../utils/routes'
 import { useAppSelector } from '../../../../store'
-import React, { useEffect, useState } from 'react'
 import { type Group } from '../../../../types/Group'
 import { AntDesign, Ionicons } from '@expo/vector-icons'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Header } from '../../../../components/shared/Header'
 import { useFetchCreateGroup } from '../../../../services/groups'
 import { UserCardInf } from '../../../../components/shared/UserCardInf'
@@ -18,6 +18,7 @@ interface Form {
 	photoURL: string
 	name: string
 	description: string
+	search: string
 }
 
 export default function CreateGroup(): JSX.Element {
@@ -31,6 +32,7 @@ export default function CreateGroup(): JSX.Element {
 	} = useForm<Form>({
 		defaultValues: {
 			description: '',
+			search: '',
 			name: '',
 			photoURL: ''
 		}
@@ -40,6 +42,11 @@ export default function CreateGroup(): JSX.Element {
 	const user = useAppSelector((state) => state.userSlice.user)
 	const users = useAppSelector((state) => state.userSlice.users)
 	const { mutate, isSuccess, isError, error, isLoading } = useFetchCreateGroup()
+
+	const usersFiltered = useMemo(
+		() => users.filter((user) => user.name?.toLowerCase().includes(watch('search')?.toLowerCase())),
+		[watch('search')]
+	)
 
 	const onSubmit = (data: Form) => {
 		if (!user) return
@@ -135,33 +142,36 @@ export default function CreateGroup(): JSX.Element {
 			<Text w='full' mt='5' fontSize='md' color='white'>
 				Add participants:
 			</Text>
+			<CustomInput control={control} name='search' label='Search' placeholder='Search an user...' />
 			<FlatList
 				mt='5'
-				data={users}
-				maxH={`${users.length * 66 < 200 ? users.length * 66 : 200}px`}
+				data={usersFiltered}
+				maxH={`${users.length * 66 < 300 ? users.length * 66 : 300}px`}
 				renderItem={({ item: contact }) => {
 					const isAdded = usersToAdd.includes(contact.uid)
 					return (
-						<UserCardInf
-							key={contact.uid}
-							contact={contact}
-							userId={user?.uid}
-							addToGroup={
-								isAdded
-									? undefined
-									: () => {
-											setUsersToAdd([...usersToAdd, contact.uid])
-									  }
-							}
-							removeFromGroup={
-								isAdded
-									? () => {
-											setUsersToAdd(usersToAdd.filter((id) => id !== contact.uid))
-									  }
-									: undefined
-							}
-							isContact={undefined}
-						/>
+						<>
+							<UserCardInf
+								key={contact.uid}
+								contact={contact}
+								userId={user?.uid}
+								addToGroup={
+									isAdded
+										? undefined
+										: () => {
+												setUsersToAdd([...usersToAdd, contact.uid])
+										  }
+								}
+								removeFromGroup={
+									isAdded
+										? () => {
+												setUsersToAdd(usersToAdd.filter((id) => id !== contact.uid))
+										  }
+										: undefined
+								}
+								isContact={undefined}
+							/>
+						</>
 					)
 				}}
 			/>

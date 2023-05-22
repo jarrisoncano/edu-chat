@@ -123,6 +123,6 @@ export const useListenUsersChanges = () => {
 	}, [])
 
 	useEffect(() => {
-		dispatch(handleAddUsers(users))
+		if (users.length > 0) dispatch(handleAddUsers(users))
 	}, [users])
 }
