@@ -30,7 +30,7 @@ export const ChatMessage: FC<Props> = (props) => {
 		>
 			<Box w='full'>
 				<Text fontSize='xs' color='white' fontWeight='bold' lineHeight='xs'>
-					{user?.name === userFrom?.name ? 'You' : userFrom?.name}
+					{user?.uid === props.message.userId ? 'You' : userFrom?.name}
 				</Text>
 			</Box>
 			<Text mt='1'>{props.message.content}</Text>
