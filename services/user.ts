@@ -3,12 +3,12 @@ import { useUser } from '../hooks/useUser'
 import { useMutation } from '@tanstack/react-query'
 import { COLLECTIONS } from '../utils/firebaseConsts'
 import { useAppDispatch, useAppSelector } from '../store'
-import { handleAddContacts } from '../store/user/userSlice'
 import { auth, database, storage } from '../config/firebaseConfig'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { handleAddContacts, handleAddUsers } from '../store/user/userSlice'
 import { Unsubscribe, createUserWithEmailAndPassword } from 'firebase/auth'
-import { doc, getDoc, onSnapshot, setDoc, updateDoc } from 'firebase/firestore'
+import { collection, doc, getDoc, onSnapshot, query, setDoc, updateDoc } from 'firebase/firestore'
 
 interface NewUserType {
 	user: User
@@ -109,4 +109,39 @@ export const useListenUserChanges = () => {
 		if (userData) setUser(userData)
 		dispatch(handleAddContacts(contacts))
 	}, [contacts])
+}
+//
+const fetchUsersChange = (setUsers: Dispatch<SetStateAction<User[]>>): Unsubscribe => {
+	try {
+		const q = query(collection(database, COLLECTIONS.USERS))
+
+		const unsubscribe = onSnapshot(q, (querySnapshot) => {
+			const users: User[] = []
+			querySnapshot.forEach((doc) => {
+				const user = doc.data() as User
+				users.push(user)
+			})
+			setUsers(users)
+		})
+
+		return unsubscribe
+	} catch (e) {
+		console.log(e)
+		return () => {}
+	}
+}
+export const useListenUsersChanges = () => {
+	const dispatch = useAppDispatch()
+	const [users, setUsers] = useState<User[]>([])
+
+	useEffect(() => {
+		const unsubscribe = fetchUsersChange(setUsers)
+		return () => {
+			unsubscribe()
+		}
+	}, [])
+
+	useEffect(() => {
+		dispatch(handleAddUsers(users))
+	}, [users])
 }

@@ -4,10 +4,12 @@ import { type User, type Contact } from '../../types/user'
 interface AuthState {
 	user: User | null
 	contacts: Contact[]
+	users: User[]
 }
 const initialState: AuthState = {
 	user: null,
-	contacts: []
+	contacts: [],
+	users: []
 }
 
 export const userSlice = createSlice({
@@ -20,12 +22,15 @@ export const userSlice = createSlice({
 		handleAddContacts: (state, action) => {
 			state.contacts = action.payload
 		},
+		handleAddUsers: (state, action) => {
+			state.users = action.payload
+		},
 		handleLogout: () => {
 			return initialState
 		}
 	}
 })
 
-export const { handleSetUser, handleAddContacts, handleLogout } = userSlice.actions
+export const { handleSetUser, handleAddContacts, handleLogout, handleAddUsers } = userSlice.actions
 
 export default userSlice.reducer

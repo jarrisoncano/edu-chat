@@ -207,7 +207,7 @@ export const useFetchUpdateEvent = () => {
 	)
 }
 //
-export const fetchLeaveGroup = (groupId: string, userId: string) => {
+const fetchLeaveGroup = (groupId: string, userId: string) => {
 	try {
 		const docRef = doc(database, COLLECTIONS.GROUPS, groupId)
 		updateDoc(docRef, {
