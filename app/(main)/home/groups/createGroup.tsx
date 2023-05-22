@@ -36,9 +36,9 @@ export default function CreateGroup(): JSX.Element {
 		}
 	})
 	const router = useRouter()
+	const [usersToAdd, setUsersToAdd] = useState<string[]>([])
 	const user = useAppSelector((state) => state.userSlice.user)
-	const [contactsToAdd, setContactsToAdd] = useState<string[]>([])
-	const contacts = useAppSelector((state) => state.userSlice.contacts)
+	const users = useAppSelector((state) => state.userSlice.users)
 	const { mutate, isSuccess, isError, error, isLoading } = useFetchCreateGroup()
 
 	const onSubmit = (data: Form) => {
@@ -51,7 +51,7 @@ export default function CreateGroup(): JSX.Element {
 			avatar: data.photoURL,
 			createdAt: new Date(),
 			admins: [user?.uid],
-			members: [user?.uid, ...contactsToAdd],
+			members: [user?.uid, ...usersToAdd],
 			chat: [],
 			events: []
 		}
@@ -137,10 +137,10 @@ export default function CreateGroup(): JSX.Element {
 			</Text>
 			<FlatList
 				mt='5'
-				data={contacts}
-				maxH={`${contacts.length * 66 < 200 ? contacts.length * 66 : 200}px`}
+				data={users}
+				maxH={`${users.length * 66 < 200 ? users.length * 66 : 200}px`}
 				renderItem={({ item: contact }) => {
-					const isAdded = contactsToAdd.includes(contact.uid)
+					const isAdded = usersToAdd.includes(contact.uid)
 					return (
 						<UserCardInf
 							key={contact.uid}
@@ -150,13 +150,13 @@ export default function CreateGroup(): JSX.Element {
 								isAdded
 									? undefined
 									: () => {
-											setContactsToAdd([...contactsToAdd, contact.uid])
+											setUsersToAdd([...usersToAdd, contact.uid])
 									  }
 							}
 							removeFromGroup={
 								isAdded
 									? () => {
-											setContactsToAdd(contactsToAdd.filter((id) => id !== contact.uid))
+											setUsersToAdd(usersToAdd.filter((id) => id !== contact.uid))
 									  }
 									: undefined
 							}
@@ -166,7 +166,7 @@ export default function CreateGroup(): JSX.Element {
 				}}
 			/>
 			<Text mt='0' fontSize='xs' textAlign='left' width='full' color='blueGray.500'>
-				{contactsToAdd.length} participants added
+				{usersToAdd.length} participants added
 			</Text>
 			<Button mt='10' isLoading={isLoading} onTouchEnd={() => handleSubmit(onSubmit)()}>
 				<Text fontWeight='bold' textAlign='center'>

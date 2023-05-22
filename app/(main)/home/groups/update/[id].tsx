@@ -42,13 +42,13 @@ export default function UpdateGroup(): JSX.Element {
 
 	const router = useRouter()
 	const user = useAppSelector((state) => state.userSlice.user)
-	const [contactsToAdd, setContactsToAdd] = useState<string[]>([])
-	const contacts = useAppSelector((state) => state.userSlice.contacts)
+	const [usersToAdd, setUsersToAdd] = useState<string[]>([])
+	const users = useAppSelector((state) => state.userSlice.users)
 	const { mutate, isSuccess, isError, error, isLoading } = useFetchUpdateGroup()
 
-	const contactsSorted = useMemo(
-		() => [...contacts].sort((a) => (contactsToAdd.includes(a.uid) ? -1 : 1)),
-		[contacts, contactsToAdd]
+	const usersSorted = useMemo(
+		() => [...users].sort((a) => (usersToAdd.includes(a.uid) ? -1 : 1)),
+		[users, usersToAdd]
 	)
 
 	const onSubmit = (data: Form) => {
@@ -59,7 +59,7 @@ export default function UpdateGroup(): JSX.Element {
 			name: data.name,
 			avatar: data.photoURL,
 			description: data.description,
-			members: [user?.uid, ...contactsToAdd]
+			members: [user?.uid, ...usersToAdd]
 		}
 
 		mutate(updateGroup)
@@ -75,7 +75,7 @@ export default function UpdateGroup(): JSX.Element {
 			setValue('name', group.name)
 			setValue('description', group.description)
 			setValue('photoURL', group.avatar)
-			setContactsToAdd(group.members.filter((member) => member !== user.uid))
+			setUsersToAdd(group.members.filter((member) => member !== user.uid))
 		}
 	}, [group, user])
 
@@ -145,7 +145,7 @@ export default function UpdateGroup(): JSX.Element {
 			<Text w='full' mt='5' fontSize='md' color='white'>
 				Participants:
 			</Text>
-			<ScrollView mt='5' maxH={`${contacts.length * 66 < 200 ? contacts.length * 66 : 200}px`}>
+			<ScrollView mt='5' maxH={`${users.length * 66 < 200 ? users.length * 66 : 200}px`}>
 				<UserCardInf
 					userId={user?.uid}
 					contact={user as any}
@@ -153,8 +153,8 @@ export default function UpdateGroup(): JSX.Element {
 					isContact={undefined}
 					removeFromGroup={() => {}}
 				/>
-				{contactsSorted.map((contact) => {
-					const isAdded = contactsToAdd.includes(contact.uid)
+				{usersSorted.map((contact) => {
+					const isAdded = usersToAdd.includes(contact.uid)
 					return (
 						<UserCardInf
 							key={contact.uid}
@@ -164,13 +164,13 @@ export default function UpdateGroup(): JSX.Element {
 								isAdded
 									? undefined
 									: () => {
-											setContactsToAdd([...contactsToAdd, contact.uid])
+											setUsersToAdd([...usersToAdd, contact.uid])
 									  }
 							}
 							removeFromGroup={
 								isAdded
 									? () => {
-											setContactsToAdd(contactsToAdd.filter((id) => id !== contact.uid))
+											setUsersToAdd(usersToAdd.filter((id) => id !== contact.uid))
 									  }
 									: undefined
 							}
@@ -180,7 +180,7 @@ export default function UpdateGroup(): JSX.Element {
 				})}
 			</ScrollView>
 			<Text fontSize='xs' textAlign='left' width='full' color='blueGray.500'>
-				{contactsToAdd.length} participants added
+				{usersToAdd.length} participants added
 			</Text>
 			<Button mt='10' isLoading={isLoading} onTouchEnd={() => handleSubmit(onSubmit)()}>
 				<Text fontWeight='bold' textAlign='center'>

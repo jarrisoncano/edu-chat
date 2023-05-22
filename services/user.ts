@@ -2,11 +2,11 @@ import { type User } from '../types/user'
 import { useUser } from '../hooks/useUser'
 import { useMutation } from '@tanstack/react-query'
 import { COLLECTIONS } from '../utils/firebaseConsts'
+import { handleAddUsers } from '../store/user/userSlice'
 import { useAppDispatch, useAppSelector } from '../store'
 import { auth, database, storage } from '../config/firebaseConfig'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
-import { handleAddContacts, handleAddUsers } from '../store/user/userSlice'
 import { Unsubscribe, createUserWithEmailAndPassword } from 'firebase/auth'
 import { collection, doc, getDoc, onSnapshot, query, setDoc, updateDoc, where } from 'firebase/firestore'
 
@@ -24,8 +24,7 @@ const fetchNewUser: any = async ({ user, password }: NewUserType) => {
 		name: user.name,
 		email: user.email,
 		avatar: '',
-		description: '',
-		contacts: []
+		description: ''
 	}
 	await setDoc(doc(database, COLLECTIONS.USERS, newAuthUser.user.uid), newUser)
 	return newUser
@@ -58,28 +57,11 @@ const fetchUpdateUser = async (user: User): Promise<User | undefined> => {
 }
 export const useFetchUpdateUser = () => useMutation(async (user: User) => await fetchUpdateUser(user), {})
 //
-const fetchGetUserContacts = (
-	userId: string,
-	setContacts: Dispatch<SetStateAction<User[]>>,
-	setUser: Dispatch<SetStateAction<User | null>>
-): Unsubscribe => {
+const fetchListenUserChanges = (userId: string, setUser: Dispatch<SetStateAction<User | null>>): Unsubscribe => {
 	try {
-		const unsubscribe = onSnapshot(doc(database, COLLECTIONS.USERS, userId), (crrDoc) => {
-			if (!crrDoc.exists()) return
-
-			const contactsIds: string[] = crrDoc.data().contacts ?? []
-			const contacts: User[] = []
-
-			Promise.all(
-				contactsIds.map(async (contactId) => {
-					const docRef = doc(database, COLLECTIONS.USERS, contactId)
-					const docSnap = await getDoc(docRef)
-					if (docSnap.exists()) contacts.push(docSnap.data() as User)
-				})
-			).then(() => {
-				setUser(crrDoc.data() as User)
-				setContacts(contacts)
-			})
+		const unsubscribe = onSnapshot(doc(database, COLLECTIONS.USERS, userId), (doc) => {
+			if (!doc.exists()) return
+			setUser(doc.data() as User)
 		})
 
 		return unsubscribe
@@ -90,16 +72,14 @@ const fetchGetUserContacts = (
 }
 export const useListenUserChanges = () => {
 	const { setUser } = useUser()
-	const dispatch = useAppDispatch()
 	const [userData, setUserData] = useState<User | null>(null)
-	const [contacts, setContacts] = useState<User[]>([])
 	const user = useAppSelector((state) => state.userSlice.user)
 	const userId = user?.uid ?? ''
 
 	useEffect(() => {
 		if (!userId) return
 
-		const unsubscribe = fetchGetUserContacts(userId, setContacts, setUserData)
+		const unsubscribe = fetchListenUserChanges(userId, setUserData)
 		return () => {
 			unsubscribe()
 		}
@@ -107,8 +87,7 @@ export const useListenUserChanges = () => {
 
 	useEffect(() => {
 		if (userData) setUser(userData)
-		dispatch(handleAddContacts(contacts))
-	}, [contacts])
+	}, [userData])
 }
 //
 const fetchUsersChange = (userId: string, setUsers: Dispatch<SetStateAction<User[]>>): Unsubscribe => {

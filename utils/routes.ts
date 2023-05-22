@@ -12,6 +12,5 @@ export const routes = {
 	updateEvent: '/events/updateEvent',
 	settings: '/user/settings',
 	createGroup: '/home/groups/createGroup',
-	contacts: '/home/contacts',
-	addContact: '/home/contacts/add'
+	users: '/home/users'
 }

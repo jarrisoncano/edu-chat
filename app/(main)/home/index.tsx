@@ -1,12 +1,11 @@
 import { useMemo } from 'react'
 import { useRouter } from 'expo-router'
 import { routes } from '../../../utils/routes'
-import { AntDesign } from '@expo/vector-icons'
 import { TouchableOpacity } from 'react-native'
 import { useAppSelector } from '../../../store'
-import { MaterialIcons } from '@expo/vector-icons'
 import { type Message } from '../../../types/Group'
 import { Box, Fab, Icon, Text, View } from 'native-base'
+import { AntDesign, FontAwesome5 } from '@expo/vector-icons'
 import { UserCard } from '../../../components/Chats/UserCard'
 
 export default function Home(): JSX.Element {
@@ -35,8 +34,8 @@ export default function Home(): JSX.Element {
 					Hello, <Text bold>{user?.name} ✨</Text>
 				</Text>
 				<Box alignItems='flex-end' width='1/6'>
-					<TouchableOpacity onPress={() => router.push(routes.contacts)}>
-						<MaterialIcons name='contacts' size={22} color='white' />
+					<TouchableOpacity onPress={() => router.push(routes.users)}>
+						<FontAwesome5 name='users' size={24} color='white' />
 					</TouchableOpacity>
 				</Box>
 			</Box>
