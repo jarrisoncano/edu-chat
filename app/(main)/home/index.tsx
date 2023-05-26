@@ -4,9 +4,9 @@ import { routes } from '../../../utils/routes'
 import { TouchableOpacity } from 'react-native'
 import { useAppSelector } from '../../../store'
 import { type Message } from '../../../types/Group'
-import { Box, Fab, Icon, ScrollView, Text, View, useColorMode } from 'native-base'
-import { AntDesign, FontAwesome5 } from '@expo/vector-icons'
 import { UserCard } from '../../../components/Chats/UserCard'
+import { AntDesign, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons'
+import { Box, Fab, HStack, Icon, ScrollView, Text, View, useColorMode } from 'native-base'
 
 export default function Home(): JSX.Element {
 	const router = useRouter()
@@ -34,14 +34,21 @@ export default function Home(): JSX.Element {
 	return (
 		<View>
 			<Box mt='2' flexDir='row' justifyContent='space-between' alignItems='center'>
-				<Text numberOfLines={1} width='5/6' fontSize='lg' fontWeight='light'>
+				<Text numberOfLines={1} width='4/6' fontSize='lg' fontWeight='light'>
 					Hello, <Text bold>{user?.name} ✨</Text>
 				</Text>
-				<Box alignItems='flex-end' width='1/6'>
-					<TouchableOpacity onPress={() => router.push(routes.users)}>
-						<FontAwesome5 name='users' size={24} color={iconColor} />
+				<HStack space={7} justifyContent='flex-end' width='2/6'>
+					<TouchableOpacity>
+						{/* <BarCodeScanner
+							onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+						> */}
+						<MaterialCommunityIcons name='qrcode-scan' size={20} color={iconColor} />
+						{/* </BarCodeScanner> */}
 					</TouchableOpacity>
-				</Box>
+					<TouchableOpacity onPress={() => router.push(routes.users)}>
+						<FontAwesome5 name='users' size={20} color={iconColor} />
+					</TouchableOpacity>
+				</HStack>
 			</Box>
 			<Box mt='7'>
 				<ScrollView h='95%'>
