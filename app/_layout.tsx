@@ -6,7 +6,7 @@ import { useUser } from '../hooks/useUser'
 import { useEffect, useState } from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { doc, getDoc } from 'firebase/firestore'
-import { NativeBaseProvider } from 'native-base'
+import { NativeBaseProvider, useColorMode } from 'native-base'
 import { customTheme } from '../utils/customTheme'
 import { COLLECTIONS } from '../utils/firebaseConsts'
 import { auth, database } from '../config/firebaseConfig'
@@ -34,6 +34,7 @@ export default function App(): JSX.Element | null {
 
 function RootLayout(): JSX.Element {
 	const { setUser } = useUser()
+	const { colorMode } = useColorMode()
 	const [showSplashScreen, setShowSplashScreen] = useState(true)
 
 	useEffect(() => {
@@ -59,7 +60,7 @@ function RootLayout(): JSX.Element {
 
 	return (
 		<>
-			<StatusBar style='light' />
+			<StatusBar style={colorMode === 'dark' ? 'light' : 'dark'} />
 			{showSplashScreen ? <SplashScreen /> : <RootLayoutNav />}
 		</>
 	)

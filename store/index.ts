@@ -1,4 +1,5 @@
 import userSlice from './user/userSlice'
+import utilsSlice from './utils/utilsSlice'
 import groupsSlice from './groups/groupsSlice'
 import eventsSlice from './events/eventsSlice'
 import { useDispatch, useSelector } from 'react-redux'
@@ -15,6 +16,7 @@ const resetStateMiddleware = () => (next: any) => (action: any) => {
 
 const rootReducer = combineReducers({
 	userSlice,
+	utilsSlice,
 	groupsSlice,
 	eventsSlice
 })

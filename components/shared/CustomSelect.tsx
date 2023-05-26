@@ -1,5 +1,5 @@
 import { type StyleProp, type ViewStyle } from 'react-native'
-import { Box, CheckIcon, FormControl, Select } from 'native-base'
+import { Box, CheckIcon, FormControl, Select, useColorMode } from 'native-base'
 import { type ResponsiveValue } from 'native-base/lib/typescript/components/types'
 import { Controller, type ErrorOption, type RegisterOptions } from 'react-hook-form'
 
@@ -15,10 +15,15 @@ interface InputProps {
 	height?: ResponsiveValue<number | string>
 	rules?: RegisterOptions
 	error?: ErrorOption
+	variant?: 'outline' | 'underlined' | 'filled' | 'unstyled'
 	backgroundColor?: string
 }
 
 export const CustomSelect = (props: InputProps): JSX.Element => {
+	const { colorMode } = useColorMode()
+	const bgColor = colorMode === 'dark' ? 'blueGray.700' : 'white'
+	const color = colorMode === 'dark' ? 'white' : 'black'
+
 	return (
 		<FormControl
 			isDisabled={props.isDisabled}
@@ -49,6 +54,7 @@ export const CustomSelect = (props: InputProps): JSX.Element => {
 						</Box>
 						<Select
 							mt={1}
+							variant={props.variant ?? 'filled'}
 							isDisabled={props.isDisabled}
 							selectedValue={value}
 							lineHeight={1}
@@ -67,8 +73,8 @@ export const CustomSelect = (props: InputProps): JSX.Element => {
 								bg: 'blueGray.300',
 								endIcon: <CheckIcon size={5} />
 							}}
-							bgColor={props.backgroundColor ?? 'blueGray.700'}
-							color='white'
+							bgColor={props.backgroundColor ?? bgColor}
+							color={color}
 							borderColor='blueGray.500'
 							w='full'
 							h={props.height ?? 9}

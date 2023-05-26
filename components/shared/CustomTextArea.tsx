@@ -1,4 +1,4 @@
-import { FormControl, Input } from 'native-base'
+import { FormControl, Input, useColorMode } from 'native-base'
 import { type StyleProp, type ViewStyle } from 'react-native'
 import { ResponsiveValue } from 'native-base/lib/typescript/components/types'
 import { Controller, type ErrorOption, type RegisterOptions } from 'react-hook-form'
@@ -17,6 +17,9 @@ interface InputProps {
 }
 
 export const CustomTextArea = (props: InputProps): JSX.Element => {
+	const { colorMode } = useColorMode()
+	const bgColor = colorMode === 'dark' ? 'blueGray.700' : 'white'
+	const color = colorMode === 'dark' ? 'white' : 'black'
 	return (
 		<FormControl style={props.style} isInvalid={Boolean(props.error?.type)}>
 			<Controller
@@ -36,8 +39,8 @@ export const CustomTextArea = (props: InputProps): JSX.Element => {
 						placeholder={props.placeholder}
 						multiline
 						variant={props.variant ?? 'filled'}
-						bgColor={'blueGray.700'}
-						color='white'
+						bgColor={bgColor}
+						color={color}
 						borderColor='blueGray.500'
 					/>
 				)}

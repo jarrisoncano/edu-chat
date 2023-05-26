@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { Box, Text } from 'native-base'
+import { Box, Text, useColorMode } from 'native-base'
 import DateTimePicker from '@react-native-community/datetimepicker'
 
 interface Props {
@@ -10,6 +10,10 @@ interface Props {
 }
 
 export const CustomDatePicker: FC<Props> = (props) => {
+	const { colorMode } = useColorMode()
+	const color = colorMode === 'dark' ? 'white' : 'black'
+	const bgColor = colorMode === 'dark' ? 'blueGray.700' : 'white'
+
 	return (
 		<Box>
 			<Text fontSize='sm' fontWeight='normal' mb='1' color='gray.500'>
@@ -19,7 +23,7 @@ export const CustomDatePicker: FC<Props> = (props) => {
 				flexDirection='row'
 				justifyContent='space-between'
 				alignItems='center'
-				bg={'blueGray.700'}
+				bg={bgColor}
 				h={9}
 				borderWidth='1'
 				pl='3'
@@ -32,7 +36,7 @@ export const CustomDatePicker: FC<Props> = (props) => {
 					collapsable
 					minimumDate={props.minimumDate}
 					value={props.value}
-					themeVariant='dark'
+					themeVariant={colorMode as any}
 					onChange={(e, v) => props.onChange(e, v)}
 				/>
 			</Box>

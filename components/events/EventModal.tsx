@@ -6,7 +6,7 @@ import { AntDesign } from '@expo/vector-icons'
 import { SelectedEvent } from '../../types/Group'
 import { Linking, TouchableOpacity } from 'react-native'
 import { useFetchDeleteEvent } from '../../services/groups'
-import { Box, Button, HStack, Modal, Text } from 'native-base'
+import { Box, Button, HStack, Modal, Text, useColorMode } from 'native-base'
 
 interface Props {
 	event: SelectedEvent | null
@@ -15,11 +15,15 @@ interface Props {
 
 export const EventModal: FC<Props> = (props) => {
 	const router = useRouter()
+	const { colorMode } = useColorMode()
 	const { mutate, isLoading } = useFetchDeleteEvent()
 	const startDate = props.event?.startDate?.toDate() as Date
 	const endDate = props.event?.endDate?.toDate() as Date
 	const isoStartDate = startDate ? formatISO(startDate, { format: 'basic', representation: 'date' }) : ''
 	const isoEndDate = endDate ? formatISO(endDate, { format: 'basic', representation: 'date' }) : ''
+
+	const color = colorMode === 'dark' ? 'white' : 'black'
+	const bgColor = colorMode === 'dark' ? 'blueGray.800' : 'white'
 
 	const handleEdit = () => {
 		if (props.event) {
@@ -46,7 +50,7 @@ export const EventModal: FC<Props> = (props) => {
 						{props.event?.title}
 					</Text>
 				</Modal.Header>
-				<Modal.Body bg='blueGray.800'>
+				<Modal.Body bg={bgColor}>
 					<Text fontWeight='semibold'>Description:</Text>
 					<Text>{props.event?.description}</Text>
 					<Text mt='2' fontWeight='semibold'>
@@ -68,7 +72,7 @@ export const EventModal: FC<Props> = (props) => {
 									<Text fontSize='xs' textAlign='center'>
 										Add to
 									</Text>
-									<AntDesign name='google' size={24} color='white' />
+									<AntDesign name='google' size={24} color={color} />
 								</HStack>
 							</TouchableOpacity>
 						</Box>
@@ -81,7 +85,7 @@ export const EventModal: FC<Props> = (props) => {
 											handleEdit()
 										}}
 									>
-										<AntDesign name='edit' size={24} color='white' />
+										<AntDesign name='edit' size={24} color={color} />
 									</TouchableOpacity>
 								</Box>
 								<Button

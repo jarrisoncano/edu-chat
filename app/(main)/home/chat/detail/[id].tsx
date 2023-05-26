@@ -39,7 +39,7 @@ export default function DetailtChat() {
 				</Text>
 				<Text mt='2'>{group?.description}</Text>
 			</Box>
-			<ScrollView showsHorizontalScrollIndicator={false} maxH='lg' mt='2'>
+			<ScrollView showsHorizontalScrollIndicator={false} maxH='lg' mt='2' w='full'>
 				<Divider mt='5' mb='3' bg='indigo.500' />
 				<Box>
 					<Text fontSize='xl' fontWeight='semibold'>

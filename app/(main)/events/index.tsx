@@ -32,11 +32,6 @@ export default function Events(): JSX.Element {
 				<Text numberOfLines={1} width='5/6' fontSize='2xl' bold>
 					Events
 				</Text>
-				<Box alignItems='flex-end' width='1/6'>
-					<TouchableOpacity onPress={() => {}}>
-						<MaterialIcons name='more-vert' size={25} color='white' />
-					</TouchableOpacity>
-				</Box>
 			</Box>
 			<Box mt='7'>
 				<ScrollView h='95%'>

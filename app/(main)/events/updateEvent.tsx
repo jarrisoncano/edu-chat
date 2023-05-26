@@ -177,7 +177,7 @@ export default function UpdateEvent() {
 			</VStack>
 
 			<Button mt='10' isLoading={isLoading} onTouchEnd={() => handleSubmit(onSubmit)()}>
-				<Text fontWeight='bold' textAlign='center'>
+				<Text fontWeight='bold' textAlign='center' color='white'>
 					Update event
 				</Text>
 			</Button>

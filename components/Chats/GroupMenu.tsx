@@ -4,7 +4,7 @@ import { Group } from '../../types/Group'
 import { routes } from '../../utils/routes'
 import { useAppSelector } from '../../store'
 import { Feather } from '@expo/vector-icons'
-import { Menu, Pressable, Text } from 'native-base'
+import { Menu, Pressable, Text, useColorMode } from 'native-base'
 import { useFetchDeleteGroup, useFetchLeaveGroup } from '../../services/groups'
 
 interface Props {
@@ -13,10 +13,13 @@ interface Props {
 
 export const GroupMenu: FC<Props> = (props) => {
 	const router = useRouter()
+	const { colorMode } = useColorMode()
 	const { mutate } = useFetchDeleteGroup()
 	const fetchLeaveGroup = useFetchLeaveGroup()
 	const user = useAppSelector((state) => state.userSlice.user)
 	const isAdmin = props.group?.admins.includes(user?.uid ?? '')
+
+	const color = colorMode === 'dark' ? 'white' : 'black'
 
 	return (
 		<Menu
@@ -24,7 +27,7 @@ export const GroupMenu: FC<Props> = (props) => {
 			trigger={(triggerProps) => {
 				return (
 					<Pressable accessibilityLabel='More options menu' {...triggerProps}>
-						<Feather name='more-vertical' size={20} color='white' />
+						<Feather name='more-vertical' size={20} color={color} />
 					</Pressable>
 				)
 			}}

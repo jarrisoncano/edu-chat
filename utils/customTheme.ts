@@ -11,13 +11,25 @@ export const customTheme = extendTheme({
 				width: 'full',
 				height: 'full',
 				justifyContent: 'flex-start',
-				alignItems: 'center',
-				bg: 'blueGray.800'
+				alignItems: 'center'
+			},
+			baseStyle: {
+				_dark: {
+					bg: 'blueGray.800'
+				},
+				_light: {
+					bg: 'blueGray.50'
+				}
 			}
 		},
 		Text: {
-			defaultProps: {
-				color: 'white'
+			baseStyle: {
+				_dark: {
+					color: 'white'
+				},
+				_light: {
+					color: 'black'
+				}
 			}
 		},
 		Box: {
@@ -40,5 +52,8 @@ export const customTheme = extendTheme({
 				}
 			}
 		}
+	},
+	config: {
+		initialColorMode: 'dark'
 	}
 })

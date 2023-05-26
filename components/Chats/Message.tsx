@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import { format } from 'date-fns'
-import { Box, Text } from 'native-base'
+import { Box, Text, useColorMode } from 'native-base'
 import { Message } from '../../types/Group'
 import { useAppSelector } from '../../store'
 
@@ -9,10 +9,15 @@ interface Props {
 }
 
 export const ChatMessage: FC<Props> = (props) => {
+	const { colorMode } = useColorMode()
 	const user = useAppSelector((state) => state.userSlice.user)
 	const users = useAppSelector((state) => state.userSlice.users)
 
 	const userFrom = users.find((user) => user.uid === props.message.userId)
+
+	const color = colorMode === 'dark' ? 'white' : 'black'
+	const bgColor1 = colorMode === 'dark' ? 'blueGray.900' : 'blueGray.300'
+	const bgColor2 = colorMode === 'dark' ? 'blueGray.700' : 'blueGray.100'
 
 	const isFromUser = user?.uid === props.message.userId
 	const date = props.message.createdAt.toDate ? props.message.createdAt.toDate() : props.message.createdAt
@@ -24,17 +29,17 @@ export const ChatMessage: FC<Props> = (props) => {
 			maxW='3/5'
 			p='2'
 			pb='1'
-			bg={isFromUser ? 'blueGray.900' : 'blueGray.700'}
+			bg={isFromUser ? bgColor1 : bgColor2}
 			mb='2'
 			borderRadius='xl'
 		>
 			<Box w='full'>
-				<Text fontSize='xs' color='white' fontWeight='bold' lineHeight='xs'>
+				<Text fontSize='xs' color={color} fontWeight='bold' lineHeight='xs'>
 					{user?.uid === props.message.userId ? 'You' : userFrom?.name}
 				</Text>
 			</Box>
 			<Text mt='1'>{props.message.content}</Text>
-			<Text fontSize='xs' color='white' textAlign='right' w='full' lineHeight='xs'>
+			<Text fontSize='xs' color={color} textAlign='right' w='full' lineHeight='xs'>
 				{dateFormatted}
 			</Text>
 		</Box>

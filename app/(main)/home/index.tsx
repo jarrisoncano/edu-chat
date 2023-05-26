@@ -4,15 +4,18 @@ import { routes } from '../../../utils/routes'
 import { TouchableOpacity } from 'react-native'
 import { useAppSelector } from '../../../store'
 import { type Message } from '../../../types/Group'
-import { Box, Fab, Icon, ScrollView, Text, View } from 'native-base'
+import { Box, Fab, Icon, ScrollView, Text, View, useColorMode } from 'native-base'
 import { AntDesign, FontAwesome5 } from '@expo/vector-icons'
 import { UserCard } from '../../../components/Chats/UserCard'
 
 export default function Home(): JSX.Element {
 	const router = useRouter()
+	const { colorMode } = useColorMode()
 	const user = useAppSelector((state) => state.userSlice.user)
 	const users = useAppSelector((state) => state.userSlice.users)
 	const groups = useAppSelector((state) => state.groupsSlice.groups)
+
+	const iconColor = colorMode === 'dark' ? 'white' : 'black'
 
 	const groupsSorted = useMemo(() => {
 		const copyOfGroups = [...groups]
@@ -36,7 +39,7 @@ export default function Home(): JSX.Element {
 				</Text>
 				<Box alignItems='flex-end' width='1/6'>
 					<TouchableOpacity onPress={() => router.push(routes.users)}>
-						<FontAwesome5 name='users' size={24} color='white' />
+						<FontAwesome5 name='users' size={24} color={iconColor} />
 					</TouchableOpacity>
 				</Box>
 			</Box>

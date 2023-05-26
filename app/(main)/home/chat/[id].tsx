@@ -4,7 +4,7 @@ import { Feather } from '@expo/vector-icons'
 import { TouchableOpacity } from 'react-native'
 import { routes } from '../../../../utils/routes'
 import { useAppSelector } from '../../../../store'
-import { Box, ScrollView, Spinner, View } from 'native-base'
+import { Box, ScrollView, Spinner, View, useColorMode } from 'native-base'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { ChatMessage } from '../../../../components/Chats/Message'
 import { ChatHeader } from '../../../../components/Chats/ChatHeader'
@@ -13,10 +13,14 @@ import { useFetchMessage, useFetchReadMessages } from '../../../../services/chat
 
 export default function Chat(): JSX.Element {
 	const router = useRouter()
+	const { colorMode } = useColorMode()
 	const { id: groupId } = useLocalSearchParams()
 	const { isLoading, mutate } = useFetchMessage()
 	const fetchReadMessages = useFetchReadMessages()
 	const { control, reset, handleSubmit } = useForm<{ message: string }>()
+
+	const bgColor = colorMode === 'dark' ? 'blueGray.800' : 'white'
+	const bgColor2 = colorMode === 'dark' ? 'blueGray.900' : 'blueGray.100'
 
 	const groups = useAppSelector((state) => state.groupsSlice.groups)
 	const group = groups.find((group) => group.id === groupId)
@@ -41,9 +45,9 @@ export default function Chat(): JSX.Element {
 	}, [groupId])
 
 	return group ? (
-		<View pt='16' bg='blueGray.900' px='0'>
+		<View pt='16' bg={bgColor2} px='0'>
 			<ChatHeader group={group} />
-			<Box bg='blueGray.800' px='5' h='full'>
+			<Box bg={bgColor} px='5' h='full'>
 				<ScrollView py='2' maxH='4/5' flexDir='column-reverse'>
 					{chat.map((message, index) => (
 						<ChatMessage key={index} message={message} />
@@ -55,7 +59,7 @@ export default function Chat(): JSX.Element {
 					borderRadius='2xl'
 					justifyContent='space-between'
 					alignItems='center'
-					bg='blueGray.900'
+					bg={bgColor2}
 					px='3'
 				>
 					<CustomInput
@@ -63,8 +67,8 @@ export default function Chat(): JSX.Element {
 						control={control}
 						variant='unstyled'
 						height={10}
-						style={{ width: '85%', backgroundColor: 'blueGray.800' }}
-						backgroundColor='blueGray.900'
+						style={{ width: '85%', backgroundColor: bgColor }}
+						backgroundColor={bgColor2}
 						error={undefined}
 						type='text'
 						placeholder='Message...'

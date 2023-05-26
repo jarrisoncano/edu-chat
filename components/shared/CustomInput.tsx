@@ -1,5 +1,5 @@
-import { FormControl, Input } from 'native-base'
 import { type StyleProp, type ViewStyle } from 'react-native'
+import { FormControl, Input, useColorMode } from 'native-base'
 import { type ResponsiveValue } from 'native-base/lib/typescript/components/types'
 import { Controller, type ErrorOption, type RegisterOptions } from 'react-hook-form'
 
@@ -19,6 +19,11 @@ interface InputProps {
 }
 
 export const CustomInput = (props: InputProps): JSX.Element => {
+	const { colorMode } = useColorMode()
+	const bgColor = colorMode === 'dark' ? 'blueGray.700' : 'white'
+	const color = colorMode === 'dark' ? 'white' : 'black'
+	const borderColor = colorMode === 'dark' ? 'blueGray.500' : 'blueGray.500'
+
 	return (
 		<FormControl style={props.style} isInvalid={Boolean(props.error?.type)} height={props.height}>
 			<FormControl.Label m={'0'} h={props.label ? '6' : 0}>
@@ -42,9 +47,9 @@ export const CustomInput = (props: InputProps): JSX.Element => {
 						type={props.type ?? 'text'}
 						placeholder={props.placeholder}
 						variant={props.variant ?? 'filled'}
-						bgColor={props.backgroundColor ?? 'blueGray.700'}
-						color='white'
-						borderColor='blueGray.500'
+						bgColor={props.backgroundColor ?? bgColor}
+						color={color}
+						borderColor={borderColor}
 					/>
 				)}
 			/>

@@ -1,4 +1,4 @@
-import { Box } from 'native-base'
+import { Box, useColorMode } from 'native-base'
 import { routes } from '../../utils/routes'
 import { Slot, usePathname } from 'expo-router'
 import { MenuBar } from '../../components/shared/MenuBar'
@@ -12,8 +12,12 @@ export default function MainLayout() {
 	const pathname = usePathname()
 	const validPaths = [routes.home, routes.settings, routes.events]
 
+	const { colorMode } = useColorMode()
+
+	const bgColor = colorMode === 'dark' ? 'blueGray.800' : 'white'
+
 	return (
-		<Box h='full' bgColor='blueGray.800'>
+		<Box h='full' bgColor={bgColor}>
 			<Slot />
 			{validPaths.includes(pathname) && <MenuBar />}
 		</Box>

@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { Box, Text } from 'native-base'
+import { Box, Text, useColorMode } from 'native-base'
 import { useRouter } from 'expo-router'
 import { GroupMenu } from './GroupMenu'
 import { routes } from '../../utils/routes'
@@ -14,13 +14,15 @@ interface Props {
 
 export const ChatHeader: FC<Props> = (props) => {
 	const router = useRouter()
+	const { colorMode } = useColorMode()
+	const color = colorMode === 'dark' ? 'white' : 'black'
 
 	return (
 		<Box px='5' pb='3' flexDir='row' justifyContent='space-between'>
 			<Box width='4/5' flexDir='row' alignItems='center'>
 				<Box flexDir='row' alignItems='center' width='5' ml='-2' mr='2' h='full'>
 					<TouchableOpacity onPress={() => router.back()}>
-						<Ionicons name='chevron-back' size={20} color='white' />
+						<Ionicons name='chevron-back' size={20} color={color} />
 					</TouchableOpacity>
 				</Box>
 				<TouchableOpacity

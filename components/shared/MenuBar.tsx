@@ -1,5 +1,5 @@
 import { routes } from '../../utils/routes'
-import { Box, Flex, Text } from 'native-base'
+import { Box, Flex, Text, useColorMode } from 'native-base'
 import { TouchableOpacity } from 'react-native'
 import { usePathname, useRouter } from 'expo-router'
 import { Feather, Ionicons, MaterialIcons } from '@expo/vector-icons'
@@ -7,6 +7,11 @@ import { Feather, Ionicons, MaterialIcons } from '@expo/vector-icons'
 export const MenuBar = (): JSX.Element => {
 	const router = useRouter()
 	const pathname = usePathname()
+	const { colorMode } = useColorMode()
+
+	const color = colorMode === 'dark' ? 'white' : 'black'
+	const bgColor = colorMode === 'dark' ? 'blueGray.900' : 'white'
+	const bgColorActive = colorMode === 'dark' ? 'blueGray.800' : 'blueGray.100'
 
 	const screens = [
 		{
@@ -31,7 +36,7 @@ export const MenuBar = (): JSX.Element => {
 			px='12'
 			pb='5'
 			pt='3'
-			bg='blueGray.900'
+			bg={bgColor}
 			borderTopLeftRadius='3xl'
 			borderTopRightRadius='3xl'
 			flexDir='row'
@@ -52,15 +57,15 @@ export const MenuBar = (): JSX.Element => {
 						p='1'
 						borderRadius='full'
 						alignItems='center'
-						bg={screen.route === pathname ? 'blueGray.800' : 'blueGray.900'}
+						bg={screen.route === pathname ? bgColorActive : bgColor}
 					>
 						<screen.icon.type
 							{...screen.icon.props}
-							color={screen.route === pathname ? '#818cf8' : 'white'}
+							color={screen.route === pathname ? '#818cf8' : color}
 						/>
 						<Text
 							fontSize='xs'
-							color={screen.route === pathname ? 'indigo.400' : 'white'}
+							color={screen.route === pathname ? 'indigo.400' : color}
 							fontWeight={screen.route === pathname ? 'bold' : 'normal'}
 						>
 							{screen.name}
