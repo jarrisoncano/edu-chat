@@ -35,7 +35,10 @@ const fetchUpdateUser = async (user: User): Promise<User | undefined> => {
 	try {
 		let avatarUrl = user.avatar
 
-		if (avatarUrl.search('firebasestorage') === -1 && avatarUrl !== '') {
+		if (
+			(avatarUrl.search('firebasestorage') === -1 || avatarUrl.search('googleusercontent') === -1) &&
+			avatarUrl !== ''
+		) {
 			const avatarRef = ref(storage, `avatars/${user.uid}`)
 			const img = await fetch(avatarUrl)
 			const bytes = await img.blob()

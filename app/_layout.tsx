@@ -1,11 +1,11 @@
-import { store } from '../store'
+import { store, useAppSelector } from '../store'
 import { Provider } from 'react-redux'
 import { routes } from '../utils/routes'
 import { type User } from '../types/user'
 import { useUser } from '../hooks/useUser'
 import { useEffect, useState } from 'react'
 import { StatusBar } from 'expo-status-bar'
-import { doc, getDoc } from 'firebase/firestore'
+import { doc, getDoc, setDoc } from 'firebase/firestore'
 import { NativeBaseProvider, useColorMode } from 'native-base'
 import { customTheme } from '../utils/customTheme'
 import { COLLECTIONS } from '../utils/firebaseConsts'
@@ -47,7 +47,17 @@ function RootLayout(): JSX.Element {
 					if (docSnap.exists()) {
 						const userData = docSnap.data() as User
 						setUser(userData)
-					} else signOut(auth).catch((e) => {})
+					} else {
+						const newUser: User = {
+							uid: user.uid as string,
+							name: user.displayName as string,
+							email: user.email as string,
+							avatar: user.photoURL as string,
+							description: ''
+						}
+						await setDoc(doc(database, COLLECTIONS.USERS, user.uid), newUser)
+						setUser(newUser)
+					}
 
 					setShowSplashScreen(false)
 				})().catch((e) => {})
@@ -69,11 +79,12 @@ function RootLayout(): JSX.Element {
 function RootLayoutNav(): JSX.Element {
 	const router = useRouter()
 	const segments = useSegments()
+	const user = useAppSelector((state) => state.userSlice.user)
 
 	useEffect(() => {
-		if (segments[0] !== '(auth)' && auth.currentUser === null) router.push(routes.onboarding)
-		else if (segments[0] !== '(main)' && auth.currentUser) router.push(routes.home)
-	}, [auth.currentUser, segments])
+		if (segments[0] !== '(auth)' && user === null) router.push(routes.onboarding)
+		else if (segments[0] !== '(main)' && user) router.push(routes.home)
+	}, [user, segments])
 
 	return (
 		<>

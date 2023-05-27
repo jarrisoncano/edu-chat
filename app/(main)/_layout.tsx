@@ -9,6 +9,7 @@ export default function MainLayout() {
 	useListenUserChanges()
 	useListenUsersChanges()
 	useListenUserGroupsChanges()
+
 	const pathname = usePathname()
 	const validPaths = [routes.home, routes.settings, routes.events]
 

@@ -7,7 +7,7 @@ export default {
     version: '1.0.0',
     orientation: 'portrait',
     icon: './assets/images/icon.png',
-    scheme: 'myapp',
+    scheme: 'https://auth.expo.io/@jarrison.cano/educhat',
     userInterfaceStyle: 'automatic',
     plugins: [
       [
@@ -26,7 +26,8 @@ export default {
       '**/*'
     ],
     ios: {
-      supportsTablet: true
+      supportsTablet: true,
+      bundleIdentifier: 'com.educhat',
     },
     android: {
       package: 'com.educhat',
