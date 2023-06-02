@@ -1,8 +1,8 @@
 import { FC } from 'react'
 import { format } from 'date-fns'
-import { Box, Text, useColorMode } from 'native-base'
 import { Message } from '../../types/Group'
 import { useAppSelector } from '../../store'
+import { Box, Image, Text, useColorMode } from 'native-base'
 
 interface Props {
 	message: Message
@@ -38,7 +38,10 @@ export const ChatMessage: FC<Props> = (props) => {
 					{user?.uid === props.message.userId ? 'You' : userFrom?.name}
 				</Text>
 			</Box>
-			<Text mt='1'>{props.message.content}</Text>
+			{!!props.message.image?.length && (
+				<Image source={{ uri: props.message.image }} alt='image' size='2xl' borderRadius='xl' mt='1' />
+			)}
+			{props.message.content.length > 0 && <Text mt='1'>{props.message.content}</Text>}
 			<Text fontSize='xs' color={color} textAlign='right' w='full' lineHeight='xs'>
 				{dateFormatted}
 			</Text>

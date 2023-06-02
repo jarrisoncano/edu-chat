@@ -1,26 +1,39 @@
 import { useAppSelector } from '../store'
 import { type Message } from '../types/Group'
 import { useMutation } from '@tanstack/react-query'
-import { database } from '../config/firebaseConfig'
+import { database, storage } from '../config/firebaseConfig'
 import { COLLECTIONS } from '../utils/firebaseConsts'
 import { doc, getDoc, updateDoc, arrayUnion, Timestamp } from 'firebase/firestore'
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 
 //
 interface FetchMessageInterface {
 	groupId: string
 	message: string
 	userId: string
+	image: string
 }
-const fetchMessage = async ({ groupId, message, userId }: FetchMessageInterface): Promise<undefined> => {
+const fetchMessage = async ({ groupId, message, userId, image }: FetchMessageInterface): Promise<undefined> => {
 	try {
-		const newMessage: Message = {
+		let newMessage: Message = {
 			userId,
 			content: message,
+			image: image ?? '',
 			createdAt: Timestamp.now(),
 			status: {
 				delivered: [userId],
 				read: [userId]
 			}
+		}
+
+		if (image.length > 0) {
+			const avatarRef = ref(storage, `${userId}/image-${Date.now()}`)
+			const img = await fetch(image)
+			const bytes = await img.blob()
+
+			await uploadBytes(avatarRef, bytes, { contentType: 'image/jpeg' })
+			const url = await getDownloadURL(avatarRef)
+			newMessage.image = url
 		}
 
 		const docRef = doc(database, COLLECTIONS.GROUPS, groupId)
@@ -36,8 +49,8 @@ export const useFetchMessage = () => {
 	const user = useAppSelector((state) => state.userSlice.user)
 	const userId = user?.uid ?? ''
 	return useMutation(
-		async (data: { message: string; groupId: string }) =>
-			await fetchMessage({ groupId: data.groupId, message: data.message, userId })
+		async (data: { message: string; groupId: string; image: string }) =>
+			await fetchMessage({ groupId: data.groupId, message: data.message, userId, image: data.image })
 	)
 }
 //
