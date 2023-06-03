@@ -60,7 +60,7 @@ export default function UpdateEvent() {
 		}
 	}
 	const onSubmit = (data: Form) => {
-		if (!user || !data.groupId || !selectedEvent) return
+		if (!user || !data.groupId || !selectedEvent || isLoading) return
 
 		const newEvent: Event = {
 			id: selectedEvent.id,

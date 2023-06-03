@@ -60,7 +60,7 @@ export default function UpdateGroup(): JSX.Element {
 	)
 
 	const onSubmit = (data: Form) => {
-		if (!user || !group) return
+		if (!user || !group || isLoading) return
 
 		const updateGroup: Group = {
 			...group,

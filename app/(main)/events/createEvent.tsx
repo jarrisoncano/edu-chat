@@ -60,7 +60,7 @@ export default function CreateEvent() {
 		}
 	}
 	const onSubmit = (data: Form) => {
-		if (!user || !data.groupId) return
+		if (!user || !data.groupId || isLoading) return
 
 		const newEvent: Event = {
 			id: uuidv4(),

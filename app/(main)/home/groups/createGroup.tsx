@@ -51,7 +51,7 @@ export default function CreateGroup(): JSX.Element {
 	)
 
 	const onSubmit = (data: Form) => {
-		if (!user) return
+		if (!user || isLoading) return
 
 		const newGroup: Group = {
 			id: '',
