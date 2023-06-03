@@ -1,10 +1,12 @@
 import { routes } from '../../utils/routes'
-import { Box, Flex, Text, useColorMode } from 'native-base'
+import { useI18n } from '../../i18n/usei18n'
 import { TouchableOpacity } from 'react-native'
 import { usePathname, useRouter } from 'expo-router'
+import { Box, Flex, Text, useColorMode } from 'native-base'
 import { Feather, Ionicons, MaterialIcons } from '@expo/vector-icons'
 
 export const MenuBar = (): JSX.Element => {
+	const i18n = useI18n()
 	const router = useRouter()
 	const pathname = usePathname()
 	const { colorMode } = useColorMode()
@@ -15,17 +17,17 @@ export const MenuBar = (): JSX.Element => {
 
 	const screens = [
 		{
-			name: 'Chats',
+			name: i18n?.menu.chats,
 			icon: <Ionicons name='chatbubble-ellipses-outline' size={24} color='white' />,
 			route: routes.home
 		},
 		{
-			name: 'Events',
+			name: i18n?.menu.events,
 			icon: <MaterialIcons name='event' size={24} color='white' />,
 			route: routes.events
 		},
 		{
-			name: 'Settings',
+			name: i18n?.menu.settings,
 			icon: <Feather name='settings' size={24} color='white' />,
 			route: routes.settings
 		}

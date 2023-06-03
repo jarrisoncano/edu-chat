@@ -2,6 +2,7 @@ import { useRouter } from 'expo-router'
 import { useForm } from 'react-hook-form'
 import { useEffect, useState } from 'react'
 import { routes } from '../../../utils/routes'
+import { useI18n } from '../../../i18n/usei18n'
 import { Button, Text, VStack, View } from 'native-base'
 import { Header } from '../../../components/shared/Header'
 import { useFetchUpdateEvent } from '../../../services/groups'
@@ -9,18 +10,9 @@ import { useAppDispatch, useAppSelector } from '../../../store'
 import { CustomInput } from '../../../components/shared/CustomInput'
 import { type SelectedEvent, type Event } from '../../../types/Group'
 import { CustomSelect } from '../../../components/shared/CustomSelect'
-import { ColorType } from 'native-base/lib/typescript/components/types'
 import { handleSelectedEvent } from '../../../store/events/eventsSlice'
 import { CustomTextArea } from '../../../components/shared/CustomTextArea'
 import { CustomDatePicker } from '../../../components/shared/CustomDatePicker'
-
-const colorOptions: Array<{ label: string; value: ColorType }> = [
-	{ label: 'Red', value: 'red.400' },
-	{ label: 'Blue', value: 'blue.400' },
-	{ label: 'Green', value: 'green.400' },
-	{ label: 'Yellow', value: 'yellow.400' },
-	{ label: 'Purple', value: 'purple.400' }
-]
 
 interface Form {
 	groupId: string
@@ -44,6 +36,7 @@ export default function UpdateEvent() {
 			color: 'blue.400'
 		}
 	})
+	const i18n = useI18n()
 	const router = useRouter()
 	const dispatch = useAppDispatch()
 	const [date, setDate] = useState({
@@ -116,7 +109,11 @@ export default function UpdateEvent() {
 
 	return (
 		<View>
-			<Header primaryText='Update event ' secondaryText={'Update the event information'} route={routes.events} />
+			<Header
+				primaryText={i18n.events.update.title}
+				secondaryText={i18n.events.update.title_description}
+				route={routes.events}
+			/>
 
 			<VStack mt='5' space={5}>
 				<CustomSelect
@@ -130,7 +127,7 @@ export default function UpdateEvent() {
 							message: 'Select a group to send the event to'
 						}
 					}}
-					label='Select a group'
+					label={i18n.events.form.groupId}
 					error={errors.groupId}
 					options={groups.map((contact) => ({
 						label: contact.name,
@@ -148,19 +145,23 @@ export default function UpdateEvent() {
 					}}
 					error={errors.name}
 					type='text'
-					placeholder='send assigment to...'
-					label='Event name'
+					placeholder='name...'
+					label={i18n.events.form.name}
 				/>
 				<CustomTextArea
 					control={control}
 					name='description'
-					placeholder='Description...'
+					placeholder={i18n.events.form.description}
 					required={false}
 					error={errors.description}
 				/>
-				<CustomDatePicker placeholder='Start date' value={date.start} onChange={onChange('start')} />
 				<CustomDatePicker
-					placeholder='End date'
+					placeholder={i18n.events.form.startDate}
+					value={date.start}
+					onChange={onChange('start')}
+				/>
+				<CustomDatePicker
+					placeholder={i18n.events.form.endDate}
 					minimumDate={date.start}
 					value={date.end}
 					onChange={onChange('end')}
@@ -171,14 +172,14 @@ export default function UpdateEvent() {
 					backgroundColor={watch('color')}
 					name='color'
 					placeholder='Color...'
-					label='Color'
-					options={colorOptions}
+					label={i18n.events.form.color}
+					options={i18n.events.form.colors}
 				/>
 			</VStack>
 
 			<Button mt='10' isLoading={isLoading} onTouchEnd={() => handleSubmit(onSubmit)()}>
 				<Text fontWeight='bold' textAlign='center' color='white'>
-					Update event
+					{i18n.events.update.submit}
 				</Text>
 			</Button>
 		</View>

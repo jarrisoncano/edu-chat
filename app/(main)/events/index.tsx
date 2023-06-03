@@ -10,8 +10,10 @@ import { useAppDispatch, useAppSelector } from '../../../store'
 import { EventCard } from '../../../components/events/EventCard'
 import { EventModal } from '../../../components/events/EventModal'
 import { handleSelectedEvent } from '../../../store/events/eventsSlice'
+import { useI18n } from '../../../i18n/usei18n'
 
 export default function Events(): JSX.Element {
+	const i18n = useI18n()
 	const dispatch = useAppDispatch()
 	const user = useAppSelector((state) => state.userSlice.user)
 	const groups = useAppSelector((state) => state.groupsSlice.groups)
@@ -30,7 +32,7 @@ export default function Events(): JSX.Element {
 			<EventModal event={selectedEvent} handleClose={() => changeSelectedEvent(null)} />
 			<Box mt='2' flexDir='row' justifyContent='space-between' alignItems='center'>
 				<Text numberOfLines={1} width='5/6' fontSize='2xl' bold>
-					Events
+					{i18n.events.title}
 				</Text>
 			</Box>
 			<Box mt='7'>

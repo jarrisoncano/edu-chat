@@ -6,12 +6,14 @@ import { useAppSelector } from '../../store'
 import { Feather } from '@expo/vector-icons'
 import { Menu, Pressable, Text, useColorMode } from 'native-base'
 import { useFetchDeleteGroup, useFetchLeaveGroup } from '../../services/groups'
+import { useI18n } from '../../i18n/usei18n'
 
 interface Props {
 	group: Group | undefined
 }
 
 export const GroupMenu: FC<Props> = (props) => {
+	const i18n = useI18n()
 	const router = useRouter()
 	const { colorMode } = useColorMode()
 	const { mutate } = useFetchDeleteGroup()
@@ -39,7 +41,7 @@ export const GroupMenu: FC<Props> = (props) => {
 							router.push(routes.updateGroup(props.group?.id ?? ''))
 						}}
 					>
-						Edit
+						{i18n?.edit ?? ''}
 					</Menu.Item>
 					<Menu.Item
 						onPress={() => {
@@ -47,7 +49,7 @@ export const GroupMenu: FC<Props> = (props) => {
 							mutate(props.group?.id ?? '')
 						}}
 					>
-						<Text color='red.500'>Delete</Text>
+						<Text color='red.500'>{i18n?.delete}</Text>
 					</Menu.Item>
 				</>
 			) : (
@@ -59,7 +61,7 @@ export const GroupMenu: FC<Props> = (props) => {
 						})
 					}}
 				>
-					<Text color='red.500'>Leave</Text>
+					<Text color='red.500'>{i18n?.leave}</Text>
 				</Menu.Item>
 			)}
 		</Menu>

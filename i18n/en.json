@@ -1,0 +1,99 @@
+{
+  "menu": {
+    "chats": "Chats",
+    "events": "Events",
+    "settings": "Settings"
+  },
+  "chat": {
+    "you": "You",
+    "firstMessage": "Write the first message...",
+    "inputPlaceholder": "Message...",
+    "detail": "Detail",
+    "members": "members",
+    "imageAndFiles": "Images"
+  },
+  "home": {
+    "hello": "Hello,",
+    "users": "Users",
+    "notUsers": "There are no users in the app!",
+    "users_description": "List of the users in the app!"
+  },
+  "group":{
+    "form":{
+      "groupId": "Select a group",
+      "name": "Group name",
+      "description": "What is this group about...",
+      "startDate": "Start date",
+      "admin": "Admin",
+      "participants": "Add articipants",
+      "search": "Search an user...",
+      "particpantsAdded": "participants added",
+    },
+    "create":{
+      "title": "Create a group ➕",
+      "title_description": "Start to share with your friends!",
+      "submit": "Create group"
+    },
+    "update":{
+      "title": "Update group",
+      "title_description": "Update the group information",
+      "submit": "Update group"
+    },
+  },
+  "events":{
+    "title": "Events",
+    "form":{
+      "groupId": "Select a group",
+      "name": "Event name",
+      "description": "description...",
+      "startDate": "Start date",
+      "endDate": "End date",
+      "color": "Color",
+      "colors": [
+          { "label": "Red", "value": "red.400" },
+          { "label": "Blue", "value": "blue.400" },
+          { "label": "Green", "value": "green.400" },
+          { "label": "Yellow", "value": "yellow.400" },
+          { "label": "Purple", "value": "purple.400" }
+      ]
+    },
+    "create":{
+      "title": "Create a event ➕",
+      "title_description": "Create a event to share with your team!",
+      "submit": "Create event"
+    },
+    "update":{
+      "title": "Update event",
+      "title_description": "Update the event information",
+      "submit": "Update event"
+    },
+    "addTo": "Add to"
+  },
+  "settings":{
+   "language": [
+      {
+        "label": "English",
+        "value": "en"
+      },
+      {
+        "label": "Spanish",
+        "value": "es"
+      }
+   ],
+    "theme": [
+        {
+          "label": "Light",
+          "value": "light"
+        },
+        {
+          "label": "Dark",
+          "value": "dark"
+        }
+    ],
+    "logout": "Logout"
+  },
+  "delete": "Delete",
+  "description": "Description",
+  "edit": "Edit",
+  "leave": "Leave",
+}

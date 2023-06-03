@@ -13,6 +13,7 @@ import { CustomInput } from '../../../../components/shared/CustomInput'
 import { getImageFromLibary } from '../../../../components/utils/getImage'
 import { Box, ScrollView, Spinner, Text, View, useColorMode } from 'native-base'
 import { useFetchMessage, useFetchReadMessages } from '../../../../services/chat'
+import { useI18n } from '../../../../i18n/usei18n'
 
 interface Form {
 	message: string
@@ -20,6 +21,7 @@ interface Form {
 }
 
 export default function Chat(): JSX.Element {
+	const i18n = useI18n()
 	const router = useRouter()
 	const { colorMode } = useColorMode()
 	const scrollViewRef = useRef<any>(null)
@@ -106,7 +108,7 @@ export default function Chat(): JSX.Element {
 						backgroundColor={bgColor2}
 						error={undefined}
 						type='text'
-						placeholder='Message...'
+						placeholder={i18n?.chat.inputPlaceholder ?? ''}
 						label=''
 					/>
 					<TouchableOpacity

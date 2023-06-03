@@ -7,6 +7,7 @@ import { SelectedEvent } from '../../types/Group'
 import { Linking, TouchableOpacity } from 'react-native'
 import { useFetchDeleteEvent } from '../../services/groups'
 import { Box, Button, HStack, Modal, Text, useColorMode } from 'native-base'
+import { useI18n } from '../../i18n/usei18n'
 
 interface Props {
 	event: SelectedEvent | null
@@ -14,6 +15,7 @@ interface Props {
 }
 
 export const EventModal: FC<Props> = (props) => {
+	const i18n = useI18n()
 	const router = useRouter()
 	const { colorMode } = useColorMode()
 	const { mutate, isLoading } = useFetchDeleteEvent()
@@ -51,13 +53,13 @@ export const EventModal: FC<Props> = (props) => {
 					</Text>
 				</Modal.Header>
 				<Modal.Body bg={bgColor}>
-					<Text fontWeight='semibold'>Description:</Text>
+					<Text fontWeight='semibold'>{i18n.description}:</Text>
 					<Text>{props.event?.description}</Text>
 					<Text mt='2' fontWeight='semibold'>
-						Start Date: <Text fontWeight='thin'>{startDate?.toLocaleDateString()}</Text>
+						{i18n.events.form.startDate}: <Text fontWeight='thin'>{startDate?.toLocaleDateString()}</Text>
 					</Text>
 					<Text fontWeight='semibold'>
-						End Date: <Text fontWeight='thin'>{endDate?.toLocaleDateString()}</Text>
+						{i18n.events.form.endDate}: <Text fontWeight='thin'>{endDate?.toLocaleDateString()}</Text>
 					</Text>
 					<HStack mt='3' space={2} justifyContent='space-between'>
 						<Box bg='blue.500' w='2/6' borderRadius='sm' alignItems='center' justifyContent='center' p='2'>
@@ -70,7 +72,7 @@ export const EventModal: FC<Props> = (props) => {
 							>
 								<HStack pointerEvents='none' space='1' alignItems='center'>
 									<Text fontSize='xs' textAlign='center'>
-										Add to
+										{i18n.events.addTo}
 									</Text>
 									<AntDesign name='google' size={24} color={color} />
 								</HStack>
@@ -97,7 +99,7 @@ export const EventModal: FC<Props> = (props) => {
 										handleDelete()
 									}}
 								>
-									<Text textAlign='center'>Delete</Text>
+									<Text textAlign='center'>{i18n.delete}</Text>
 								</Button>
 							</HStack>
 						)}

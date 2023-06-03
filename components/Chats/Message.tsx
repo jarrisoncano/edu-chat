@@ -2,6 +2,7 @@ import { FC } from 'react'
 import { format } from 'date-fns'
 import { Message } from '../../types/Group'
 import { useAppSelector } from '../../store'
+import { useI18n } from '../../i18n/usei18n'
 import { Box, Image, Text, useColorMode } from 'native-base'
 
 interface Props {
@@ -9,6 +10,7 @@ interface Props {
 }
 
 export const ChatMessage: FC<Props> = (props) => {
+	const i18n = useI18n()
 	const { colorMode } = useColorMode()
 	const user = useAppSelector((state) => state.userSlice.user)
 	const users = useAppSelector((state) => state.userSlice.users)
@@ -35,7 +37,7 @@ export const ChatMessage: FC<Props> = (props) => {
 		>
 			<Box w='full'>
 				<Text fontSize='xs' color={color} fontWeight='bold' lineHeight='xs'>
-					{user?.uid === props.message.userId ? 'You' : userFrom?.name}
+					{user?.uid === props.message.userId ? i18n.chat.you : userFrom?.name}
 				</Text>
 			</Box>
 			{!!props.message.image?.length && (

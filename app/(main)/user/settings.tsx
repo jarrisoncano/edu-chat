@@ -7,6 +7,7 @@ import { CustomAvatar } from '../../../components/shared/CustomAvatar'
 import { CustomSelect } from '../../../components/shared/CustomSelect'
 import { Language, Theme, handleChangeLanguage, handleChangeTheme } from '../../../store/utils/utilsSlice'
 import { Box, Divider, HStack, Text, VStack, View, useColorMode } from 'native-base'
+import { useI18n } from '../../../i18n/usei18n'
 
 interface Form {
 	language: Language
@@ -27,6 +28,7 @@ export default function Settings() {
 			theme: Theme.LIGHT
 		}
 	})
+	const i18n = useI18n()
 	const { logout } = useUser()
 	const dispatch = useAppDispatch()
 	const { setColorMode } = useColorMode()
@@ -64,16 +66,7 @@ export default function Settings() {
 					backgroundColor='transparent'
 					label=''
 					error={errors.language}
-					options={[
-						{
-							label: 'English',
-							value: 'en'
-						},
-						{
-							label: 'Español',
-							value: 'es'
-						}
-					]}
+					options={i18n.settings.language}
 				/>
 				<Divider my='3' bg='blueGray.700' />
 				<CustomSelect
@@ -84,21 +77,12 @@ export default function Settings() {
 					backgroundColor='transparent'
 					label=''
 					error={errors.theme}
-					options={[
-						{
-							label: 'Light',
-							value: 'light'
-						},
-						{
-							label: 'Dark',
-							value: 'dark'
-						}
-					]}
+					options={i18n.settings.theme}
 				/>
 				<Divider my='3' bg='blueGray.700' />
 				<TouchableOpacity onPress={logout}>
 					<Text color='red.500' bold pl='3' my='3'>
-						Log out
+						{i18n.settings.logout}
 					</Text>
 				</TouchableOpacity>
 				<Divider my='3' bg='blueGray.700' />

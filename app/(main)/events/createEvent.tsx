@@ -2,6 +2,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { useRouter } from 'expo-router'
 import { useForm } from 'react-hook-form'
 import { routes } from '../../../utils/routes'
+import { useI18n } from '../../../i18n/usei18n'
 import { useAppSelector } from '../../../store'
 import { type Event } from '../../../types/Group'
 import { useEffect, useMemo, useState } from 'react'
@@ -10,17 +11,8 @@ import { Header } from '../../../components/shared/Header'
 import { useFetchNewEvent } from '../../../services/groups'
 import { CustomInput } from '../../../components/shared/CustomInput'
 import { CustomSelect } from '../../../components/shared/CustomSelect'
-import { ColorType } from 'native-base/lib/typescript/components/types'
 import { CustomTextArea } from '../../../components/shared/CustomTextArea'
 import { CustomDatePicker } from '../../../components/shared/CustomDatePicker'
-
-const colorOptions: Array<{ label: string; value: ColorType }> = [
-	{ label: 'Red', value: 'red.400' },
-	{ label: 'Blue', value: 'blue.400' },
-	{ label: 'Green', value: 'green.400' },
-	{ label: 'Yellow', value: 'yellow.400' },
-	{ label: 'Purple', value: 'purple.400' }
-]
 
 interface Form {
 	groupId: string
@@ -44,6 +36,7 @@ export default function CreateEvent() {
 			color: 'blue.400'
 		}
 	})
+	const i18n = useI18n()
 	const router = useRouter()
 	const [date, setDate] = useState({
 		start: new Date(),
@@ -98,8 +91,8 @@ export default function CreateEvent() {
 	return (
 		<View>
 			<Header
-				primaryText='Create a event ➕'
-				secondaryText={'Create a event to share with your team!'}
+				primaryText={i18n.events.create.title}
+				secondaryText={i18n.events.create.title_description}
 				route={routes.events}
 			/>
 
@@ -114,7 +107,7 @@ export default function CreateEvent() {
 							message: 'Select a group to send the event to'
 						}
 					}}
-					label='Select a group'
+					label={i18n.events.form.groupId}
 					error={errors.groupId}
 					options={groupsFiltered.map((contact) => ({
 						label: contact.name,
@@ -133,18 +126,22 @@ export default function CreateEvent() {
 					error={errors.name}
 					type='text'
 					placeholder='send assigment to...'
-					label='Event name'
+					label={i18n.events.form.name}
 				/>
 				<CustomTextArea
 					control={control}
 					name='description'
-					placeholder='Description...'
+					placeholder={i18n.events.form.description}
 					required={false}
 					error={errors.description}
 				/>
-				<CustomDatePicker placeholder='Start date' value={date.start} onChange={onChange('start')} />
 				<CustomDatePicker
-					placeholder='End date'
+					placeholder={i18n.events.form.startDate}
+					value={date.start}
+					onChange={onChange('start')}
+				/>
+				<CustomDatePicker
+					placeholder={i18n.events.form.endDate}
 					minimumDate={date.start}
 					value={date.end}
 					onChange={onChange('end')}
@@ -155,14 +152,14 @@ export default function CreateEvent() {
 					backgroundColor={watch('color')}
 					name='color'
 					placeholder='Color...'
-					label='Color'
-					options={colorOptions}
+					label={i18n.events.form.color}
+					options={i18n.events.form.colors}
 				/>
 			</VStack>
 
 			<Button mt='10' isLoading={isLoading} onTouchEnd={() => handleSubmit(onSubmit)()}>
 				<Text fontWeight='bold' textAlign='center' color='white'>
-					Create event
+					{i18n.events.create.submit}
 				</Text>
 			</Button>
 		</View>

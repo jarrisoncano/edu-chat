@@ -8,8 +8,10 @@ import { type Message } from '../../../types/Group'
 import { UserCard } from '../../../components/Chats/UserCard'
 import { AntDesign, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons'
 import { Box, Fab, HStack, Icon, ScrollView, Text, View, useColorMode } from 'native-base'
+import { useI18n } from '../../../i18n/usei18n'
 
 export default function Home(): JSX.Element {
+	const i18n = useI18n()
 	const router = useRouter()
 	const { colorMode } = useColorMode()
 	const user = useAppSelector((state) => state.userSlice.user)
@@ -40,7 +42,7 @@ export default function Home(): JSX.Element {
 		<View>
 			<Box mt='2' flexDir='row' justifyContent='space-between' alignItems='center'>
 				<Text numberOfLines={1} width='4/6' fontSize='lg' fontWeight='light'>
-					Hello, <Text bold>{user?.name} ✨</Text>
+					{i18n?.home.hello} <Text bold>{user?.name} ✨</Text>
 				</Text>
 				<HStack space={7} justifyContent='flex-end' width='2/6'>
 					<TouchableOpacity>
@@ -60,14 +62,14 @@ export default function Home(): JSX.Element {
 						)
 
 						const lastMessage: Message = messageSorted[messageSorted.length - 1] || {
-							content: 'Write the first message',
+							content: i18n?.chat.firstMessage,
 							createdAt: group.createdAt
 						}
 
 						const userToDisplay = users.find((user) => user.uid === lastMessage.userId)
 						let message =
 							lastMessage.userId === user?.uid
-								? `You: ${!!lastMessage.image ? '📸' : ''} ${lastMessage.content}`
+								? `${i18n?.chat.you}: ${!!lastMessage.image ? '📸' : ''} ${lastMessage.content}`
 								: `${userToDisplay?.name}: ${!!lastMessage.image ? '📸' : ''} ${lastMessage.content}`
 
 						if (lastMessage?.createdAt?.toDate) lastMessage.createdAt = lastMessage.createdAt.toDate()

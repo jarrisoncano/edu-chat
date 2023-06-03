@@ -13,6 +13,7 @@ import { CustomInput } from '../../../../components/shared/CustomInput'
 import { getImageFromLibary } from '../../../../components/utils/getImage'
 import { CustomTextArea } from '../../../../components/shared/CustomTextArea'
 import { Avatar, Box, Button, FlatList, Image, Text, View } from 'native-base'
+import { useI18n } from '../../../../i18n/usei18n'
 
 interface Form {
 	photoURL: string
@@ -37,6 +38,7 @@ export default function CreateGroup(): JSX.Element {
 			photoURL: ''
 		}
 	})
+	const i18n = useI18n()
 	const router = useRouter()
 	const [usersToAdd, setUsersToAdd] = useState<string[]>([])
 	const user = useAppSelector((state) => state.userSlice.user)
@@ -83,8 +85,8 @@ export default function CreateGroup(): JSX.Element {
 	return (
 		<View>
 			<Header
-				primaryText='Create a group ➕'
-				secondaryText={'Start to share with your friends'}
+				primaryText={i18n?.group.create.title ?? ''}
+				secondaryText={i18n?.group.create.title_description ?? ''}
 				route={routes.home}
 			/>
 
@@ -126,7 +128,7 @@ export default function CreateGroup(): JSX.Element {
 						error={errors.name}
 						type='text'
 						placeholder='Group #1...'
-						label='Group Name'
+						label={i18n?.group.form.name ?? ''}
 					/>
 				</Box>
 			</Box>
@@ -134,15 +136,15 @@ export default function CreateGroup(): JSX.Element {
 				<CustomTextArea
 					control={control}
 					name='description'
-					placeholder='What is this group about?'
+					placeholder={i18n?.group.form.description ?? ''}
 					required={false}
 					error={errors.description}
 				/>
 			</Box>
 			<Text w='full' mt='5' fontSize='md' color='white'>
-				Add participants:
+				{i18n?.group.form.participants}:
 			</Text>
-			<CustomInput control={control} name='search' label='Search' placeholder='Search an user...' />
+			<CustomInput control={control} name='search' label='' placeholder={i18n?.group.form.search ?? ''} />
 			<FlatList
 				mt='5'
 				data={usersFiltered}
@@ -176,11 +178,11 @@ export default function CreateGroup(): JSX.Element {
 				}}
 			/>
 			<Text mt='0' fontSize='xs' textAlign='left' width='full' color='blueGray.500'>
-				{usersToAdd.length} participants added
+				{usersToAdd.length} {i18n.group.form.particpantsAdded}
 			</Text>
 			<Button mt='10' isLoading={isLoading} onTouchEnd={() => handleSubmit(onSubmit)()}>
 				<Text fontWeight='bold' textAlign='center' color='white'>
-					Create group
+					{i18n?.group.create.submit}
 				</Text>
 			</Button>
 		</View>

@@ -1,0 +1,98 @@
+{
+  "menu": {
+    "chats": "Chats",
+    "events": "Eventos",
+    "settings": "Ajustes"
+  },
+  "chat": {
+    "you": "Tu",
+    "firstMessage": "Escribe el primer mensaje...",
+    "inputPlaceholder": "Mensaje...",
+    "detail": "Detalles",
+    "members": "miembros",
+    "imageAndFiles": "Imagenes"
+  },
+  "home": {
+    "hello": "Hola,",
+    "users": "Usuarios",
+    "notUsers": "No hay usuarios registrados!",
+    "users_description": "Lista de usuarios en la app!"
+  },
+  "group":{
+    "form":{
+      "groupId": "Selecciona un grupo",
+      "name": "Nombre del grupo",
+      "description": "De que trata este grupo?",
+      "admin": "Administrador",
+      "participants": "Agregar miembros",
+      "search": "Buscar un usuario...",
+      "particpantsAdded": "Miembros agregados"
+    },
+    "create":{
+      "title": "Crear un grupo ➕",
+      "title_description": "Empieza a compartir con tus amigos!",
+      "submit": "Crear grupo"
+    },
+    "update":{
+      "title": "Actualizar grupo",
+      "title_description": "Actualiza la información del grupo",
+      "submit": "Actualizar"
+    }
+  },
+  "events":{
+    "title": "Eventos",
+    "form":{
+      "groupId": "Selecciona un grupo",
+      "name": "Nombre del evento",
+      "description": "Descripción...",
+      "startDate": "Fecha de inicio",
+      "endDate": "Fecha de finalización",
+      "color": "Color",
+      "colors": [
+          { "label": "Rojo", "value": "red.400" },
+          { "label": "Azul", "value": "blue.400" },
+          { "label": "Verde", "value": "green.400" },
+          { "label": "Amarillo", "value": "yellow.400" },
+          { "label": "Purpura", "value": "purple.400" }
+      ]
+    },
+    "create":{
+      "title": "Crear un evento ➕",
+      "title_description": "Crea un evento para compartir con tus amigos!",
+      "submit": "Crear evento"
+    },
+    "update":{
+      "title": "Actualizar evento",
+      "title_description": "Actualiza la información del evento",
+      "submit": "Actualizar event"
+    },
+    "addTo": "Ir a"
+  },
+  "settings":{
+   "language": [
+      {
+        "label": "Inglés",
+        "value": "en"
+      },
+      {
+        "label": "Español",
+        "value": "es"
+      }
+   ],
+    "theme": [
+        {
+          "label": "Tema Claro",
+          "value": "light"
+        },
+        {
+          "label": "Tema oscuro",
+          "value": "dark"
+        }
+    ],
+    "logout": "Cerrar sesión"
+  },
+  "delete": "Eliminar",
+  "description": "Descripción",
+  "edit": "Editar",
+  "leave": "Salir"
+}

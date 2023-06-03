@@ -3,6 +3,7 @@ import QRCode from 'react-native-qrcode-svg'
 import { AntDesign } from '@expo/vector-icons'
 import { TouchableOpacity } from 'react-native'
 import { useLocalSearchParams } from 'expo-router'
+import { useI18n } from '../../../../../i18n/usei18n'
 import { useAppSelector } from '../../../../../store'
 import { Header } from '../../../../../components/shared/Header'
 import { GroupMenu } from '../../../../../components/Chats/GroupMenu'
@@ -11,6 +12,7 @@ import { CustomAvatar } from '../../../../../components/shared/CustomAvatar'
 import { Box, Divider, HStack, Image, Modal, ScrollView, Text, View } from 'native-base'
 
 export default function DetailtChat() {
+	const i18n = useI18n()
 	const [showQr, setShowQr] = useState(false)
 	const { id: groupId } = useLocalSearchParams()
 	const groups = useAppSelector((state) => state.groupsSlice.groups)
@@ -34,7 +36,7 @@ export default function DetailtChat() {
 				route=''
 				secondaryText=''
 				variant='secondary'
-				primaryText='Detail'
+				primaryText={i18n?.chat.detail ?? ''}
 				showIcon={{
 					icon: <GroupMenu group={group} />,
 					onPress: () => {}
@@ -46,7 +48,7 @@ export default function DetailtChat() {
 					{group?.name}
 				</Text>
 				<Text color='blueGray.600' fontSize='md' fontWeight='semibold'>
-					{group?.members.length} members
+					{group?.members.length} {i18n?.chat.members}
 				</Text>
 				<Text mt='2'>{group?.description}</Text>
 				<TouchableOpacity
@@ -61,12 +63,19 @@ export default function DetailtChat() {
 				<Divider mt='5' mb='3' bg='indigo.500' />
 				<Box>
 					<Text fontSize='xl' fontWeight='semibold'>
-						Images & Files
+						{i18n?.chat.imageAndFiles}
 					</Text>
 					<ScrollView horizontal showsHorizontalScrollIndicator={false}>
 						<HStack space={3} mt='2'>
 							{images.map((chat) => (
-								<Image source={{ uri: chat.image }} alt='image' size='lg' borderRadius='xl' mt='1' />
+								<Image
+									key={chat.image}
+									source={{ uri: chat.image }}
+									alt='image'
+									size='lg'
+									borderRadius='xl'
+									mt='1'
+								/>
 							))}
 						</HStack>
 					</ScrollView>
@@ -74,7 +83,7 @@ export default function DetailtChat() {
 				<Divider mt='6' mb='3' bg='indigo.500' />
 				<Box>
 					<Text fontSize='xl' fontWeight='semibold'>
-						Events
+						{i18n?.events.title}
 					</Text>
 
 					{eventsSorted?.map((event) => (
