@@ -69,8 +69,10 @@ export default function Home(): JSX.Element {
 						const userToDisplay = users.find((user) => user.uid === lastMessage.userId)
 						let message =
 							lastMessage.userId === user?.uid
-								? `${i18n?.chat.you}: ${!!lastMessage.image ? '📸' : ''} ${lastMessage.content}`
-								: `${userToDisplay?.name}: ${!!lastMessage.image ? '📸' : ''} ${lastMessage.content}`
+								? `${i18n.chat.you}: ${!!lastMessage.image ? '📸' : ''} ${lastMessage.content}`
+								: `${userToDisplay?.name ?? ''}: ${!!lastMessage.image ? '📸' : ''} ${
+										lastMessage.content
+								  }`
 
 						if (lastMessage?.createdAt?.toDate) lastMessage.createdAt = lastMessage.createdAt.toDate()
 
