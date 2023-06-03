@@ -3,9 +3,10 @@ import { TouchableOpacity } from 'react-native'
 import EmojiModal from 'react-native-emoji-modal'
 import { routes } from '../../../../utils/routes'
 import { useAppSelector } from '../../../../store'
-import { useEffect, useMemo, useState } from 'react'
+import { sortChat } from '../../../../utils/sortChat'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { AntDesign, Entypo, Feather } from '@expo/vector-icons'
+import { Ref, useEffect, useMemo, useRef, useState } from 'react'
 import { ChatMessage } from '../../../../components/Chats/Message'
 import { ChatHeader } from '../../../../components/Chats/ChatHeader'
 import { CustomInput } from '../../../../components/shared/CustomInput'
@@ -21,6 +22,7 @@ interface Form {
 export default function Chat(): JSX.Element {
 	const router = useRouter()
 	const { colorMode } = useColorMode()
+	const scrollViewRef = useRef<any>(null)
 	const { id: groupId } = useLocalSearchParams()
 	const { isLoading, mutate } = useFetchMessage()
 	const fetchReadMessages = useFetchReadMessages()
@@ -44,7 +46,8 @@ export default function Chat(): JSX.Element {
 
 	const chat = useMemo(() => {
 		const messages = [...(group?.chat ?? [])]
-		return messages
+		const messagesSorted = sortChat(messages)
+		return messagesSorted
 	}, [group])
 
 	const handleImage = async () => {
@@ -65,13 +68,22 @@ export default function Chat(): JSX.Element {
 	useEffect(() => {
 		if (!groupId) return
 		fetchReadMessages.mutate({ groupId })
-	}, [groupId])
+	}, [groupId, chat])
 
 	return group ? (
 		<View pt='16' bg={bgColor2} px='0' position='relative'>
 			<ChatHeader group={group} />
 			<Box bg={bgColor} px='5' h='full'>
-				<ScrollView py='2' maxH={showEmoji ? '3/6' : '5/6'} flexDir='column-reverse'>
+				<ScrollView
+					py='2'
+					maxH={showEmoji ? '3/6' : '5/6'}
+					flexDir='column'
+					ref={scrollViewRef}
+					onContentSizeChange={() => {
+						scrollViewRef.current
+						if (scrollViewRef.current) scrollViewRef.current?.scrollToEnd({ animated: false })
+					}}
+				>
 					{chat.map((message, index) => (
 						<ChatMessage key={index} message={message} />
 					))}

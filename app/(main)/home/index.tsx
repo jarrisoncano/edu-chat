@@ -3,6 +3,7 @@ import { useRouter } from 'expo-router'
 import { routes } from '../../../utils/routes'
 import { TouchableOpacity } from 'react-native'
 import { useAppSelector } from '../../../store'
+import { sortChat } from '../../../utils/sortChat'
 import { type Message } from '../../../types/Group'
 import { UserCard } from '../../../components/Chats/UserCard'
 import { AntDesign, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons'
@@ -21,8 +22,12 @@ export default function Home(): JSX.Element {
 		const copyOfGroups = [...groups]
 
 		copyOfGroups.sort((a, b) => {
-			const aLastMessage = a.chat[a.chat.length - 1]
-			const bLastMessage = b.chat[b.chat.length - 1]
+			const messagesSortedA = sortChat([...a.chat])
+			const messagesSortedB = sortChat([...b.chat])
+
+			const aLastMessage = messagesSortedA[messagesSortedA.length - 1]
+			const bLastMessage = messagesSortedB[messagesSortedB.length - 1]
+
 			if (!aLastMessage || !bLastMessage) return a.createdAt > b.createdAt ? -1 : 1
 			if (aLastMessage.createdAt > bLastMessage.createdAt) return -1
 			if (aLastMessage.createdAt < bLastMessage.createdAt) return 1
@@ -39,11 +44,7 @@ export default function Home(): JSX.Element {
 				</Text>
 				<HStack space={7} justifyContent='flex-end' width='2/6'>
 					<TouchableOpacity>
-						{/* <BarCodeScanner
-							onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-						> */}
 						<MaterialCommunityIcons name='qrcode-scan' size={20} color={iconColor} />
-						{/* </BarCodeScanner> */}
 					</TouchableOpacity>
 					<TouchableOpacity onPress={() => router.push(routes.users)}>
 						<FontAwesome5 name='users' size={20} color={iconColor} />
@@ -53,18 +54,21 @@ export default function Home(): JSX.Element {
 			<Box mt='7'>
 				<ScrollView h='95%'>
 					{groupsSorted.map((group) => {
-						const messagesUnread = group.chat.filter(
+						const messageSorted = sortChat([...group.chat])
+						const messagesUnread = messageSorted.filter(
 							(message) => message.status?.read.includes(user?.uid ?? '') === false
 						)
-						const lastMessage: Message = group.chat[group.chat.length - 1] || {
+
+						const lastMessage: Message = messageSorted[messageSorted.length - 1] || {
 							content: 'Write the first message',
 							createdAt: group.createdAt
 						}
+
 						const userToDisplay = users.find((user) => user.uid === lastMessage.userId)
-						const message =
+						let message =
 							lastMessage.userId === user?.uid
-								? 'You: ' + lastMessage.content
-								: `${userToDisplay?.name}: ${lastMessage.content}`
+								? `You: ${!!lastMessage.image ? '📸' : ''} ${lastMessage.content}`
+								: `${userToDisplay?.name}: ${!!lastMessage.image ? '📸' : ''} ${lastMessage.content}`
 
 						if (lastMessage?.createdAt?.toDate) lastMessage.createdAt = lastMessage.createdAt.toDate()
 
