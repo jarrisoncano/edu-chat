@@ -77,6 +77,10 @@
       {
         "label": "Español",
         "value": "es"
+      },
+      {
+        "label": "Francés",
+        "value": "fr"
       }
    ],
     "theme": [

@@ -7,7 +7,8 @@ export enum Theme {
 
 export enum Language {
 	EN = 'en',
-	ES = 'es'
+	ES = 'es',
+	FR = 'fr'
 }
 
 interface UtilsState {

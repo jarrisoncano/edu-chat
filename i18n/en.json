@@ -27,7 +27,7 @@
       "admin": "Admin",
       "participants": "Add articipants",
       "search": "Search an user...",
-      "particpantsAdded": "participants added",
+      "particpantsAdded": "participants added"
     },
     "create":{
       "title": "Create a group ➕",
@@ -38,7 +38,7 @@
       "title": "Update group",
       "title_description": "Update the group information",
       "submit": "Update group"
-    },
+    }
   },
   "events":{
     "title": "Events",
@@ -78,6 +78,10 @@
       {
         "label": "Spanish",
         "value": "es"
+      },
+      {
+        "label": "French",
+        "value": "fr"
       }
    ],
     "theme": [
@@ -95,5 +99,5 @@
   "delete": "Delete",
   "description": "Description",
   "edit": "Edit",
-  "leave": "Leave",
+  "leave": "Leave"
 }

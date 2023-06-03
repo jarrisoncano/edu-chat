@@ -1,0 +1,99 @@
+{
+  "menu": {
+    "chats": "Chats",
+    "events": "Événements",
+    "settings": "Paramètres"
+  },
+  "chat": {
+    "you": "Toi",
+    "firstMessage": "Écrire le premier message...",
+    "inputPlaceholder": "Message...",
+    "detail": "Détails",
+    "members": "membres",
+    "imageAndFiles": "Images"
+  },
+  "home": {
+    "hello": "Bonjour,",
+    "users": "Utilisateurs",
+    "notUsers": "Aucun utilisateur enregistré !",
+    "users_description": "Liste des utilisateurs dans l'application !"
+  },
+  "group":{
+    "form":{
+      "groupId": "Sélectionnez un groupe",
+      "name": "Nom du groupe",
+      "description": "De quoi traite ce groupe ?",
+      "admin": "Administrateur",
+      "participants": "Ajouter des membres",
+      "search": "Rechercher un utilisateur...",
+      "particpantsAdded": "Membres ajoutés"
+    },
+    "create":{
+      "title": "Créer un groupe ➕",
+      "title_description": "Commencez à partager avec vos amis !",
+      "submit": "Créer groupe"
+    },
+    "update":{
+      "title": "Mettre à jour groupe",
+      "title_description": "Mettre à jour les informations du groupe",
+      "submit": "Mettre à jour"
+    }
+  },
+  "events":{
+    "title": "Événements",
+    "form":{
+      "groupId": "Sélectionnez un groupe",
+      "name": "Nom de l'événement",
+      "description": "Description...",
+      "startDate": "Date de début",
+      "endDate": "Date de fin",
+      "color": "Couleur",
+      "colors": [
+          { "label": "Rouge", "value": "red.400" },
+          { "label": "Bleu", "value": "blue.400" },
+          { "label": "Vert", "value": "green.400" },
+          { "label": "Jaune", "value": "yellow.400" },
+          { "label": "Purpura", "value": "purple.400" }
+      ]
+    },
+    "create":{
+      "title": "Créer un événement ➕",
+      "title_description": "Créez un événement pour partager avec vos amis !",
+      "submit": "Créer événement"
+    },
+    "update":{
+      "title": "Mettre à jour événement",
+      "title_description": "Mettre à jour les informations de l'événement",
+      "submit": "Mettre à jour événement"
+    },
+    "addTo": "Aller à"
+  },
+  "settings":{
+    "language": [
+      {
+        "label": "Anglais",
+        "value": "en"
+      },
+      {
+        "label": "Espagnol",
+        "value": "es"
+      },
+      {
+        "label": "Français",
+        "value": "fr"
+      }
+    ],
+    "theme": [
+      {
+        "label": "Thème clair",
+        "value": "light"
+      },
+      {
+        "label": "Thème sombre",
+        "value": "dark"
+      }
+    ],
+    "logout": "Se déconnecter"
+  },
+  "delete": "Supprimer"
+}

@@ -67,6 +67,7 @@ export const MenuBar = (): JSX.Element => {
 						/>
 						<Text
 							fontSize='xs'
+							numberOfLines={1}
 							color={screen.route === pathname ? 'indigo.400' : color}
 							fontWeight={screen.route === pathname ? 'bold' : 'normal'}
 						>
