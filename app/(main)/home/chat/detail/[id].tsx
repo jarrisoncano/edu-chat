@@ -8,13 +8,15 @@ import { Header } from '../../../../../components/shared/Header'
 import { GroupMenu } from '../../../../../components/Chats/GroupMenu'
 import { EventCard } from '../../../../../components/events/EventCard'
 import { CustomAvatar } from '../../../../../components/shared/CustomAvatar'
-import { Box, Divider, HStack, Modal, ScrollView, Text, View } from 'native-base'
+import { Box, Divider, HStack, Image, Modal, ScrollView, Text, View } from 'native-base'
 
 export default function DetailtChat() {
 	const [showQr, setShowQr] = useState(false)
 	const { id: groupId } = useLocalSearchParams()
 	const groups = useAppSelector((state) => state.groupsSlice.groups)
 	const group = groups.find((group) => group.id === groupId)
+
+	const images = useMemo(() => [...(group?.chat ?? [])].filter((m) => !!m.image), [group?.chat])
 
 	const eventsSorted = useMemo(
 		() => [...(group?.events ?? [])].sort((a, b) => a.createdAt - b.createdAt),
@@ -61,10 +63,13 @@ export default function DetailtChat() {
 					<Text fontSize='xl' fontWeight='semibold'>
 						Images & Files
 					</Text>
-					<HStack space={3} mt='2'>
-						<Box h='20' w='20' bg='primary.300' rounded='md' shadow={3} />
-						<Box h='20' w='20' bg='primary.500' rounded='md' shadow={3} />
-					</HStack>
+					<ScrollView horizontal showsHorizontalScrollIndicator={false}>
+						<HStack space={3} mt='2'>
+							{images.map((chat) => (
+								<Image source={{ uri: chat.image }} alt='image' size='lg' borderRadius='xl' mt='1' />
+							))}
+						</HStack>
+					</ScrollView>
 				</Box>
 				<Divider mt='6' mb='3' bg='indigo.500' />
 				<Box>
